@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.company.project"
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 100
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //个推应用参数
+        manifestPlaceholders = [
+                GETUI_APP_ID       : "GETUI_APP_ID",
+                GETUI_APP_KEY      : "GETUI_APP_KEY",
+                GETUI_APP_SECRET   : "GETUI_APP_SECRET",
+                UMENG_CHANNEL_VALUE: "appname"
+        ]
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    applicationVariants.all { variant ->
+        //这个修改输出的APK路径
+//        if (variant.buildType.name != "debug") {//防止AS无法安装debug包(apk)
+//            variant.getPackageApplication().outputDirectory = new File(project.rootDir.absolutePath + "/apk")
+//        }
+        variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
+            //这个修改输出APK的文件名
+            apkData.outputFileName = "AppName_V" + variant.versionName + "_" + variant.buildType.name + ".apk"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    //rxjava
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    //bugly
+    implementation 'com.tencent.bugly:crashreport:2.6.6.1'
+    //运行时权限
+    implementation 'me.weyye.hipermission:library:1.0.7'
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+    //个推
+    implementation 'com.getui:sdk:2.12.1.0'
+    implementation 'com.android.support:support-v4:27.1.1'
+    //防止三方框架爆包
+    implementation 'com.android.support:multidex:1.0.3'
+    //Stetho调试
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    //友盟统计
+    implementation 'com.umeng.sdk:common:1.5.0'
+    implementation 'com.umeng.sdk:analytics:7.5.0'
+    //util集合
+    implementation 'com.blankj:utilcode:1.13.5'
+    //banner
+    implementation 'com.youth.banner:banner:1.4.10'
+}

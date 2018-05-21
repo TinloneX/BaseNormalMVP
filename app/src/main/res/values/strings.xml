@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Finance</string>
+
+    <string name="skip" translatable="false">跳过%s</string>
+    <string name="toUse" translatable="false">立即体验</string>
+    <string name="homepage" translatable="false">首页</string>
+    <string name="info" translatable="false">资讯</string>
+    <string name="discover" translatable="false">发现</string>
+    <string name="mine" translatable="false">我的</string>
+</resources>
