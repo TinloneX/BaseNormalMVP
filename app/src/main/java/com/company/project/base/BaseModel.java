@@ -3,6 +3,7 @@ package com.company.project.base;
 import android.annotation.SuppressLint;
 import android.util.SparseArray;
 
+import com.company.project.http.HttpObserver;
 import com.company.project.mvp.IModel;
 import com.company.project.http.HttpClient;
 import com.company.project.http.HttpService;
@@ -32,6 +33,17 @@ public class BaseModel implements IModel {
         index++;
         return call.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    protected void bindObservable(@NonNull Observable call,@NonNull AsyncCallBack callBack){
+        if (queue == null) {
+            queue = new SparseArray<>();
+        }
+        queue.append(index, call);
+        index++;
+        call.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(HttpObserver.getInstance().createObserver(callBack));
     }
 
     @Override

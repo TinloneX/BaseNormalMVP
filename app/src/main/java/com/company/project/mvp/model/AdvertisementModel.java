@@ -22,9 +22,10 @@ public class AdvertisementModel extends BaseModel implements IAdvertisementModel
     @Override
     public void getAdvertisement(HashMap params, AsyncCallBack<BaseResponse<AdvertisementBean>> callBack) {
         TLog.i("(AdvertisementModel.java:26) -> getAdvertisement" + mService);
-        bindObservable(mService.getAdvertisement(params))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(HttpObserver.getInstance().createObserver(callBack));
+        bindObservable(mService.getAdvertisement(params), callBack);
+//        bindObservable(mService.getAdvertisement(params))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(HttpObserver.getInstance().createObserver(callBack));
     }
 }

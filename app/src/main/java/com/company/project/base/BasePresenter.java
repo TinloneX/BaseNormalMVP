@@ -47,7 +47,20 @@ public abstract class BasePresenter<V extends IView, M extends IModel> implement
             mModel.cancelRequest();
             mModel = null;
         }
-//        mView = null;
+        mView = null;
         TLog.i("(BasePresenter.java:31) -> dettachView");
+    }
+
+    protected abstract class BaseAsyncCallback<Data> implements IModel.AsyncCallBack<Data> {
+
+        @Override
+        public abstract void onSuccess(Data resultData);
+
+        @Override
+        public void onFailed(String resultMsg, String resultCode) {
+            if (mView != null) {
+                mView.onLoadFail(resultMsg, resultCode);
+            }
+        }
     }
 }

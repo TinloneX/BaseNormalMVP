@@ -1,6 +1,7 @@
 package com.company.project.util;
 
 import com.company.project.base.BaseResponse;
+import com.company.project.mvp.IView;
 
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -43,6 +44,16 @@ public final class Check {
      */
     public static boolean hasContent(BaseResponse response) {
         return response != null && response.getResultData() != null;
+    }
+
+    /**
+     * 判断响应
+     *
+     * @param response 响应
+     * @return 响应实体状态
+     */
+    public static boolean hasContent(BaseResponse response, IView view) {
+        return response != null && response.getResultData() != null && view != null;
     }
 
     /**

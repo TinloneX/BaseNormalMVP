@@ -31,21 +31,13 @@ public class AdvertisementPresenter extends BasePresenter<AdvertisementContract.
         params.put("version", BuildConfig.VERSION_CODE);
         TLog.i("(AdvertisementPresenter.java:31) ->" + TLog.valueOf(params));
 
-        mModel.getAdvertisement(params, new IModel.AsyncCallBack<BaseResponse<AdvertisementBean>>() {
+        mModel.getAdvertisement(params, new BaseAsyncCallback<BaseResponse<AdvertisementBean>>() {
             @Override
             public void onSuccess(BaseResponse<AdvertisementBean> resultData) {
                 TLog.i("(AdvertisementPresenter.java:37) ->" + resultData.toString());
-                if (Check.hasContent(resultData)) {
+                if (Check.hasContent(resultData, mView)) {
                     mView.onLoadData(resultData.getResultData());
-                } else {
-                    mView.onLoadFail(Config.Strings.SERVER_ERROR, "-1");
                 }
-            }
-
-            @Override
-            public void onFailed(String resultMsg, String resultCode) {
-                TLog.i("(AdvertisementPresenter.java:47) -> onFailed" + resultMsg);
-                mView.onLoadFail(Config.Strings.SERVER_ERROR, resultCode);
             }
         });
     }

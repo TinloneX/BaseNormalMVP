@@ -14,13 +14,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_luncher_bottom" />
+        app:srcCompat="@drawable/ic_guide_1" />
 
     <ImageView
         android:id="@+id/ivAdvertisement"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitXY"
+        android:src="@drawable/ic_guide_3"
         app:layout_constraintBottom_toTopOf="@+id/ivBottomLogo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
