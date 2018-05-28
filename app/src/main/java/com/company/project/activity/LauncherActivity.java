@@ -96,7 +96,8 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
             SharedPreferencesUtil.setParam(MyApplication.getAppContext(), SharedPreferencesUtil.VERSION_CODE, currentVersionCode);
             startActivity(GuideActivity.class);
         } else {
-            startActivity(MainActivity.class);
+//            startActivity(MainActivity.class);
+            startActivity(TabIndicatorActivity.class);
         }
 
         this.finish();

@@ -25,4 +25,10 @@
     <color name="color_333">#333333</color>
     <color name="color_666">#666666</color>
     <color name="color_999">#999999</color>
+
+    <!--深颜色文本黑色-->
+    <color name="hx_text_dark_black">#FF212121</color>
+    <!--金黄色-->
+    <color name="hx_golden_yellow">#FFD2B152</color>
+
 </resources>

@@ -39,7 +39,7 @@
     <!-- android:protectionLevel="normal" > -->
     <!-- </permission> -->
     <application
-        android:name="com.company.project.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -47,10 +47,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.company.project.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name="com.company.project.activity.LauncherActivity">
+        <activity android:name=".activity.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,8 +60,7 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5ab9e6f0b27b0a3d540000ed" >
-        </meta-data>
+            android:value="5ab9e6f0b27b0a3d540000ed"></meta-data>
 
         <!-- 多渠道打包 -->
         <meta-data
@@ -71,13 +70,14 @@
         <!-- 个推SDK配置开始 -->
         <!-- 推送服务 -->
         <service
-            android:name="com.company.project.service.DemoPushService"
+            android:name=".service.DemoPushService"
             android:exported="true"
             android:label="PushService"
             android:process=":pushservice" />
-        <service android:name="com.company.project.service.DemoIntentService" />
+        <service android:name=".service.DemoIntentService" />
         <!-- 个推SDK配置结束 -->
-        <activity android:name="com.company.project.activity.GuideActivity"></activity>
+        <activity android:name=".activity.GuideActivity" />
+        <activity android:name=".activity.TabIndicatorActivity"></activity>
     </application>
 
 </manifest>
