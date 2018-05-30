@@ -17,6 +17,7 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        AppExceptionHandler.getInstance().init(mContext);
         AppLifecycleManager.onAppStart();
         // 初始化友盟统计
         UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,"Umeng app key");
