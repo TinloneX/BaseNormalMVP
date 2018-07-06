@@ -59,8 +59,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     //bugly
     implementation 'com.tencent.bugly:crashreport:2.6.6.1'
-    //运行时权限
-    implementation 'me.weyye.hipermission:library:1.0.7'
     //glide
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
@@ -79,7 +77,11 @@ dependencies {
     implementation 'com.blankj:utilcode:1.13.5'
     //banner
     implementation 'com.youth.banner:banner:1.4.10'
-
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
-    implementation 'me.grantland:autofittextview:0.2.+'
+    implementation 'me.grantland:autofittextview:0.2.1'
+    //    权限
+    implementation 'com.github.jokermonn:permissions4m:2.1.2-lib'
+    annotationProcessor 'com.github.jokermonn:permissions4m:2.1.2-processor'
+    //沉浸式状态栏
+    implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
 }

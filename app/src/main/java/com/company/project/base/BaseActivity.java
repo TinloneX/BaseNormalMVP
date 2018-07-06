@@ -4,16 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.company.project.mvp.IView;
+import com.company.project.R;
 import com.company.project.config.Config;
+import com.company.project.mvp.IView;
 import com.company.project.widget.LoadingProgressDialog;
+import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.analytics.MobclickAgent;
 
 /**
  * @author EDZ
  * @date 2018/3/23.
+ * If you shed tears when you miss the sun, you also miss the stars.
  */
 
 public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompatActivity implements IView<V> {
@@ -23,17 +27,32 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      * 限制666ms内多次跳转同一界面
      */
     private long lastClick = 0L;
+    /**
+     * 暴露出来供给单个界面更改样式
+     */
+    protected ImmersionBar immersionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layoutId());
+        initImmersionBar();
         mPresenter = getPresenter();
         if (mPresenter != null) {
             mPresenter.attachView(this);
         }
         initView();
         initData();
+    }
+
+    /**
+     * 沉浸式状态栏
+     */
+    protected void initImmersionBar() {
+        immersionBar = ImmersionBar.with(this)
+                .keyboardEnable(true);
+        immersionBar.init();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -72,6 +91,19 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
     protected void initData() {
 
     }
+    /**
+     * 左侧进入
+     */
+    protected void leftStart() {
+        overridePendingTransition(R.anim.push_left_in, 0);
+    }
+
+    /**
+     * 右侧进入
+     */
+    protected void rightStart() {
+        overridePendingTransition(R.anim.push_right_in, 0);
+    }
 
     /**
      * 打开新界面
@@ -100,6 +132,7 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
         intent.putExtras(bundle);
         lastClick = System.currentTimeMillis();
         startActivity(intent);
+        rightStart();
     }
 
     /**
@@ -117,9 +150,9 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      * @param resultCode 失败返回码
      */
     @Override
-    public void onLoadFail(String resultMsg, String resultCode){
+    public void onLoadFail(String resultMsg, String resultCode) {
         hideLoading();
-        ToastUtils.showShort(Config.Strings.SERVER_ERROR);
+        ToastUtils.showShort(resultMsg);
     }
 
     @Override

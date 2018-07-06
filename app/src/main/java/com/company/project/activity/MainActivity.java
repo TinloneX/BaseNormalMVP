@@ -9,6 +9,7 @@ import com.company.project.base.IBasePresenter;
 /**
  * @author EDZ
  * 未完成
+ * We read the world wrong and say that it deceives us.
  */
 public class MainActivity extends BaseActivity {
 

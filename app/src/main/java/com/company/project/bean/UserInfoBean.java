@@ -28,14 +28,6 @@ public class UserInfoBean {
      */
     String sex;
     /**
-     * 推荐码
-     */
-    String recommendCode;
-    /**
-     * 推荐人
-     */
-    long recommendUser;
-    /**
      * 角色 0-默认 100-投资人 110-投资人VIP 200-借款人 300-管理员 310-风控管理员 320-投资管理员 999-root管理员
      */
     int role;
@@ -43,64 +35,6 @@ public class UserInfoBean {
      * 状态（0-未激活，1-已激活，2-锁定）
      */
     int status;
-    /**
-     * 版本code
-     */
-    int versionCode;
-    String from = "android";
-    /**
-     * 是否实名认证
-     */
-    private boolean hasCardId;
-    /**
-     * 是否已设置交易密码
-     */
-    private boolean hasTradePassword;
-    /**
-     * 是否已绑定银行卡
-     */
-    private boolean hasBankCard;
-
-
-    public boolean isHasCardId() {
-        return hasCardId;
-    }
-
-    public void setHasCardId(boolean hasCardId) {
-        this.hasCardId = hasCardId;
-    }
-
-    public boolean isHasTradePassword() {
-        return hasTradePassword;
-    }
-
-    public void setHasTradePassword(boolean hasTradePassword) {
-        this.hasTradePassword = hasTradePassword;
-    }
-
-    public boolean isHasBankCard() {
-        return hasBankCard;
-    }
-
-    public void setHasBankCard(boolean hasBankCard) {
-        this.hasBankCard = hasBankCard;
-    }
-
-    public int getVersionCode() {
-        return versionCode;
-    }
-
-    public void setVersionCode(int versionCode) {
-        this.versionCode = versionCode;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
 
     public String getToken() {
         return token;
@@ -164,22 +98,6 @@ public class UserInfoBean {
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    public String getRecommendCode() {
-        return recommendCode;
-    }
-
-    public void setRecommendCode(String recommendCode) {
-        this.recommendCode = recommendCode;
-    }
-
-    public long getRecommendUser() {
-        return recommendUser;
-    }
-
-    public void setRecommendUser(long recommendUser) {
-        this.recommendUser = recommendUser;
     }
 
     public int getRole() {

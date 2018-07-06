@@ -16,6 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * @author EDZ
  * @date 2018/3/23.
+ * Life has become richer by the love that has been lost.
  */
 
 public class BaseModel implements IModel {

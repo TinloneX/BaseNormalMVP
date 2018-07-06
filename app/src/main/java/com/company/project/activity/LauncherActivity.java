@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.company.project.MyApplication;
 import com.company.project.R;
 import com.company.project.base.BaseActivity;
 import com.company.project.bean.AdvertisementBean;
@@ -19,13 +20,13 @@ import com.company.project.util.Check;
 import com.company.project.util.SharedPreferencesUtil;
 import com.company.project.util.TLog;
 import com.company.project.util.UserInfoUtil;
-import com.company.project.MyApplication;
 
 import java.lang.ref.WeakReference;
 
 /**
  * @author EDZ
  *         启动广告页
+ *         Let life be beautiful like summer flowers and death like autumn leaves.
  */
 public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvertisementPresenter, AdvertisementBean> implements AdvertisementContract.IAdvertisementView {
 

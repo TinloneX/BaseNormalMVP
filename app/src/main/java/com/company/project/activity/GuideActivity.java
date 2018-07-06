@@ -9,6 +9,7 @@ import com.company.project.adapter.GuideAdapter;
 
 /**
  * @author EDZ
+ * Let this be my last word, that I trust in thy love.
  */
 public class GuideActivity extends BaseActivity {
 

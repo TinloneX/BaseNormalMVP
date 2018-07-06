@@ -18,6 +18,7 @@ import com.umeng.analytics.MobclickAgent;
 /**
  * @author EDZ
  * @date 2018/3/23.
+ * The little flower lies in the dust. It sought the path of the butterfly.
  */
 
 public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment implements IView<V> {

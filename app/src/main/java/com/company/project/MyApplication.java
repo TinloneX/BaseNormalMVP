@@ -8,6 +8,7 @@ import com.umeng.commonsdk.UMConfigure;
 /**
  * @author EDZ
  * @date 2018/3/23.
+ * I cannot choose the best. The best chooses me.
  */
 public class MyApplication extends MultiDexApplication {
 
