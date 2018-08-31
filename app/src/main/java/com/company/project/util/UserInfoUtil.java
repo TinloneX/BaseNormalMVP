@@ -2,7 +2,6 @@ package com.company.project.util;
 
 import com.company.project.bean.UserInfoBean;
 import com.google.gson.Gson;
-import com.igexin.sdk.PushManager;
 import com.company.project.MyApplication;
 
 /**
@@ -49,11 +48,6 @@ public class UserInfoUtil {
             Gson gson = new Gson();
             String json = gson.toJson(info);
             SharedPreferencesUtil.setParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, json);
-
-            if (info.getUserId() == 0) {
-                //个推绑定别名
-                PushManager.getInstance().unBindAlias(MyApplication.getAppContext(), info.getUserId() + "", false);
-            }
             mUserInfo = info;
         }
     }

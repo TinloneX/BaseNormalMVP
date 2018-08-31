@@ -2,8 +2,6 @@ package com.company.project.activity;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,24 +15,26 @@ import com.company.project.config.GlideApp;
 import com.company.project.mvp.contract.AdvertisementContract;
 import com.company.project.mvp.presenter.AdvertisementPresenter;
 import com.company.project.util.Check;
+import com.company.project.util.CountObserver;
+import com.company.project.util.CountUtil;
 import com.company.project.util.SharedPreferencesUtil;
 import com.company.project.util.TLog;
 import com.company.project.util.UserInfoUtil;
 
-import java.lang.ref.WeakReference;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author EDZ
- *         启动广告页
- *         Let life be beautiful like summer flowers and death like autumn leaves.
+ * 启动广告页
+ * Let life be beautiful like summer flowers and death like autumn leaves.
  */
 public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvertisementPresenter, AdvertisementBean> implements AdvertisementContract.IAdvertisementView {
 
     TextView tvSkip;
     ImageView ivAdvertisement;
     ImageView ivBottomLogo;
-    private int time = 3;
-    private MyHandler myHandler;
+    private int time = 4;
+    private Disposable disposable;
 
     @Override
     public int layoutId() {
@@ -46,12 +46,33 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
         ivBottomLogo = findViewById(R.id.ivBottomLogo);
         ivAdvertisement = findViewById(R.id.ivAdvertisement);
         tvSkip = findViewById(R.id.tvSkip);
+        CountUtil.countDown(time, new CountObserver() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
+
+            @Override
+            public void onNext(Integer t) {
+                tvSkip.setText(String.format("跳过%ss", t - 1 < 0 ? 0 : t - 1));
+            }
+
+            @Override
+            public void onComplete() {
+                doNext();
+            }
+        });
+        tvSkip.setOnClickListener(v -> {
+            if (disposable != null && !disposable.isDisposed()) {
+                disposable.dispose();
+            }
+            doNext();
+        });
     }
 
     @Override
     protected void initData() {
-        myHandler = new MyHandler(this);
-        myHandler.sendEmptyMessage(0);
         mPresenter.getAdvertisement();
     }
 
@@ -104,24 +125,12 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
         this.finish();
     }
 
-    private static class MyHandler extends Handler {
-
-        WeakReference<LauncherActivity> weakActivity;
-
-        private MyHandler(LauncherActivity activity) {
-            this.weakActivity = new WeakReference<>(activity);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (weakActivity.get().time > 0) {
-                weakActivity.get().tvSkip.setText(String.format("跳过%s", weakActivity.get().time));
-                weakActivity.get().time--;
-                weakActivity.get().myHandler.sendEmptyMessageDelayed(0, 1000);
-            } else {
-                weakActivity.get().doNext();
-            }
-        }
+        disposable = null;
     }
 }

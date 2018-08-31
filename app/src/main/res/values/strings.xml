@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Finance</string>
+    <string name="app_name" translatable="false">BaseNormalMVP</string>
 
     <string name="skip" translatable="false">跳过%s</string>
     <string name="toUse" translatable="false">立即体验</string>

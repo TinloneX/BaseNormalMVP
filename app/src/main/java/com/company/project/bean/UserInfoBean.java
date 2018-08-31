@@ -36,6 +36,26 @@ public class UserInfoBean {
      */
     int status;
 
+    String from;
+
+    int versionCode;
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public int getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
+    }
+
     public String getToken() {
         return token;
     }

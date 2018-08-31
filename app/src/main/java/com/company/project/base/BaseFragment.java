@@ -13,7 +13,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.company.project.mvp.IView;
 import com.company.project.config.Config;
 import com.company.project.widget.LoadingProgressDialog;
-import com.umeng.analytics.MobclickAgent;
 
 /**
  * @author EDZ
@@ -154,12 +153,10 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(getClass().getSimpleName());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(getClass().getSimpleName());
     }
 }

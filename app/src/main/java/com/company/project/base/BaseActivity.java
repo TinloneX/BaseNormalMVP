@@ -12,7 +12,6 @@ import com.company.project.config.Config;
 import com.company.project.mvp.IView;
 import com.company.project.widget.LoadingProgressDialog;
 import com.gyf.barlibrary.ImmersionBar;
-import com.umeng.analytics.MobclickAgent;
 
 /**
  * @author EDZ
@@ -168,12 +167,10 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
     }
 }

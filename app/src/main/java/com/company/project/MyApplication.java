@@ -3,7 +3,6 @@ package com.company.project;
 import android.support.multidex.MultiDexApplication;
 
 import com.company.project.manager.AppLifecycleManager;
-import com.umeng.commonsdk.UMConfigure;
 
 /**
  * @author EDZ
@@ -20,8 +19,6 @@ public class MyApplication extends MultiDexApplication {
         mContext = this;
         AppExceptionHandler.getInstance().init(mContext);
         AppLifecycleManager.onAppStart();
-        // 初始化友盟统计
-        UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,"Umeng app key");
     }
 
     public static MyApplication getAppContext() {
