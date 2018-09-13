@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.company.project.mvp.IView;
 import com.company.project.config.Config;
+import com.company.project.mvp.IView;
 import com.company.project.widget.LoadingProgressDialog;
 
 /**
@@ -73,7 +73,9 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
      *
      * @return presenter
      */
-    public abstract P getPresenter();
+    public P getPresenter() {
+        return null;
+    }
 
     /**
      * 提供初始化控件入口
@@ -124,7 +126,7 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
      * @param resultData 数据
      */
     @Override
-    public void onLoadData(V resultData){
+    public void onLoadData(V resultData) {
         hideLoading();
     }
 
@@ -135,7 +137,7 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
      * @param resultCode 失败返回码
      */
     @Override
-    public void onLoadFail(String resultMsg, String resultCode){
+    public void onLoadFail(String resultMsg, String resultCode) {
         hideLoading();
         ToastUtils.showShort(Config.Strings.SERVER_ERROR);
     }

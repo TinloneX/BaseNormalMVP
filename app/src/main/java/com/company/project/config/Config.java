@@ -49,24 +49,4 @@ public interface Config {
         String TYPE_LARGE = "102";
     }
 
-//--------------------------------------------------------------------------------------------------
-
-    /**
-     * 布局类型
-     */
-    interface ViewType {
-        /**
-         * 正常布局
-         */
-        int VIEWTYPE_NORMAL = 0;
-        /**
-         * 加载更多
-         */
-        int VIEWTYPE_LOAD_MORE = 1;
-        /**
-         * 没有更多
-         */
-        int VIEWTYPE_NO_MORE = 2;
-    }
-
 }

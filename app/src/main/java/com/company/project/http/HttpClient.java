@@ -33,7 +33,7 @@ public class HttpClient {
      * 充值界面生产环境 RechargeActivity
      * DiscoverFragment 后台窗口关闭tv_times
      */
-    private String BASE_URL = null;
+    private String BASE_URL = Config.BaseUrls.BASE_URL;
     private Retrofit retrofit;
 
     private HttpClient() {

@@ -75,7 +75,9 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      *
      * @return presenter
      */
-    public abstract P getPresenter();
+    public P getPresenter(){
+        return null;
+    }
 
     /**
      * 提供初始化控件入口
@@ -162,15 +164,5 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
     @Override
     public void hideLoading() {
         LoadingProgressDialog.dismissProgressDialog();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 }
