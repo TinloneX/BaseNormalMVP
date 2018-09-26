@@ -28,10 +28,10 @@ public abstract class BasePresenter<V extends IView, M extends IModel> implement
     protected HashMap<String, Object> getBaseParams(String token) {
         if (baseParams == null) {
             baseParams = new HashMap<>(16);
-        }else {
+        } else {
             baseParams.clear();
         }
-        if (Check.hasContent(token)){
+        if (Check.hasContent(token)) {
             baseParams.put("token", token);
         }
         baseParams.put("from", "android");

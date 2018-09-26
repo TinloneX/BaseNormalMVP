@@ -12,7 +12,10 @@ package com.company.project.manager;
  */
 public interface AppLifecycle {
     void onAppStart();
+
     void onAppEnterBackground();
+
     void onAppEnterForeground();
+
     int priority();
 }

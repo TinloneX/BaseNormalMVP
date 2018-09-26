@@ -1,8 +1,8 @@
 package com.company.project.http;
 
 import com.company.project.base.BaseResponse;
-import com.company.project.mvp.IModel;
 import com.company.project.config.Config;
+import com.company.project.mvp.IModel;
 import com.company.project.util.TLog;
 
 import io.reactivex.Observer;
@@ -42,7 +42,7 @@ public class HttpObserver<T> {
                 } else {
                     callBack.onFailed(Config.Strings.SERVER_ERROR, response.getResultCode());
                 }
-                TLog.i("tag","(HttpObserver.java:45) ~ onNext:" + response.toString());
+                TLog.i("tag", "(HttpObserver.java:45) ~ onNext:" + response.toString());
             }
 
             @Override

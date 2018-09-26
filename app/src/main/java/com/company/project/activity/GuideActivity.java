@@ -3,9 +3,9 @@ package com.company.project.activity;
 import android.support.v4.view.ViewPager;
 
 import com.company.project.R;
+import com.company.project.adapter.GuideAdapter;
 import com.company.project.base.BaseActivity;
 import com.company.project.base.IBasePresenter;
-import com.company.project.adapter.GuideAdapter;
 
 /**
  * @author EDZ

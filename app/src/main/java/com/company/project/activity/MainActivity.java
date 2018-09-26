@@ -2,13 +2,14 @@ package com.company.project.activity;
 
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+
 import com.company.project.R;
 import com.company.project.base.BaseActivity;
 import com.company.project.base.IBasePresenter;
 
 /**
  * @author EDZ
- * 未完成
+ * <p>
  * We read the world wrong and say that it deceives us.
  */
 public class MainActivity extends BaseActivity {

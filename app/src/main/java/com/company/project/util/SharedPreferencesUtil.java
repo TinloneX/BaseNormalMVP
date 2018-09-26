@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.company.project.MyApplication;
+
 /**
- *
  * @author baibai
  * @date 2017/8/19
  */

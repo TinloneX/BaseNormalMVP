@@ -21,15 +21,14 @@ import com.gyf.barlibrary.ImmersionBar;
 
 public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompatActivity implements IView<V> {
     protected P mPresenter;
-
-    /**
-     * 限制666ms内多次跳转同一界面
-     */
-    private long lastClick = 0L;
     /**
      * 暴露出来供给单个界面更改样式
      */
     protected ImmersionBar immersionBar;
+    /**
+     * 限制666ms内多次跳转同一界面
+     */
+    private long lastClick = 0L;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +74,7 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      *
      * @return presenter
      */
-    public P getPresenter(){
+    public P getPresenter() {
         return null;
     }
 
@@ -92,6 +91,7 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
     protected void initData() {
 
     }
+
     /**
      * 左侧进入
      */

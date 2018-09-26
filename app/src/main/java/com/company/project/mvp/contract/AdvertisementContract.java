@@ -1,8 +1,12 @@
 package com.company.project.mvp.contract;
 
+import com.company.project.base.BaseResponse;
 import com.company.project.base.IBasePresenter;
-import com.company.project.mvp.IView;
 import com.company.project.bean.AdvertisementBean;
+import com.company.project.mvp.IModel;
+import com.company.project.mvp.IView;
+
+import java.util.HashMap;
 
 /**
  * @author EDZ
@@ -22,4 +26,14 @@ public interface AdvertisementContract {
         void getAdvertisement();
     }
 
+    interface IAdvertisementModel extends IModel {
+
+        /**
+         * 获取广告
+         *
+         * @param params   参数
+         * @param callBack 回调
+         */
+        void getAdvertisement(HashMap params, AsyncCallBack<BaseResponse<AdvertisementBean>> callBack);
+    }
 }

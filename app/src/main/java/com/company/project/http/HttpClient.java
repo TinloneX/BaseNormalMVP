@@ -2,10 +2,10 @@ package com.company.project.http;
 
 
 import com.company.project.BuildConfig;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.company.project.MyApplication;
 import com.company.project.config.Config;
 import com.company.project.util.SharedPreferencesUtil;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -51,6 +51,13 @@ public class HttpClient {
         return mRetrofitHttp;
     }
 
+    /**
+     * 方便测试期间后门更改 IP : port
+     */
+    public static void updateUrl() {
+        getInstance().retrofit = null;
+        getInstance().initRetrofit();
+    }
 
     private void initRetrofit() {
         if (retrofit == null) {
@@ -104,14 +111,6 @@ public class HttpClient {
                     .client(builder.build())
                     .build();
         }
-    }
-
-    /**
-     * 方便测试期间后门更改 IP : port
-     */
-    public static void updateUrl() {
-        getInstance().retrofit = null;
-        getInstance().initRetrofit();
     }
 
     public HttpService getApiService() {

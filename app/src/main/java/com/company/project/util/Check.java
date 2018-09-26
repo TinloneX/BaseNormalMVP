@@ -39,8 +39,9 @@ public final class Check {
 
     /**
      * 判断响应
+     *
      * @param response 响应
-     * @return  响应实体状态
+     * @return 响应实体状态
      */
     public static boolean hasContent(BaseResponse response) {
         return response != null && response.getResultData() != null;

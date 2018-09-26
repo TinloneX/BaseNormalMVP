@@ -7,9 +7,8 @@ package com.company.project.config;
 
 public interface Config {
 
-    interface BaseUrls{
+    interface BaseUrls {
         String BASE_URL = "https://www.company.com/api/";
-        String TEST_URL = "http://tingapi.ting.baidu.com/";
     }
 
     /**

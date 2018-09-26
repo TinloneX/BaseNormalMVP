@@ -5,13 +5,12 @@ import android.content.pm.PackageManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.Glide;
 import com.company.project.MyApplication;
 import com.company.project.R;
 import com.company.project.base.BaseActivity;
 import com.company.project.bean.AdvertisementBean;
 import com.company.project.bean.UserInfoBean;
-import com.company.project.config.GlideApp;
 import com.company.project.mvp.contract.AdvertisementContract;
 import com.company.project.mvp.presenter.AdvertisementPresenter;
 import com.company.project.util.Check;
@@ -85,9 +84,8 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
     @Override
     public void onLoadData(AdvertisementBean resultData) {
         if (resultData != null && Check.isLegalWebSite(resultData.getPicture())) {
-            GlideApp.with(this)
+            Glide.with(this)
                     .load(resultData.getPicture())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(ivAdvertisement);
         }
     }

@@ -4,7 +4,6 @@ package com.company.project.http;
 import com.company.project.base.BaseResponse;
 import com.company.project.bean.AdvertisementBean;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;

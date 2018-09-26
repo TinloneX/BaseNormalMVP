@@ -1,6 +1,7 @@
 package com.company.project;
 
-import android.support.multidex.MultiDexApplication;
+
+import android.app.Application;
 
 import com.company.project.manager.AppLifecycleManager;
 
@@ -9,9 +10,13 @@ import com.company.project.manager.AppLifecycleManager;
  * @date 2018/3/23.
  * I cannot choose the best. The best chooses me.
  */
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends Application {
 
-    private static MyApplication mContext ;
+    private static MyApplication mContext;
+
+    public static MyApplication getAppContext() {
+        return mContext;
+    }
 
     @Override
     public void onCreate() {
@@ -19,9 +24,5 @@ public class MyApplication extends MultiDexApplication {
         mContext = this;
         AppExceptionHandler.getInstance().init(mContext);
         AppLifecycleManager.onAppStart();
-    }
-
-    public static MyApplication getAppContext() {
-        return mContext;
     }
 }

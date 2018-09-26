@@ -1,15 +1,8 @@
 package com.company.project.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.company.project.R;
 import com.company.project.base.BaseFragment;
-import com.company.project.base.IBasePresenter;
 
 /**
  * **************************************************

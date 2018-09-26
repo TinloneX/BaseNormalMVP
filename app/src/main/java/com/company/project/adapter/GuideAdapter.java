@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.company.project.R;
+import com.company.project.activity.MainActivity;
 import com.company.project.base.BaseActivity;
 import com.company.project.config.CollectionConfig;
-import com.company.project.activity.MainActivity;
 
 /**
  * @author EDZ
@@ -56,7 +56,7 @@ public class GuideAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-/* super.destroyItem(container, position, object); */
+        /* super.destroyItem(container, position, object); */
         container.removeView((View) object);
     }
 }

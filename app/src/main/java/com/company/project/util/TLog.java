@@ -1,7 +1,6 @@
 package com.company.project.util;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -24,11 +23,10 @@ import java.net.UnknownHostException;
  */
 public class TLog {
 
-    private TLog() {
-    }
-
     private static String TAG = "tag";
     private static boolean showLog = BuildConfig.DEBUG;
+    private TLog() {
+    }
 
     public static void d(Object object) {
         if (showLog) {

@@ -11,6 +11,7 @@ public interface IBasePresenter<V extends IView> {
 
     /**
      * 绑定V层
+     *
      * @param view view
      */
     void attachView(V view);

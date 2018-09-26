@@ -1,8 +1,8 @@
 package com.company.project.util;
 
+import com.company.project.MyApplication;
 import com.company.project.bean.UserInfoBean;
 import com.google.gson.Gson;
-import com.company.project.MyApplication;
 
 /**
  * Created by Administrator on 2017/11/22.

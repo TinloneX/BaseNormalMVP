@@ -7,12 +7,9 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.TypefaceCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -23,13 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.company.project.R;
-import com.google.gson.Gson;
-
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * **************************************************
@@ -43,6 +34,10 @@ import java.util.List;
  */
 public class AppUtil {
 
+
+    public static final String SAVE_SEARCH_STOCK_HISTORY = "search_stock_history";
+    public static final String ACCOUNT_REGEX = "(\\d{3,4})\\d{4}(\\d{4})";
+    public static final String ACCOUNT_REPLACE = "$1****$2";
 
     /**
      * 获取版本号。
@@ -102,7 +97,6 @@ public class AppUtil {
         return operator;
     }
 
-
     /**
      * 网络类型
      *
@@ -136,7 +130,6 @@ public class AppUtil {
         return Build.MODEL;
     }
 
-
     /**
      * 扩大一个View的点击事件接收区域。
      * 默认是在原View四边增加30pix
@@ -165,7 +158,6 @@ public class AppUtil {
         });
     }
 
-
     /**
      * 获取设备状态栏的高度（pix）
      *
@@ -180,7 +172,6 @@ public class AppUtil {
         }
         return height;
     }
-
 
     /**
      * 获得设备的宽和高尺寸(pix)。
@@ -280,7 +271,6 @@ public class AppUtil {
         return textSize;
     }
 
-
     /**
      * px转dp
      *
@@ -316,8 +306,6 @@ public class AppUtil {
         Toast.makeText(context.getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
-    public static final String SAVE_SEARCH_STOCK_HISTORY = "search_stock_history";
-
     /**
      * 账号隐藏,显示*
      */
@@ -328,10 +316,6 @@ public class AppUtil {
         return account.replaceAll(ACCOUNT_REGEX, ACCOUNT_REPLACE);
 
     }
-
-    public static final String ACCOUNT_REGEX = "(\\d{3,4})\\d{4}(\\d{4})";
-    public static final String ACCOUNT_REPLACE = "$1****$2";
-
 
     /**
      * 格式化资产

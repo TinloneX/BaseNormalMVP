@@ -1,14 +1,11 @@
 package com.company.project.mvp.presenter;
 
 import com.company.project.BuildConfig;
-import com.company.project.mvp.IModel;
-import com.company.project.mvp.contract.AdvertisementContract;
-import com.company.project.mvp.imodel.IAdvertisementModel;
-import com.company.project.mvp.model.AdvertisementModel;
 import com.company.project.base.BasePresenter;
 import com.company.project.base.BaseResponse;
 import com.company.project.bean.AdvertisementBean;
-import com.company.project.config.Config;
+import com.company.project.mvp.contract.AdvertisementContract;
+import com.company.project.mvp.model.AdvertisementModel;
 import com.company.project.util.Check;
 import com.company.project.util.TLog;
 import com.company.project.util.TypeCalculator;
@@ -20,7 +17,7 @@ import java.util.HashMap;
  * @date 2018/3/23.
  */
 
-public class AdvertisementPresenter extends BasePresenter<AdvertisementContract.IAdvertisementView, IAdvertisementModel> implements AdvertisementContract.IAdvertisementPresenter {
+public class AdvertisementPresenter extends BasePresenter<AdvertisementContract.IAdvertisementView, AdvertisementContract.IAdvertisementModel> implements AdvertisementContract.IAdvertisementPresenter {
 
     @Override
     public void getAdvertisement() {
