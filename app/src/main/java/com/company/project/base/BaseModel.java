@@ -7,6 +7,7 @@ import com.company.project.http.HttpClient;
 import com.company.project.http.HttpObserver;
 import com.company.project.http.HttpService;
 import com.company.project.mvp.IModel;
+import com.company.project.util.TLog;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,7 +37,7 @@ public class BaseModel implements IModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    protected void bindObservable(@NonNull Observable call, @NonNull AsyncCallBack callBack) {
+    protected <T> void bindObservable(@NonNull Observable<BaseResponse<T>> call, @NonNull AsyncCallBack<BaseResponse<T>> callBack) {
         if (queue == null) {
             queue = new SparseArray<>();
         }
@@ -52,7 +53,7 @@ public class BaseModel implements IModel {
     public void cancelRequest() {
         if (queue != null && queue.size() > 0) {
             for (int i = 0; i < queue.size(); i++) {
-                queue.get(i).unsubscribeOn(AndroidSchedulers.mainThread());
+                TLog.i(queue.get(i).unsubscribeOn(AndroidSchedulers.mainThread()));
             }
             queue.clear();
             index = 0;

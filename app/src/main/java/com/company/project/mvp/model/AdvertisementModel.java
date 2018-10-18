@@ -17,12 +17,7 @@ import java.util.HashMap;
 public class AdvertisementModel extends BaseModel implements AdvertisementContract.IAdvertisementModel {
 
     @Override
-    public void getAdvertisement(HashMap params, AsyncCallBack<BaseResponse<AdvertisementBean>> callBack) {
-        TLog.i("(AdvertisementModel.java:26) -> getAdvertisement" + mService);
+    public void getAdvertisement(HashMap<String,Object> params, AsyncCallBack<BaseResponse<AdvertisementBean>> callBack) {
         bindObservable(mService.getAdvertisement(params), callBack);
-//        bindObservable(mService.getAdvertisement(params))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(HttpObserver.getInstance().createObserver(callBack));
     }
 }

@@ -21,7 +21,6 @@ public class AdvertisementPresenter extends BasePresenter<AdvertisementContract.
 
     @Override
     public void getAdvertisement() {
-
         HashMap<String, Object> params = new HashMap<>(16);
         params.put("from", "android");
         params.put("type", TypeCalculator.forScreenType());

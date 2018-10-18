@@ -13,7 +13,7 @@ import io.reactivex.disposables.Disposable;
  * @date 2017/10/17 0017.
  */
 
-public class HttpObserver<T> {
+public class HttpObserver {
     private static HttpObserver mHttpDao = null;
 
     private HttpObserver() {
@@ -27,7 +27,7 @@ public class HttpObserver<T> {
         return mHttpDao;
     }
 
-    public Observer<BaseResponse<T>> createObserver(final IModel.AsyncCallBack<BaseResponse<T>> callBack) {
+    public<T> Observer<BaseResponse<T>> createObserver(final IModel.AsyncCallBack<BaseResponse<T>> callBack) {
         return new Observer<BaseResponse<T>>() {
             @Override
             public void onSubscribe(Disposable d) {

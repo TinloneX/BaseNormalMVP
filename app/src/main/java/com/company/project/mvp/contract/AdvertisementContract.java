@@ -34,6 +34,6 @@ public interface AdvertisementContract {
          * @param params   参数
          * @param callBack 回调
          */
-        void getAdvertisement(HashMap params, AsyncCallBack<BaseResponse<AdvertisementBean>> callBack);
+        void getAdvertisement(HashMap<String, Object> params, AsyncCallBack<BaseResponse<AdvertisementBean>> callBack);
     }
 }
