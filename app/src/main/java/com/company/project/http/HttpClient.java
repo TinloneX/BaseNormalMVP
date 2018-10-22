@@ -99,9 +99,8 @@ public class HttpClient {
             builder.connectTimeout(30, TimeUnit.SECONDS);
             builder.addInterceptor(headerInterceptor);
             builder.addInterceptor(cookieInterceptor);
-            if (BuildConfig.DEBUG) {
-                builder.addNetworkInterceptor(new StethoInterceptor());
-            }
+
+
             builder.cache(cache);
 
             retrofit = new Retrofit.Builder()
