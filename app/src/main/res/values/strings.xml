@@ -7,4 +7,7 @@
     <string name="info" translatable="false">资讯</string>
     <string name="discover" translatable="false">发现</string>
     <string name="mine" translatable="false">我的</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

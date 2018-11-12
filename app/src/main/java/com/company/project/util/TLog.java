@@ -25,6 +25,7 @@ public class TLog {
 
     private static String TAG = "tag";
     private static boolean showLog = BuildConfig.DEBUG;
+
     private TLog() {
     }
 

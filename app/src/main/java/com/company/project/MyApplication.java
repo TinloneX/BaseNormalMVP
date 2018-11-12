@@ -2,7 +2,9 @@ package com.company.project;
 
 
 import android.app.Application;
+import android.content.Intent;
 
+import com.company.project.activity.LauncherActivity;
 import com.company.project.manager.AppLifecycleManager;
 
 /**
@@ -22,7 +24,16 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        AppExceptionHandler.getInstance().init(mContext);
         AppLifecycleManager.onAppStart();
+        dealUncaughtException();
+    }
+
+    private void dealUncaughtException() {
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            Intent intent = new Intent(mContext, LauncherActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            android.os.Process.killProcess(android.os.Process.myPid());
+        });
     }
 }

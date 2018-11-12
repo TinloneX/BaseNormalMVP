@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff6d2a</color>
-    <color name="colorPrimaryDark">#ff6d2a</color>
-    <color name="colorAccent">#ff6d2a</color>
+    <color name="colorPrimary">#FF6D2A</color>
+    <color name="colorPrimaryDark">#FF6D2A</color>
+    <color name="colorAccent">#FF6D2A</color>
     
     <color name="dark_gray_6000">#66000000</color>
-    <color name="color_dfdfdf">#dfdfdf</color>
+    <color name="color_dfdfdf">#DFDFDF</color>
 
-    <!--深颜色文本黑色-->
-    <color name="hx_text_dark_black">#FF212121</color>
     <!--金黄色-->
-    <color name="hx_golden_yellow">#FFD2B152</color>
+    <color name="golden_yellow">#FFD2B152</color>
+    <color name="smart_blue">#00b7ee</color>
+    <color name="smart_pink">#eeb7ee</color>
+    <color name="smart_green">#00eeb7</color>
+    <color name="smart_yellow">#FFFACD</color>
 
 </resources>

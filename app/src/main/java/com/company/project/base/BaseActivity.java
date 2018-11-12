@@ -2,6 +2,7 @@ package com.company.project.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
@@ -12,6 +13,9 @@ import com.company.project.config.Config;
 import com.company.project.mvp.IView;
 import com.company.project.widget.LoadingProgressDialog;
 import com.gyf.barlibrary.ImmersionBar;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * @author EDZ
@@ -29,14 +33,17 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      * 限制666ms内多次跳转同一界面
      */
     private long lastClick = 0L;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layoutId());
         initImmersionBar();
+        unbinder = ButterKnife.bind(this);
         mPresenter = getPresenter();
         if (mPresenter != null) {
+            // 谁能帮我解决下类型问题~！
             mPresenter.attachView(this);
         }
         initView();
@@ -58,6 +65,10 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.dettachView();
+        }
+        if (unbinder != null) {
+            unbinder.unbind();
+            unbinder = null;
         }
         lastClick = 0L;
     }
@@ -96,14 +107,14 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      * 左侧进入
      */
     protected void leftStart() {
-        overridePendingTransition(R.anim.push_left_in, 0);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     /**
      * 右侧进入
      */
     protected void rightStart() {
-        overridePendingTransition(R.anim.push_right_in, 0);
+        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
     }
 
     /**
@@ -111,8 +122,12 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      *
      * @param clazz 界面类
      */
-    public void startActivity(Class<? extends BaseActivity> clazz) {
+    public void startActivity(@NonNull Class<? extends BaseActivity> clazz) {
         startActivity(clazz, null);
+    }
+
+    public void startActivity(@NonNull Class<? extends BaseActivity> clazz, @Nullable Bundle bundle) {
+        startActivity(clazz, bundle, true);
     }
 
     /**
@@ -121,19 +136,22 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      * @param clazz  界面类
      * @param bundle 数据
      */
-    public void startActivity(Class<? extends BaseActivity> clazz, Bundle bundle) {
-        if (System.currentTimeMillis() - lastClick < Config.Numbers.CLICK_LIMITED) {
-            return;
+    public void startActivity(@NonNull Class<? extends BaseActivity> clazz, @Nullable Bundle bundle, boolean right) {
+        if (noDoubleClick()) {
+            Intent intent = new Intent();
+            intent.setClass(this, clazz);
+            if (bundle == null) {
+                bundle = new Bundle();
+            }
+            intent.putExtras(bundle);
+            lastClick = System.currentTimeMillis();
+            startActivity(intent);
+            if (right) {
+                rightStart();
+            } else {
+                leftStart();
+            }
         }
-        Intent intent = new Intent();
-        intent.setClass(this, clazz);
-        if (bundle == null) {
-            bundle = new Bundle();
-        }
-        intent.putExtras(bundle);
-        lastClick = System.currentTimeMillis();
-        startActivity(intent);
-        rightStart();
     }
 
     /**
@@ -164,5 +182,9 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
     @Override
     public void hideLoading() {
         LoadingProgressDialog.dismissProgressDialog();
+    }
+
+    protected boolean noDoubleClick() {
+        return System.currentTimeMillis() - lastClick >= Config.Numbers.CLICK_LIMITED;
     }
 }

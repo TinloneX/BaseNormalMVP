@@ -45,9 +45,16 @@
         <activity
             android:name=".activity.GuideActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.TabIndicatorActivity"
-            android:screenOrientation="portrait" />
+
+        <provider
+            android:authorities="${applicationId}.file_provider"
+            android:name=".util.MyFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider"/>
+        </provider>
     </application>
 
 </manifest>

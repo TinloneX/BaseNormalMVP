@@ -1,11 +1,9 @@
 package com.company.project.http;
 
 
-import com.company.project.BuildConfig;
 import com.company.project.MyApplication;
 import com.company.project.config.Config;
 import com.company.project.util.SharedPreferencesUtil;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;

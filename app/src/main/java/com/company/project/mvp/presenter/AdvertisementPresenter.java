@@ -8,7 +8,6 @@ import com.company.project.mvp.contract.AdvertisementContract;
 import com.company.project.mvp.model.AdvertisementModel;
 import com.company.project.util.Check;
 import com.company.project.util.TLog;
-import com.company.project.util.TypeCalculator;
 
 import java.util.HashMap;
 
@@ -23,7 +22,7 @@ public class AdvertisementPresenter extends BasePresenter<AdvertisementContract.
     public void getAdvertisement() {
         HashMap<String, Object> params = new HashMap<>(16);
         params.put("from", "android");
-        params.put("type", TypeCalculator.forScreenType());
+        params.put("type", "102");
         params.put("version", BuildConfig.VERSION_CODE);
         TLog.i("(AdvertisementPresenter.java:31) ->" + TLog.valueOf(params));
 

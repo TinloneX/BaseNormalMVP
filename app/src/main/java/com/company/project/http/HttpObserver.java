@@ -27,7 +27,7 @@ public class HttpObserver {
         return mHttpDao;
     }
 
-    public<T> Observer<BaseResponse<T>> createObserver(final IModel.AsyncCallBack<BaseResponse<T>> callBack) {
+    public <T> Observer<BaseResponse<T>> createObserver(final IModel.AsyncCallBack<BaseResponse<T>> callBack) {
         return new Observer<BaseResponse<T>>() {
             @Override
             public void onSubscribe(Disposable d) {

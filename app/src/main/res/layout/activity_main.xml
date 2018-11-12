@@ -1,88 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.company.project.activity.MainActivity">
 
-
-    <RadioGroup
-        android:id="@+id/rgMainBottom"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:checked="true"
-            android:drawablePadding="5dp"
-            android:drawableTop="@drawable/ic_main_home_selector"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/homepage" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawablePadding="5dp"
-            android:drawableTop="@drawable/ic_main_investment_selector"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/info" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawablePadding="5dp"
-            android:drawableTop="@drawable/ic_main_find_selector"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/discover" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawablePadding="5dp"
-            android:drawableTop="@drawable/ic_main_me_selector"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/mine" />
-    </RadioGroup>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_fragments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <View
-        android:id="@+id/view2"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_dfdfdf"
-        app:layout_constraintBottom_toTopOf="@+id/rgMainBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:background="@color/colorAccent" />
 
-    <FrameLayout
-        android:id="@+id/flFragmentHolder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <com.chaychan.library.BottomBarLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    </FrameLayout>
-</android.support.constraint.ConstraintLayout>
+        <com.chaychan.library.BottomBarItem
+            style="@style/bottomBarStyle"
+            app:iconNormal="@drawable/ic_main_home_normal"
+            app:iconSelected="@drawable/ic_main_home_checked"
+            app:itemText="@string/homepage" />
+
+        <com.chaychan.library.BottomBarItem
+            style="@style/bottomBarStyle"
+            app:iconNormal="@drawable/ic_main_investment_normal"
+            app:iconSelected="@drawable/ic_main_investment_checked"
+            app:itemText="@string/info" />
+
+        <com.chaychan.library.BottomBarItem
+            style="@style/bottomBarStyle"
+            app:iconNormal="@drawable/ic_main_find_normal"
+            app:iconSelected="@drawable/ic_main_find_checked"
+            app:itemText="@string/discover" />
+
+        <com.chaychan.library.BottomBarItem
+            style="@style/bottomBarStyle"
+            app:iconNormal="@drawable/ic_main_me_normal"
+            app:iconSelected="@drawable/ic_main_me_checked"
+            app:itemText="@string/mine" />
+
+    </com.chaychan.library.BottomBarLayout>
+
+</LinearLayout>

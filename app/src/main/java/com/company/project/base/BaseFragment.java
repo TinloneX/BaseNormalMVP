@@ -3,6 +3,7 @@ package com.company.project.base;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,13 +15,16 @@ import com.company.project.config.Config;
 import com.company.project.mvp.IView;
 import com.company.project.widget.LoadingProgressDialog;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * @author EDZ
  * @date 2018/3/23.
  * The little flower lies in the dust. It sought the path of the butterfly.
  */
 
-public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment implements IView<V> {
+public abstract class BaseFragment<P extends IBasePresenter<IView<?>>, DATA> extends Fragment implements IView<DATA> {
     protected P mPresenter;
     protected Context mContext;
     protected View mRootView;
@@ -28,6 +32,7 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
      * 限制666ms内多次跳转同一界面
      */
     private long lastClick = 0L;
+    private Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {
@@ -37,10 +42,11 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if (mRootView == null) {
             mRootView = inflater.inflate(layoutId(), container, false);
         }
+        unbinder = ButterKnife.bind(this, mRootView);
         mPresenter = getPresenter();
         if (mPresenter != null) {
             mPresenter.attachView(this);
@@ -57,6 +63,10 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.dettachView();
+        }
+        if (unbinder != null) {
+            unbinder.unbind();
+            unbinder = null;
         }
         lastClick = 0L;
     }
@@ -88,7 +98,6 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
      * （非必选）
      */
     protected void initData() {
-
     }
 
     /**
@@ -126,7 +135,7 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
      * @param resultData 数据
      */
     @Override
-    public void onLoadData(V resultData) {
+    public void onLoadData(DATA resultData) {
         hideLoading();
     }
 
@@ -139,7 +148,7 @@ public abstract class BaseFragment<P extends IBasePresenter, V> extends Fragment
     @Override
     public void onLoadFail(String resultMsg, String resultCode) {
         hideLoading();
-        ToastUtils.showShort(Config.Strings.SERVER_ERROR);
+        ToastUtils.showShort(resultMsg);
     }
 
     @Override
