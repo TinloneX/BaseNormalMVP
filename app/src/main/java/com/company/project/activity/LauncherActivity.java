@@ -1,11 +1,10 @@
 package com.company.project.activity;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.company.project.BuildConfig;
 import com.company.project.MyApplication;
 import com.company.project.R;
 import com.company.project.base.BaseActivity;
@@ -32,7 +31,6 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
     TextView tvSkip;
     ImageView ivAdvertisement;
     ImageView ivBottomLogo;
-    private int time = 4;
     private Disposable disposable;
 
     @Override
@@ -45,7 +43,7 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
         ivBottomLogo = findViewById(R.id.ivBottomLogo);
         ivAdvertisement = findViewById(R.id.ivAdvertisement);
         tvSkip = findViewById(R.id.tvSkip);
-        CountUtil.countDown(time, new CountObserver() {
+        CountUtil.countDown(4, new CountObserver() {
 
             @Override
             public void onSubscribe(Disposable d) {
@@ -96,24 +94,16 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
     }
 
     private void doNext() {
-        int spVersionCode = (int) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), SharedPreferencesUtil.VERSION_CODE, -1);
-        int currentVersionCode = 0;
-        PackageManager pm;
-        try {
-            pm = getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
-            currentVersionCode = pi.versionCode;
-        } catch (Exception ignored) {
-
-        }
-
+        int spVersionCode = (int) SharedPreferencesUtil.getParam(MyApplication.getAppContext(),
+                SharedPreferencesUtil.VERSION_CODE, -1);
         UserInfoBean bean = UserInfoUtil.getUserInfo();
         bean.setFrom("android");
-        bean.setVersionCode(currentVersionCode);
+        bean.setVersionCode(BuildConfig.VERSION_CODE);
         UserInfoUtil.updateUserInfo(bean);
 
-        if (currentVersionCode > spVersionCode) {
-            SharedPreferencesUtil.setParam(MyApplication.getAppContext(), SharedPreferencesUtil.VERSION_CODE, currentVersionCode);
+        if (BuildConfig.VERSION_CODE > spVersionCode) {
+            SharedPreferencesUtil.setParam(MyApplication.getAppContext(),
+                    SharedPreferencesUtil.VERSION_CODE, BuildConfig.VERSION_CODE);
             startActivity(GuideActivity.class);
         } else {
             startActivity(MainActivity.class);
