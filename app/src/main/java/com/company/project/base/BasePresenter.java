@@ -3,8 +3,8 @@ package com.company.project.base;
 import com.company.project.BuildConfig;
 import com.company.project.mvp.IModel;
 import com.company.project.mvp.IView;
-import com.company.project.util.Check;
 import com.company.project.util.TLog;
+import com.company.project.util.UserInfoUtil;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ import java.util.HashMap;
  * @date 2018/3/23.
  */
 
-public abstract class BasePresenter<V extends IView, M extends IModel> implements IBasePresenter<V> {
+public abstract class BasePresenter<V extends IView, M extends IModel> implements IPresenter<V> {
 
     protected M mModel = null;
     protected V mView = null;
@@ -25,14 +25,15 @@ public abstract class BasePresenter<V extends IView, M extends IModel> implement
         setModel();
     }
 
-    protected HashMap<String, Object> getBaseParams(String token) {
+    protected HashMap<String, Object> getBaseParams() {
         if (baseParams == null) {
             baseParams = new HashMap<>(16);
         } else {
             baseParams.clear();
         }
-        if (Check.hasContent(token)) {
-            baseParams.put("token", token);
+        if (UserInfoUtil.isLogin()) {
+            baseParams.put("token", UserInfoUtil.getUserInfo().getToken());
+            baseParams.put("userId", UserInfoUtil.getUserInfo().getUserId());
         }
         baseParams.put("from", "android");
         baseParams.put("version", BuildConfig.VERSION_CODE);

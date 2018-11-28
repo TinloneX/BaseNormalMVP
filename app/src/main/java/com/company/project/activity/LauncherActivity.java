@@ -9,16 +9,14 @@ import com.company.project.MyApplication;
 import com.company.project.R;
 import com.company.project.base.BaseActivity;
 import com.company.project.bean.AdvertisementBean;
-import com.company.project.bean.UserInfoBean;
 import com.company.project.mvp.contract.AdvertisementContract;
 import com.company.project.mvp.presenter.AdvertisementPresenter;
 import com.company.project.util.Check;
 import com.company.project.util.CountObserver;
 import com.company.project.util.CountUtil;
 import com.company.project.util.SharedPreferencesUtil;
-import com.company.project.util.TLog;
-import com.company.project.util.UserInfoUtil;
 
+import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -28,8 +26,11 @@ import io.reactivex.disposables.Disposable;
  */
 public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvertisementPresenter, AdvertisementBean> implements AdvertisementContract.IAdvertisementView {
 
+    @BindView(R.id.tvSkip)
     TextView tvSkip;
+    @BindView(R.id.ivAdvertisement)
     ImageView ivAdvertisement;
+    @BindView(R.id.ivBottomLogo)
     ImageView ivBottomLogo;
     private Disposable disposable;
 
@@ -40,11 +41,7 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
 
     @Override
     protected void initView() {
-        ivBottomLogo = findViewById(R.id.ivBottomLogo);
-        ivAdvertisement = findViewById(R.id.ivAdvertisement);
-        tvSkip = findViewById(R.id.tvSkip);
         CountUtil.countDown(4, new CountObserver() {
-
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;
@@ -75,7 +72,6 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
 
     @Override
     public AdvertisementContract.IAdvertisementPresenter getPresenter() {
-        TLog.i("(LauncherActivity.java:57) -> getPresenter");
         return new AdvertisementPresenter();
     }
 
@@ -96,11 +92,6 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
     private void doNext() {
         int spVersionCode = (int) SharedPreferencesUtil.getParam(MyApplication.getAppContext(),
                 SharedPreferencesUtil.VERSION_CODE, -1);
-        UserInfoBean bean = UserInfoUtil.getUserInfo();
-        bean.setFrom("android");
-        bean.setVersionCode(BuildConfig.VERSION_CODE);
-        UserInfoUtil.updateUserInfo(bean);
-
         if (BuildConfig.VERSION_CODE > spVersionCode) {
             SharedPreferencesUtil.setParam(MyApplication.getAppContext(),
                     SharedPreferencesUtil.VERSION_CODE, BuildConfig.VERSION_CODE);
@@ -115,9 +106,6 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-        disposable = null;
+        dispose(disposable);
     }
 }

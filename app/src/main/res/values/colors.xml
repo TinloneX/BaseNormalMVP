@@ -7,6 +7,11 @@
     <color name="dark_gray_6000">#66000000</color>
     <color name="color_dfdfdf">#DFDFDF</color>
 
+    <color name="text_dark_black">#222</color>
+    <color name="text_light_black">#BEC3CC</color>
+    <color name="c_f6f6f6">#F6F6F6</color>
+    <color name="orange">#FF7F00</color>
+
     <!--金黄色-->
     <color name="golden_yellow">#FFD2B152</color>
     <color name="smart_blue">#00b7ee</color>

@@ -22,7 +22,7 @@ import com.company.project.util.DensityUtil;
 
 public class LoadingProgressDialog {
 
-    static Dialog dialog;
+    private static Dialog dialog;
 
     /**
      * 显示dialog
@@ -40,19 +40,19 @@ public class LoadingProgressDialog {
 
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null, false);
-        TextView tvTip = view.findViewById(R.id.tv_tip);
         dialog.setCancelable(true);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
-
         Window window = dialog.getWindow();
-        window.setContentView(view);
-        window.setBackgroundDrawable(new ColorDrawable(0));
-
-        WindowManager.LayoutParams p = window.getAttributes();
-        p.width = (int) (DensityUtil.getScreenWidth() * 0.6);
-        window.setAttributes(p);
-        dialog.show();
+        if (window!=null) {
+            window.setContentView(view);
+            window.setBackgroundDrawable(new ColorDrawable(0));
+            WindowManager.LayoutParams p = window.getAttributes();
+            p.width = (int) (DensityUtil.getScreenWidth() * 0.6);
+            p.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(p);
+            dialog.show();
+        }
     }
 
     /**

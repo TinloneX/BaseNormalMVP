@@ -1,7 +1,7 @@
 package com.company.project.mvp.contract;
 
 import com.company.project.base.BaseResponse;
-import com.company.project.base.IBasePresenter;
+import com.company.project.base.IPresenter;
 import com.company.project.bean.AdvertisementBean;
 import com.company.project.mvp.IModel;
 import com.company.project.mvp.IView;
@@ -19,7 +19,7 @@ public interface AdvertisementContract {
 
     }
 
-    interface IAdvertisementPresenter extends IBasePresenter<IAdvertisementView> {
+    interface IAdvertisementPresenter extends IPresenter<IAdvertisementView> {
         /**
          * 获取启动页广告
          */

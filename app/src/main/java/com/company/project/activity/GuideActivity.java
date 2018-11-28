@@ -5,7 +5,9 @@ import android.support.v4.view.ViewPager;
 import com.company.project.R;
 import com.company.project.adapter.GuideAdapter;
 import com.company.project.base.BaseActivity;
-import com.company.project.base.IBasePresenter;
+import com.company.project.base.IPresenter;
+
+import butterknife.BindView;
 
 /**
  * @author EDZ
@@ -13,8 +15,8 @@ import com.company.project.base.IBasePresenter;
  */
 public class GuideActivity extends BaseActivity {
 
-    private ViewPager vpGuide;
-    private GuideAdapter guideAdapter;
+    @BindView(R.id.vpGuide)
+    ViewPager vpGuide;
 
     @Override
     public int layoutId() {
@@ -22,30 +24,15 @@ public class GuideActivity extends BaseActivity {
     }
 
     @Override
-    public IBasePresenter getPresenter() {
+    public IPresenter getPresenter() {
         return null;
     }
 
     @Override
     protected void initData() {
         super.initData();
-        guideAdapter = new GuideAdapter(this);
+        GuideAdapter guideAdapter = new GuideAdapter(this);
         vpGuide.setAdapter(guideAdapter);
     }
 
-    @Override
-    public void onLoadData(Object resultData) {
-
-    }
-
-    @Override
-    public void onLoadFail(String resultMsg, String resultCode) {
-
-    }
-
-    @Override
-    protected void initView() {
-        super.initView();
-        vpGuide = findViewById(R.id.vpGuide);
-    }
 }

@@ -7,7 +7,7 @@ import com.company.project.mvp.IView;
  * @date 2018/3/23.
  */
 
-public interface IBasePresenter<V extends IView> {
+public interface IPresenter<V extends IView> {
 
     /**
      * 绑定V层

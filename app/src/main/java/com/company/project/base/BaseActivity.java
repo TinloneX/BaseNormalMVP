@@ -16,6 +16,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author EDZ
@@ -23,7 +24,7 @@ import butterknife.Unbinder;
  * If you shed tears when you miss the sun, you also miss the stars.
  */
 
-public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompatActivity implements IView<V> {
+public abstract class BaseActivity<P extends IPresenter, V> extends AppCompatActivity implements IView<V> {
     protected P mPresenter;
     /**
      * 暴露出来供给单个界面更改样式
@@ -59,6 +60,44 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
         immersionBar.init();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
+
+    /**
+     * 状态栏白底黑字
+     */
+    public void statusWhiteFontBlack() {
+        immersionBar
+                .statusBarColor(R.color.white)
+                .keyboardEnable(true)
+                .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                .statusBarDarkFont(true, 0.2f)
+                .init();
+    }
+
+    /**
+     * 透明底黑字
+     */
+    public void statusTransparentFontBlack() {
+        immersionBar
+                .transparentStatusBar()
+                .keyboardEnable(true)
+                .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                .statusBarDarkFont(true, 0.2f)
+                .init();
+    }
+
+    /**
+     * 透明底白字
+     */
+    public void statusTransparentFontWhite() {
+        immersionBar
+                .transparentStatusBar()
+                .fitsSystemWindows(false)
+                .statusBarDarkFont(false)
+                .keyboardEnable(true)
+                .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                .init();
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -160,7 +199,9 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
      * @param resultData 数据
      */
     @Override
-    public abstract void onLoadData(V resultData);
+    public void onLoadData(V resultData){
+        hideLoading();
+    }
 
     /**
      * 失败响应
@@ -184,7 +225,21 @@ public abstract class BaseActivity<P extends IBasePresenter, V> extends AppCompa
         LoadingProgressDialog.dismissProgressDialog();
     }
 
+    /**
+     * 防止抖动连点
+     */
     protected boolean noDoubleClick() {
-        return System.currentTimeMillis() - lastClick >= Config.Numbers.CLICK_LIMITED;
+        return System.currentTimeMillis() - lastClick >= Config.Numbers.CLICK_LIMIT;
+    }
+
+    /**
+     * 释放订阅者
+     */
+    protected void dispose(Disposable... disposables) {
+        for (Disposable i : disposables) {
+            if (i != null) {
+                i.dispose();
+            }
+        }
     }
 }

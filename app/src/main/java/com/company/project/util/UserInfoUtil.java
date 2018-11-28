@@ -52,4 +52,8 @@ public class UserInfoUtil {
         }
     }
 
+    public static boolean isLogin() {
+        return Check.hasContent(getUserInfo().getToken());
+    }
+
 }

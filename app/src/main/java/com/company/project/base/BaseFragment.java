@@ -24,7 +24,7 @@ import butterknife.Unbinder;
  * The little flower lies in the dust. It sought the path of the butterfly.
  */
 
-public abstract class BaseFragment<P extends IBasePresenter<IView<?>>, DATA> extends Fragment implements IView<DATA> {
+public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends Fragment implements IView<DATA> {
     protected P mPresenter;
     protected Context mContext;
     protected View mRootView;
@@ -116,7 +116,7 @@ public abstract class BaseFragment<P extends IBasePresenter<IView<?>>, DATA> ext
      * @param bundle 数据
      */
     public void startActivity(Class<? extends BaseFragment> clazz, Bundle bundle) {
-        if (System.currentTimeMillis() - lastClick < Config.Numbers.CLICK_LIMITED) {
+        if (noDoubleClick()) {
             return;
         }
         Intent intent = new Intent();
@@ -169,5 +169,9 @@ public abstract class BaseFragment<P extends IBasePresenter<IView<?>>, DATA> ext
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    protected boolean noDoubleClick() {
+        return System.currentTimeMillis() - lastClick >= Config.Numbers.CLICK_LIMIT;
     }
 }
