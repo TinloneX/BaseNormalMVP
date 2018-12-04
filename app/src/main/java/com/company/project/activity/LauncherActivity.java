@@ -17,6 +17,7 @@ import com.company.project.util.CountUtil;
 import com.company.project.util.SharedPreferencesUtil;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -41,28 +42,7 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
 
     @Override
     protected void initView() {
-        CountUtil.countDown(4, new CountObserver() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposable = d;
-            }
-
-            @Override
-            public void onNext(Integer t) {
-                tvSkip.setText(String.format("跳过%ss", t - 1 < 0 ? 0 : t - 1));
-            }
-
-            @Override
-            public void onComplete() {
-                doNext();
-            }
-        });
-        tvSkip.setOnClickListener(v -> {
-            if (disposable != null && !disposable.isDisposed()) {
-                disposable.dispose();
-            }
-            doNext();
-        });
+        skipDown();
     }
 
     @Override
@@ -84,10 +64,33 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
         }
     }
 
-    @Override
-    public void onLoadFail(String resultMsg, String resultCode) {
+    private void skipDown() {
+        CountUtil.countDown(4, new CountObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
 
+            @Override
+            public void onNext(Integer t) {
+                tvSkip.setText(String.format("跳过%ss", t - 1 < 0 ? 0 : t - 1));
+            }
+
+            @Override
+            public void onComplete() {
+                doNext();
+            }
+        });
     }
+
+    @OnClick(R.id.tvSkip)
+    public void onSkipClick() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+        doNext();
+    }
+
 
     private void doNext() {
         int spVersionCode = (int) SharedPreferencesUtil.getParam(MyApplication.getAppContext(),

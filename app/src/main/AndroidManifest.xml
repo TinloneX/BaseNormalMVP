@@ -19,6 +19,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 浮动通知权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <!--安装应用-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".MyApplication"
@@ -47,14 +50,15 @@
             android:screenOrientation="portrait" />
 
         <provider
-            android:authorities="${applicationId}.file_provider"
             android:name=".util.MyFileProvider"
+            android:authorities="${applicationId}.file_provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider"/>
+                android:resource="@xml/file_provider" />
         </provider>
+        <service android:name=".service.ODownloadService" />
     </application>
 
 </manifest>
