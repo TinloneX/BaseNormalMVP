@@ -1,10 +1,15 @@
 package com.company.project.service;
 
+import java.io.File;
+import java.io.IOException;
+
+import okhttp3.Call;
+
 public interface OnDownloadListener {
     /**
      * 下载成功
      */
-    void onDownloadSuccess();
+    void onDownloadSuccess(File file);
 
     /**
      * @param progress 下载进度
@@ -14,5 +19,5 @@ public interface OnDownloadListener {
     /**
      * 下载失败
      */
-    void onDownloadFailed();
+    void onDownloadFailed(Call call, Exception e);
 }

@@ -49,6 +49,13 @@
             android:name=".activity.GuideActivity"
             android:screenOrientation="portrait" />
 
+        <receiver android:name=".receiver.OpenFileReceiver"
+            android:permission="android.permission.READ_EXTERNAL_STORAGE">
+            <intent-filter>
+                <action android:name="${applicationId}.open_file" />
+            </intent-filter>
+        </receiver>
+
         <provider
             android:name=".util.MyFileProvider"
             android:authorities="${applicationId}.file_provider"
