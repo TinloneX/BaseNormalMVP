@@ -1,6 +1,7 @@
 package com.company.project.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 import com.company.project.MyApplication;
@@ -37,16 +38,13 @@ public class DensityUtil {
      */
     public static int px2sp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-
         return (int) (pxValue / fontScale + 0.5f);
     }
 
     /**
      * 将sp值转换为px值，保证文字大小不变
      *
-     * @param spValue
      * @param spValue （DisplayMetrics类中属性scaledDensity）
-     * @return
      */
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
@@ -88,5 +86,23 @@ public class DensityUtil {
         DisplayMetrics dm = MyApplication.getAppContext().getResources().getDisplayMetrics();
         float density = dm.density;
         return density;
+    }
+
+    /**
+     * 获得设备的宽和高尺寸(pix)。
+     * <p>
+     * float[0]存放设备屏幕的宽（pix值），float[1]存放设备屏幕的高（pix值）。
+     *
+     * @return float[2]
+     */
+    public static float[] getDeviceDisplaySize(Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        float[] size = new float[2];
+        size[0] = width;
+        size[1] = height;
+        return size;
     }
 }

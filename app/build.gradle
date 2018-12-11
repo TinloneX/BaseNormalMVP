@@ -66,5 +66,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
     // logging
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    // Snacky
+    implementation 'com.github.matecode:Snacky:1.0.2'
 
 }

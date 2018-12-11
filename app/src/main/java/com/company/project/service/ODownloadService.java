@@ -38,7 +38,9 @@ import okhttp3.ResponseBody;
  * @author Tinlone
  * 下载服务，包含通知(适配Android7+)
  * 需要文件系统权限{@link Manifest.permission_group#STORAGE}，
- * 网络权限{@link Manifest.permission#INTERNET}
+ * 请将网络权限{@link Manifest.permission#INTERNET}
+ * 弹窗权限{@link Manifest.permission#ACCESS_NOTIFICATION_POLICY}加入清单文件
+ * 若适用于安装文件，还需{@link Manifest.permission#REQUEST_INSTALL_PACKAGES}
  */
 public class ODownloadService extends Service {
     private NotificationManager notificationManager;

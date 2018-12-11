@@ -85,9 +85,7 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
 
     @OnClick(R.id.tvSkip)
     public void onSkipClick() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
+        dispose(disposable);
         doNext();
     }
 

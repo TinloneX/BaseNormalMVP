@@ -1,6 +1,7 @@
 package com.company.project.util;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -162,6 +163,7 @@ public class TLog {
         return sw.toString();
     }
 
+    @SuppressLint("HardwareIds")
     private static void phoneInfo(Context context) {
         try {
             ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -171,9 +173,8 @@ public class TLog {
             keep("设备厂商：" + Build.BOARD + "  " + Build.MANUFACTURER);
             String packageName = context.getPackageName();
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-            keep("包名：" + packageName + "   版本号:" + packageInfo.versionCode);
-            ApplicationInfo appInfo;
-            appInfo = context.getPackageManager()
+            keep("包名：" + packageName + "   版本号:" + BuildConfig.VERSION_NAME);
+            ApplicationInfo appInfo  = context.getPackageManager()
                     .getApplicationInfo(packageName,
                             PackageManager.GET_META_DATA);
             keep("Umeng_Channel:" + valueOf(appInfo.metaData.getString("UMENG_CHANNEL")));

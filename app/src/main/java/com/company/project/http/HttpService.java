@@ -19,9 +19,9 @@ public interface HttpService {
 
 
     /**
-     * 13、手机APP开屏页
-     * from 	string 	是 	（安卓：android；水果：iOS） 		iOS
-     * type 	string 	是 101-720*1280 102 1080*1920
+     * 手机APP开屏页
+     * from 	string 	是 	（安卓：android；水果：iOS）
+     * type 	string 	是
      */
     @GET("openscreen/pic")
     Observable<BaseResponse<AdvertisementBean>> getAdvertisement(@QueryMap() Map<String, Object> params);

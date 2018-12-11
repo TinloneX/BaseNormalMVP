@@ -3,6 +3,7 @@ package com.company.project.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 
 /**
  * 网络管理工具
@@ -17,10 +18,7 @@ public class NetWorkUtils {
      * @param paramContext paramContext
      * @return return
      */
-    public static boolean isNetConnected(Context paramContext) {
-        if (paramContext == null) {
-            return true;
-        }
+    public static boolean isNetConnected(@NonNull Context paramContext) {
         ConnectivityManager systemService = (ConnectivityManager) paramContext
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo localNetworkInfo = null;
@@ -33,7 +31,7 @@ public class NetWorkUtils {
     /**
      * 检测wifi是否连接
      */
-    public static boolean isWifiConnected(Context context) {
+    public static boolean isWifiConnected(@NonNull Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -45,7 +43,7 @@ public class NetWorkUtils {
     /**
      * 检测3G是否连接
      */
-    public static boolean is3gConnected(Context context) {
+    public static boolean is4gConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
