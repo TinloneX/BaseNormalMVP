@@ -46,7 +46,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     //glide
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     //防止三方框架爆包
     implementation 'com.android.support:multidex:1.0.3'
@@ -65,7 +65,7 @@ dependencies {
     // 快捷BaseAdapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
     // logging
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     // Snacky
     implementation 'com.github.matecode:Snacky:1.0.2'
 

@@ -1,9 +1,5 @@
 package com.company.project.manager;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 import java.util.PriorityQueue;
 
 /**
@@ -14,31 +10,22 @@ import java.util.PriorityQueue;
  * 文件描述 :
  * 注意事项 :
  * 修改历史 : 2018/5/28 1.00 初始版本
+ * 修改历史 : 2018/12/12 1.1 简化代码
  * **************************************************
  */
 public class AppLifecycleManager {
 
-    private static PriorityQueue<AppLifecycle> singletons = new PriorityQueue<>(5, new Comparator<AppLifecycle>() {
-        @Override
-        public int compare(AppLifecycle a0, AppLifecycle a1) {
-            if (a0 == null || a1 == null)
-                return 0;
-            if (a0.priority() > a1.priority()) {
-                return -1;
-            } else if (a0.priority() == a1.priority()) {
-                return 0;
-            } else {
-                return 1;
-            }
-        }
+    private static PriorityQueue<AppLifecycle> singletons = new PriorityQueue<>(5, (a0, a1) -> {
+        if (a0 == null || a1 == null)
+            return 0;
+        return Integer.compare(a1.priority(), a0.priority());
     });
 
     public static void registerSingleton(AppLifecycle... appLifecycles) {
-
         if (appLifecycles == null) {
             return;
         }
-        List<AppLifecycle> ls = Arrays.asList(appLifecycles);
+        AppLifecycle[] ls = appLifecycles;
         for (AppLifecycle l : ls) {
             if (!singletons.contains(l)) {
                 singletons.add(l);
@@ -47,23 +34,20 @@ public class AppLifecycleManager {
     }
 
     public static void onAppStart() {
-        Iterator<AppLifecycle> iter = singletons.iterator();
-        while (iter.hasNext()) {
-            iter.next().onAppStart();
+        for (AppLifecycle singleton : singletons) {
+            singleton.onAppStart();
         }
     }
 
     public static void onAppEnterBackground() {
-        Iterator<AppLifecycle> iter = singletons.iterator();
-        while (iter.hasNext()) {
-            iter.next().onAppEnterBackground();
+        for (AppLifecycle singleton : singletons) {
+            singleton.onAppEnterBackground();
         }
     }
 
     public static void onAppEnterForeground() {
-        Iterator<AppLifecycle> iter = singletons.iterator();
-        while (iter.hasNext()) {
-            iter.next().onAppEnterForeground();
+        for (AppLifecycle singleton : singletons) {
+            singleton.onAppEnterForeground();
         }
     }
 

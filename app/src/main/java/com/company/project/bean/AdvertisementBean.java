@@ -1,5 +1,7 @@
 package com.company.project.bean;
 
+import android.support.annotation.NonNull;
+
 /**
  * @author EDZ
  * @date 2018/3/26.
@@ -107,6 +109,7 @@ public class AdvertisementBean {
         this.endTime = endTime;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "AdvertisementBean{" +

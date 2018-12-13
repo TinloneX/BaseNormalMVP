@@ -60,10 +60,6 @@ public interface Config {
          */
         int WEB_LOAD_100 = 95;
         /**
-         * 小屏手机高
-         */
-        int SCREEN_VALVE = 980;
-        /**
          * 连续时间点击限制
          */
         long CLICK_LIMIT = 666L;

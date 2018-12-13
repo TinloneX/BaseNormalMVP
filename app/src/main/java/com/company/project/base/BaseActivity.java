@@ -24,7 +24,7 @@ import io.reactivex.disposables.Disposable;
  * If you shed tears when you miss the sun, you also miss the stars.
  */
 
-public abstract class BaseActivity<P extends IPresenter, V> extends AppCompatActivity implements IView<V> {
+public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompatActivity implements IView<DATA> {
     protected P mPresenter;
     /**
      * 暴露出来供给单个界面更改样式
@@ -199,7 +199,7 @@ public abstract class BaseActivity<P extends IPresenter, V> extends AppCompatAct
      * @param resultData 数据
      */
     @Override
-    public void onLoadData(V resultData){
+    public void onLoadData(DATA resultData) {
         hideLoading();
     }
 

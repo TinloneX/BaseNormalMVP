@@ -1,5 +1,7 @@
 package com.company.project.bean;
 
+import android.support.annotation.NonNull;
+
 /**
  * @author Administrator
  * @date 2017/11/22
@@ -7,38 +9,38 @@ package com.company.project.bean;
 
 public class UserInfoBean {
 
-    String token;
+    private String token;
     /**
      * 真实姓名
      */
-    String realName;
-    long userId;
-    String phone;
+    private String realName;
+    private long userId;
+    private String phone;
     /**
      * 身份证
      */
-    String idCard;
+    private String idCard;
     /**
      * 用户头像路径
      */
-    String avatar;
-    String email;
+    private String avatar;
+    private String email;
     /**
      * 性别（1：男，2：女）
      */
-    String sex;
+    private String sex;
     /**
      * 角色 0-默认 100-投资人 110-投资人VIP 200-借款人 300-管理员 310-风控管理员 320-投资管理员 999-root管理员
      */
-    int role;
+    private int role;
     /**
      * 状态（0-未激活，1-已激活，2-锁定）
      */
-    int status;
+    private int status;
 
-    String from;
+    private String from;
 
-    int versionCode;
+    private int versionCode;
 
     public String getFrom() {
         return from;
@@ -134,5 +136,24 @@ public class UserInfoBean {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "UserInfoBean{" +
+                "token='" + token + '\'' +
+                ", realName='" + realName + '\'' +
+                ", userId=" + userId +
+                ", phone='" + phone + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", email='" + email + '\'' +
+                ", sex='" + sex + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                ", from='" + from + '\'' +
+                ", versionCode=" + versionCode +
+                '}';
     }
 }

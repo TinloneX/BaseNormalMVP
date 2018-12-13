@@ -1,6 +1,7 @@
 package com.company.project.http;
 
 
+import com.company.project.BuildConfig;
 import com.company.project.MyApplication;
 import com.company.project.config.Config;
 import com.company.project.util.SharedPreferencesUtil;
@@ -15,7 +16,7 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-//import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * 13265969699
@@ -97,8 +98,12 @@ public class HttpClient {
             builder.connectTimeout(30, TimeUnit.SECONDS);
             builder.addInterceptor(headerInterceptor);
             builder.addInterceptor(cookieInterceptor);
-
-
+            if (BuildConfig.DEBUG) {
+                // Log信息拦截器
+                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);//这里可以选择拦截级别
+                builder.addInterceptor(loggingInterceptor);
+            }
             builder.cache(cache);
 
             retrofit = new Retrofit.Builder()
