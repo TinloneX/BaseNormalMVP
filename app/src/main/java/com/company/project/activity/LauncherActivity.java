@@ -65,14 +65,14 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
     }
 
     private void skipDown() {
-        CountUtil.countDown(4, new CountObserver() {
+        CountUtil.numberDown(4, new CountObserver() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;
             }
 
             @Override
-            public void onNext(Integer t) {
+            public void onNext(Long t) {
                 tvSkip.setText(String.format("跳过%ss", t - 1 < 0 ? 0 : t - 1));
             }
 

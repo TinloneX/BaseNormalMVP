@@ -3,9 +3,10 @@ package com.company.project;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 import com.company.project.activity.LauncherActivity;
-import com.company.project.manager.AppLifecycleManager;
+import com.company.project.receiver.OpenFileReceiver;
 
 /**
  * @author EDZ
@@ -24,8 +25,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        AppLifecycleManager.onAppStart();
         dealUncaughtException();
+        registerReceiver(new OpenFileReceiver(), new IntentFilter(BuildConfig.APPLICATION_ID + ".open_file"));
     }
 
     private void dealUncaughtException() {

@@ -61,7 +61,9 @@ public class PhoneStateUtil {
         return "当前可用内存：" + fileSize;
     }
 
-
+    /**
+     * 获取渠道打包过程中填充的UMENG_CHANNEL字段
+     */
     public static String getChannel(Context context) {
         try {
             String packageName = context.getPackageName();
@@ -76,13 +78,15 @@ public class PhoneStateUtil {
         return "";
     }
 
-    @SuppressLint("MissingPermission")
+    /**
+     * 获取deviceId
+     */
     public static String getDeviceId(Context context) {
         final String[] deviceId = {""};
         PermissionUtils.permission(PermissionConstants.PHONE)
                 .callback(new PermissionUtils.SimpleCallback() {
                     @Override
-                    @SuppressLint("HardwareIds")
+                    @SuppressLint({"HardwareIds", "MissingPermission"})
                     public void onGranted() {
                         TelephonyManager mTm = (TelephonyManager) (context.getSystemService(Context.TELEPHONY_SERVICE));
                         if (mTm != null) {
@@ -110,7 +114,7 @@ public class PhoneStateUtil {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             result = wifiInfo.getMacAddress();
         }
-        return "手机macAdd:" + result;
+        return result;
     }
 
     /***
@@ -127,6 +131,21 @@ public class PhoneStateUtil {
             }
         }
         return imei;
+    }
+    /***
+     * 获取 IMEI
+     *
+     */
+    @SuppressLint("HardwareIds")
+    public static String getDeviceIMSI(Context context) {
+        String imsi = null;
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            if (telephonyManager != null) {
+                imsi = String.valueOf(telephonyManager.getSubscriberId());
+            }
+        }
+        return imsi;
     }
 
     /**

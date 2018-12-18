@@ -10,10 +10,11 @@ import java.text.DecimalFormat;
  */
 public class FileSizeUtil {
 
-    private static final int BYTE = 1;
-    private static final int KB = 1024 * BYTE;
-    private static final int MB = 1024 * KB;
-    private static final int GB = 1024 * MB;
+    private static final long BYTE = 1;
+    private static final long KB = 1024 * BYTE;
+    private static final long MB = 1024 * KB;
+    private static final long GB = 1024 * MB;
+    private static final long TB = 1024 * GB;
     /**
      * 获取文件大小单位为B的double值
      */
@@ -30,6 +31,10 @@ public class FileSizeUtil {
      * 获取文件大小单位为GB的double值
      */
     private static final int SIZETYPE_GB = 4;
+    /**
+     * 获取文件大小单位为GB的double值
+     */
+    private static final int SIZETYPE_TB = 5;
 
     /**
      * 获取文件指定文件的指定单位的大小
@@ -127,7 +132,7 @@ public class FileSizeUtil {
      * @return 最大单位制文件大小
      */
     public static String formatFileSize(long fileS) {
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("#0.00");
         String fileSizeString;
         String wrongSize = "0B";
         if (fileS == 0) {
@@ -136,11 +141,13 @@ public class FileSizeUtil {
         if (fileS < KB) {
             fileSizeString = df.format((double) fileS) + "B";
         } else if (fileS < MB) {
-            fileSizeString = df.format((double) fileS / 1024) + "KB";
+            fileSizeString = df.format((double) fileS / KB) + "KB";
         } else if (fileS < GB) {
-            fileSizeString = df.format((double) fileS / 1048576) + "MB";
+            fileSizeString = df.format((double) fileS / MB) + "MB";
+        } else if (fileS < TB) {
+            fileSizeString = df.format((double) fileS / GB) + "GB";
         } else {
-            fileSizeString = df.format((double) fileS / 1073741824) + "GB";
+            fileSizeString = df.format((double) fileS / TB) + "TB";
         }
         return fileSizeString;
     }
@@ -153,20 +160,23 @@ public class FileSizeUtil {
      * @return 指定单位制文件大小
      */
     private static double formatFileSize(long fileS, int sizeType) {
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("#0.00");
         double fileSizeLong = 0;
         switch (sizeType) {
             case SIZETYPE_B:
                 fileSizeLong = Double.valueOf(df.format((double) fileS));
                 break;
             case SIZETYPE_KB:
-                fileSizeLong = Double.valueOf(df.format((double) fileS / 1024));
+                fileSizeLong = Double.valueOf(df.format((double) fileS / KB));
                 break;
             case SIZETYPE_MB:
-                fileSizeLong = Double.valueOf(df.format((double) fileS / 1048576));
+                fileSizeLong = Double.valueOf(df.format((double) fileS / MB));
                 break;
             case SIZETYPE_GB:
-                fileSizeLong = Double.valueOf(df.format((double) fileS / 1073741824));
+                fileSizeLong = Double.valueOf(df.format((double) fileS / GB));
+                break;
+            case SIZETYPE_TB:
+                fileSizeLong = Double.valueOf(df.format((double) fileS / TB));
                 break;
             default:
                 break;

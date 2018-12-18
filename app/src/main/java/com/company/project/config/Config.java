@@ -12,7 +12,7 @@ import com.company.project.BuildConfig;
 public interface Config {
 
     interface BaseUrls {
-        String BASE_URL = "https://www.company.com/api/";
+        String BASE_URL = "https://www.tinlone.com/api/";
     }
 
     /**

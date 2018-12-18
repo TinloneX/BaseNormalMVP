@@ -24,6 +24,8 @@ public class FileUtils {
 
     private static final String DEFAULT_CATEGORY = "android.intent.category.DEFAULT";
 
+    public static final String APK = "apk";
+
     private FileUtils() {
     }
 
@@ -123,20 +125,31 @@ public class FileUtils {
     }
 
     /**
+     * 获取文件后缀
+     * @param filePath 文件路径
+     * @return 文件后缀
+     */
+    public static String getFileType(@Size(min = 1) String filePath){
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return "";
+        }
+        /* 取得扩展名 */
+        return file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()).toLowerCase();
+    }
+
+    /**
      * 获取打开文件Intent
      *
      * @param filePath 文件路径
      * @return 打开文件Intent
      */
     public static Intent getFileOpenIntent(@Size(min = 1) String filePath) {
-        File file = new File(filePath);
-        if (!file.exists()) {
+        /* 取得扩展名 */
+        String end = getFileType(filePath);
+        if ("".equals(end)){
             return null;
         }
-        /* 取得扩展名 */
-        String end = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()).toLowerCase();
-        /* 依扩展名的类型决定MimeType */
-        Log.i(TAG, "文件扩展名：" + end);
         switch (end) {
             case "m4a":
             case "mp3":
@@ -154,7 +167,7 @@ public class FileUtils {
             case "jpeg":
             case "bmp":
                 return getImageFileIntent(filePath);
-            case "apk":
+            case APK:
                 return getApkFileIntent(filePath);
             case "ppt":
                 return getPptFileIntent(filePath);
