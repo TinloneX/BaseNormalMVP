@@ -9,6 +9,7 @@ import com.company.project.MyApplication;
 import com.company.project.R;
 import com.company.project.base.BaseActivity;
 import com.company.project.bean.AdvertisementBean;
+import com.company.project.config.Config;
 import com.company.project.mvp.contract.AdvertisementContract;
 import com.company.project.mvp.presenter.AdvertisementPresenter;
 import com.company.project.util.Check;
@@ -21,7 +22,7 @@ import butterknife.OnClick;
 import io.reactivex.disposables.Disposable;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * 启动广告页
  * Let life be beautiful like summer flowers and death like autumn leaves.
  */
@@ -65,7 +66,7 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
     }
 
     private void skipDown() {
-        CountUtil.numberDown(4, new CountObserver() {
+        CountUtil.numberDown(Config.Numbers.ADVERTISEMENT_TIME, new CountObserver() {
             @Override
             public void onSubscribe(Disposable d) {
                 disposable = d;

@@ -9,10 +9,9 @@ import com.company.project.mvp.IView;
 import java.util.HashMap;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  */
-
 public interface AdvertisementContract {
 
     interface IAdvertisementView extends IView<AdvertisementBean> {

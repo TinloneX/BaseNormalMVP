@@ -10,7 +10,7 @@ import com.company.project.base.IPresenter;
 import butterknife.BindView;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * Let this be my last word, that I trust in thy love.
  */
 public class GuideActivity extends BaseActivity {

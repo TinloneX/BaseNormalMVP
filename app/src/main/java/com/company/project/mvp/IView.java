@@ -1,7 +1,7 @@
 package com.company.project.mvp;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  */
 
@@ -21,13 +21,4 @@ public interface IView<Data> {
      */
     void onLoadFail(String resultMsg, String resultCode);
 
-    /**
-     * 显示加载弹窗
-     */
-    void showLoading();
-
-    /**
-     * 隐藏加载框
-     */
-    void hideLoading();
 }

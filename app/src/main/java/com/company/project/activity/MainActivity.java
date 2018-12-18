@@ -22,7 +22,7 @@ import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * <p>
  * We read the world wrong and say that it deceives us.
  */

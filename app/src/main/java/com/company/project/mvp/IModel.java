@@ -1,7 +1,7 @@
 package com.company.project.mvp;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  */
 
@@ -29,5 +29,4 @@ public interface IModel {
          */
         void onFailed(String resultMsg, String resultCode);
     }
-
 }

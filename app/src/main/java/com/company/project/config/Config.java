@@ -5,7 +5,7 @@ import android.os.Environment;
 import com.company.project.BuildConfig;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  */
 

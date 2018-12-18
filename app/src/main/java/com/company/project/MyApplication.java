@@ -9,7 +9,7 @@ import com.company.project.activity.LauncherActivity;
 import com.company.project.receiver.OpenFileReceiver;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  * I cannot choose the best. The best chooses me.
  */

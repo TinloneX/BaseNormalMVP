@@ -7,7 +7,7 @@ import android.util.DisplayMetrics;
 import com.company.project.MyApplication;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/26.
  */
 

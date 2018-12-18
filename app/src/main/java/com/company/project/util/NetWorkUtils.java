@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 /**
  * 网络管理工具
  *
- * @author EDZ
+ * @author Tinlone
  */
 public class NetWorkUtils {
 

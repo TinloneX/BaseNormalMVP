@@ -3,7 +3,7 @@ package com.company.project.bean;
 import android.support.annotation.NonNull;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/26.
  */
 

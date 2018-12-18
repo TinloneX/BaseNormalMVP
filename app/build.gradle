@@ -10,6 +10,16 @@ android {
         versionName "1.0.0"
         multiDexEnabled true
         buildConfigField "String", "APP_NAME", '"application"'
+        manifestPlaceholders = [
+                UMENG_CHANNEL       : "xxxx",
+                UMENG_APPKEY        : "24位key",
+                UMENG_MESSAGE_SECRET: "32位secret",
+                BAIDU_MAP_APIKEY    : "32位key"
+        ]
+
+        ndk {
+            abiFilters 'armeabi', 'x86'
+        }
     }
 
     compileOptions {
@@ -24,9 +34,22 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            //密钥文件路径
+            storeFile file("../xxx.jks")
+            storePassword 'xxxxxx'
+            keyAlias 'xxxxxxx'
+            keyPassword 'xxxxxx'
+        }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false
+//            自动签名
+//            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

@@ -15,7 +15,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  * Life has become richer by the love that has been lost.
  */

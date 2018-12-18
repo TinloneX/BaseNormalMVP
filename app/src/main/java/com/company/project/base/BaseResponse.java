@@ -1,7 +1,9 @@
 package com.company.project.base;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/26.
  */
 
@@ -10,13 +12,15 @@ public class BaseResponse<T> {
 
     /**
      * resultCode : 0
-     * resultTime : 20180326134451
+     * message : 20180326134451
      * resultData：{}
      */
-
+    @SerializedName("resultCode")
     private String resultCode;
+    @SerializedName("resultData")
     private T resultData;
-    private String resultTime;
+    @SerializedName("message")
+    private String message;
 
     public String getResultCode() {
         return resultCode;
@@ -34,12 +38,12 @@ public class BaseResponse<T> {
         this.resultData = resultData;
     }
 
-    public String getResultTime() {
-        return resultTime;
+    public String getMessage() {
+        return message;
     }
 
-    public void setResultTime(String resultTime) {
-        this.resultTime = resultTime;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
@@ -47,7 +51,7 @@ public class BaseResponse<T> {
         return "BaseResponse{" +
                 "resultCode='" + resultCode + '\'' +
                 ", resultData=" + resultData +
-                ", resultTime='" + resultTime + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 }

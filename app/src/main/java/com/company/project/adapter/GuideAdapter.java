@@ -14,7 +14,7 @@ import com.company.project.base.BaseActivity;
 import com.company.project.config.CollectionConfig;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/27.
  */
 

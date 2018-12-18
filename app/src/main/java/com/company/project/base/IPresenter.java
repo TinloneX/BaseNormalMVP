@@ -3,7 +3,7 @@ package com.company.project.base;
 import com.company.project.mvp.IView;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  */
 

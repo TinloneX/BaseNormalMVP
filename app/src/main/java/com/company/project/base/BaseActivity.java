@@ -19,7 +19,7 @@ import butterknife.Unbinder;
 import io.reactivex.disposables.Disposable;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  * If you shed tears when you miss the sun, you also miss the stars.
  */
@@ -98,10 +98,8 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
                 .init();
     }
 
-
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (mPresenter != null) {
             mPresenter.dettachView();
         }
@@ -110,6 +108,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             unbinder = null;
         }
         lastClick = 0L;
+        super.onDestroy();
     }
 
     /**
@@ -215,12 +214,10 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         ToastUtils.showShort(resultMsg);
     }
 
-    @Override
     public void showLoading() {
         LoadingProgressDialog.showProgressDialog(this);
     }
 
-    @Override
     public void hideLoading() {
         LoadingProgressDialog.dismissProgressDialog();
     }

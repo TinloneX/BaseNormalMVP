@@ -12,7 +12,7 @@ import com.company.project.util.TLog;
 import java.util.HashMap;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  */
 
@@ -20,13 +20,7 @@ public class AdvertisementPresenter extends BasePresenter<AdvertisementContract.
 
     @Override
     public void getAdvertisement() {
-        HashMap<String, Object> params = new HashMap<>(16);
-        params.put("from", "android");
-        params.put("type", "102");
-        params.put("version", BuildConfig.VERSION_CODE);
-        TLog.i("(AdvertisementPresenter.java:31) ->" + TLog.valueOf(params));
-
-        mModel.getAdvertisement(params, new BaseAsyncCallback<BaseResponse<AdvertisementBean>>() {
+        mModel.getAdvertisement(getBaseParams(), new BaseAsyncCallback<BaseResponse<AdvertisementBean>>() {
             @Override
             public void onSuccess(BaseResponse<AdvertisementBean> resultData) {
                 TLog.i("(AdvertisementPresenter.java:37) ->" + resultData.toString());
@@ -41,5 +35,4 @@ public class AdvertisementPresenter extends BasePresenter<AdvertisementContract.
     public void setModel() {
         mModel = new AdvertisementModel();
     }
-
 }

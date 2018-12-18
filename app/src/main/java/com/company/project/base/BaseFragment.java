@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * @author EDZ
+ * @author Tinlone
  * @date 2018/3/23.
  * The little flower lies in the dust. It sought the path of the butterfly.
  */
@@ -60,7 +60,6 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (mPresenter != null) {
             mPresenter.dettachView();
         }
@@ -69,6 +68,7 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
             unbinder = null;
         }
         lastClick = 0L;
+        super.onDestroy();
     }
 
     /**
@@ -151,12 +151,10 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
         ToastUtils.showShort(resultMsg);
     }
 
-    @Override
     public void showLoading() {
         LoadingProgressDialog.showProgressDialog(mContext);
     }
 
-    @Override
     public void hideLoading() {
         LoadingProgressDialog.dismissProgressDialog();
     }
