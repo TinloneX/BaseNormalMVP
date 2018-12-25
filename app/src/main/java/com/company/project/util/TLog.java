@@ -13,6 +13,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.company.project.BuildConfig;
+import com.company.project.MyApplication;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -171,14 +172,9 @@ public class TLog {
             keep("系统分配内存大小为：" + heapSize + " M ");
             keep("手机品牌型号：" + Build.BRAND + " - " + Build.MODEL);
             keep("设备厂商：" + Build.BOARD + "  " + Build.MANUFACTURER);
-            String packageName = context.getPackageName();
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-            keep("包名：" + packageName + "   版本号:" + BuildConfig.VERSION_NAME);
-            ApplicationInfo appInfo  = context.getPackageManager()
-                    .getApplicationInfo(packageName,
-                            PackageManager.GET_META_DATA);
-            keep("Umeng_Channel:" + valueOf(appInfo.metaData.getString("UMENG_CHANNEL")));
+            keep("包名：" + BuildConfig.APPLICATION_ID + "   版本号:" + BuildConfig.VERSION_NAME);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                keep("Umeng_Channel:" + PhoneStateUtil.getChannel(MyApplication.getAppContext()));
                 TelephonyManager mTm = (TelephonyManager) (context.getSystemService(Context.TELEPHONY_SERVICE));
                 if (mTm != null) {
                     keep(valueOf("IMEI:%s, IMSI: %s, NUMBER:%s, ", mTm.getDeviceId(), mTm.getSubscriberId(), mTm.getLine1Number()));
@@ -186,7 +182,6 @@ public class TLog {
             } else {
                 keep("No Permission : Manifest.permission.READ_PHONE_STATE, 无法获取IMEI");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

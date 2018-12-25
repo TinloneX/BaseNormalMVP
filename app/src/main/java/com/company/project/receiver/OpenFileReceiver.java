@@ -15,8 +15,7 @@ public class OpenFileReceiver extends BroadcastReceiver {
         try {
             String path = intent.getStringExtra("path");
             if (PackageManager.PERMISSION_GRANTED ==
-                    ContextCompat.checkSelfPermission(context,Manifest.permission.READ_EXTERNAL_STORAGE))
-            {
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Intent dealIntent = FileUtils.getFileOpenIntent(path);
                 context.startActivity(dealIntent);
             }

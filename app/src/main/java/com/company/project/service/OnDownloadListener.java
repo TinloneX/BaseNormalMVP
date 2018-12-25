@@ -1,7 +1,6 @@
 package com.company.project.service;
 
 import java.io.File;
-import java.io.IOException;
 
 import okhttp3.Call;
 

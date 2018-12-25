@@ -2,6 +2,8 @@ package com.company.project.bean;
 
 import android.support.annotation.NonNull;
 
+import java.util.Locale;
+
 /**
  * @author Administrator
  * @date 2017/11/22
@@ -141,19 +143,6 @@ public class UserInfoBean {
     @NonNull
     @Override
     public String toString() {
-        return "UserInfoBean{" +
-                "token='" + token + '\'' +
-                ", realName='" + realName + '\'' +
-                ", userId=" + userId +
-                ", phone='" + phone + '\'' +
-                ", idCard='" + idCard + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", email='" + email + '\'' +
-                ", sex='" + sex + '\'' +
-                ", role=" + role +
-                ", status=" + status +
-                ", from='" + from + '\'' +
-                ", versionCode=" + versionCode +
-                '}';
+        return String.format(Locale.CHINA, "UserInfoBean{token='%s', realName='%s', userId=%d, phone='%s', idCard='%s', avatar='%s', email='%s', sex='%s', role=%d, status=%d, from='%s', versionCode=%d}", token, realName, userId, phone, idCard, avatar, email, sex, role, status, from, versionCode);
     }
 }

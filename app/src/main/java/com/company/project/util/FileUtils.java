@@ -30,6 +30,16 @@ public class FileUtils {
     }
 
     /**
+     * @param url 文件路径
+     * @return 从下载连接中解析出文件名
+     */
+    public static String getNameFromUrl(String url) {
+        if (url != null && url.contains("/") && !url.endsWith("/")) {
+            return url.substring(url.lastIndexOf("/") + 1);
+        } else return "";
+    }
+
+    /**
      * 在存储路径下创建子文件夹
      *
      * @param saveDir 子文件夹绝对路径
@@ -126,10 +136,11 @@ public class FileUtils {
 
     /**
      * 获取文件后缀
+     *
      * @param filePath 文件路径
      * @return 文件后缀
      */
-    public static String getFileType(@Size(min = 1) String filePath){
+    public static String getFileType(@Size(min = 1) String filePath) {
         File file = new File(filePath);
         if (!file.exists()) {
             return "";
@@ -147,7 +158,7 @@ public class FileUtils {
     public static Intent getFileOpenIntent(@Size(min = 1) String filePath) {
         /* 取得扩展名 */
         String end = getFileType(filePath);
-        if ("".equals(end)){
+        if ("".equals(end)) {
             return null;
         }
         switch (end) {

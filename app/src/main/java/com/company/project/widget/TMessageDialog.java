@@ -295,12 +295,14 @@ public class TMessageDialog {
         public void onClickContent(View view) {
         }
 
-        public void onClickLeft(View view){}
+        public void onClickLeft(View view) {
+        }
 
         public void onClickMid(View view) {
         }
 
-        public void onClickRight(View view){}
+        public void onClickRight(View view) {
+        }
     }
 
 }

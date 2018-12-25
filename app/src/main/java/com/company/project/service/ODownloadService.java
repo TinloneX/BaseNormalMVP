@@ -166,9 +166,11 @@ public class ODownloadService extends Service {
      */
     @NonNull
     private String getNameFromUrl(String url) {
-        if (url == null || !url.contains("/") || !url.toLowerCase().endsWith(".apk")) {
+        if (url == null || !url.contains("/") || !url.toLowerCase().endsWith(".apk") || url.endsWith("/")) {
             return BuildConfig.APPLICATION_ID + ".apk";
-        } else return url.substring(url.lastIndexOf("/") + 1);
+        } else {
+            return url.substring(url.lastIndexOf("/") + 1);
+        }
     }
 
     /**

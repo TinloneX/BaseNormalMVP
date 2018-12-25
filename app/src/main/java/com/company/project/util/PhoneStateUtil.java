@@ -132,6 +132,7 @@ public class PhoneStateUtil {
         }
         return imei;
     }
+
     /***
      * 获取 IMEI
      *
@@ -177,6 +178,7 @@ public class PhoneStateUtil {
     /**
      * 手机CPU信息
      */
+    @Deprecated
     public static String[] getCpuInfo() {
         String str1 = "/proc/cpuinfo";
         String str2;

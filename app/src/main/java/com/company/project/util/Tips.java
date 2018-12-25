@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.mateware.snacky.BuildConfig;
 import de.mateware.snacky.Snacky;
 
 /**

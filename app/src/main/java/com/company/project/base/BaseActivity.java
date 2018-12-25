@@ -1,16 +1,25 @@
 package com.company.project.base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.company.project.R;
+import com.company.project.activity.WebsiteActivity;
 import com.company.project.config.Config;
 import com.company.project.mvp.IView;
+import com.company.project.util.Check;
 import com.company.project.widget.LoadingProgressDialog;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -25,6 +34,12 @@ import io.reactivex.disposables.Disposable;
  */
 
 public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompatActivity implements IView<DATA> {
+    public static final String FULL_SCREEN = "full_screen";
+    public static final String AUTO_TITLE = "auto_title";
+    public static final String RIGHT_TEXT = "right_text";
+    public static final String TITLE = "title";
+    public static final String URL = "url";
+
     protected P mPresenter;
     /**
      * 暴露出来供给单个界面更改样式
@@ -42,6 +57,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         setContentView(layoutId());
         initImmersionBar();
         unbinder = ButterKnife.bind(this);
+        initParams(getIntent().getExtras());
         mPresenter = getPresenter();
         if (mPresenter != null) {
             // 谁能帮我解决下类型问题~！
@@ -127,6 +143,9 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         return null;
     }
 
+    public void initParams(Bundle params) {
+    }
+
     /**
      * 提供初始化控件入口
      */
@@ -139,6 +158,67 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      */
     protected void initData() {
 
+    }
+
+    protected void setTitleBack(String title) {
+        setTitle(R.mipmap.back, title);
+    }
+
+    protected void setTitle(String title) {
+        setTitle(0, title, "", 0);
+    }
+
+    protected void setTitleBack(String title, String right) {
+        setTitle(R.mipmap.back, title, right, 0);
+    }
+
+    protected void setTitle(@DrawableRes int leftRes, String title) {
+        setTitle(leftRes, title, "", 0);
+    }
+
+    protected void setTitle(@DrawableRes int leftRes, String title, String rightTitle, @DrawableRes int rightRes) {
+        try {
+            ImageView ivLeft = findViewById(R.id.iv_back);
+            ImageView ivRight = findViewById(R.id.iv_title_right);
+            TextView tvTitle = findViewById(R.id.tv_title_text);
+            TextView tvRight = findViewById(R.id.tv_title_right);
+            if (leftRes != 0) {
+                ivLeft.setImageResource(leftRes);
+            }
+            if (rightRes != 0) {
+                ivRight.setImageResource(rightRes);
+            }
+            ivLeft.setVisibility(leftRes != 0 ? View.VISIBLE : View.GONE);
+            ivRight.setVisibility(rightRes != 0 ? View.VISIBLE : View.GONE);
+            tvTitle.setText(title);
+            tvRight.setText(rightTitle);
+            tvRight.setVisibility(Check.hasContent(rightTitle) ? View.VISIBLE : View.GONE);
+            ivLeft.setOnClickListener(view -> onTitleLeftClick());
+            if (Check.hasContent(rightTitle))
+                tvRight.setOnClickListener(view -> onTitleRightClick());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void onTitleRightClick() {
+
+    }
+
+    /**
+     * title左图标点击，默认关闭界面，可重写
+     */
+    protected void onTitleLeftClick() {
+        closeSoftInput();
+        finish();
+    }
+
+    protected void closeSoftInput() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View currentFocus = getCurrentFocus();
+        if (inputMethodManager != null && currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /**
@@ -190,6 +270,36 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
                 leftStart();
             }
         }
+    }
+
+    public void openWebsite(String url) {
+        openWebsite(url, "", true, "", false);
+    }
+
+    public void openWebsite(String url, String title) {
+        openWebsite(url, title, true, "", false);
+    }
+
+    public void openWebsite(String url, boolean fullScreen) {
+        openWebsite(url, "", true, "", fullScreen);
+    }
+
+    public void openWebsite(String url, String title, boolean fullScreen) {
+        openWebsite(url, title, false, "", fullScreen);
+    }
+
+    public void openWebsite(String url, boolean autoTitle, String rightText, boolean fullScreen) {
+        openWebsite(url, "", autoTitle, rightText, fullScreen);
+    }
+
+    public void openWebsite(String url, String title, boolean autoTitle, String rightText, boolean fullScreen) {
+        Bundle bundle = new Bundle();
+        bundle.putString(URL, url);
+        bundle.putString(TITLE, title);
+        bundle.putString(RIGHT_TEXT, rightText);
+        bundle.putBoolean(FULL_SCREEN, fullScreen);
+        bundle.putBoolean(AUTO_TITLE, autoTitle);
+        startActivity(WebsiteActivity.class, bundle, true);
     }
 
     /**

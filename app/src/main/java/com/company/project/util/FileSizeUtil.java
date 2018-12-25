@@ -1,5 +1,8 @@
 package com.company.project.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Size;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
@@ -43,7 +46,7 @@ public class FileSizeUtil {
      * @param sizeType 获取大小的类型1为B、2为KB、3为MB、4为GB
      * @return double值的大小
      */
-    public static double getFileOrFilesSize(String filePath, int sizeType) {
+    public static double getFileOrFilesSize(@Size(min = 1) String filePath, int sizeType) {
         File file = new File(filePath);
         long blockSize = 0;
         try {
@@ -66,7 +69,7 @@ public class FileSizeUtil {
      * @return 计算好的带B、KB、MB、GB的字符串
      */
     @SuppressWarnings("unused")
-    public static String getAutoFileOrFilesSize(String filePath) {
+    public static String getAutoFileOrFilesSize(@Size(min = 1) String filePath) {
         File file = new File(filePath);
         long blockSize = 0;
         try {
@@ -89,7 +92,7 @@ public class FileSizeUtil {
      * @return long size
      * @throws Exception exception
      */
-    private static long getFileSize(File file) throws Exception {
+    private static long getFileSize(@NonNull File file) throws Exception {
         long size = 0;
         if (file.exists()) {
             FileInputStream fis;
@@ -112,7 +115,7 @@ public class FileSizeUtil {
      * @return byte - size
      * @throws Exception exception
      */
-    private static long getFileSizes(File f) throws Exception {
+    private static long getFileSizes(@NonNull File f) throws Exception {
         long size = 0;
         File[] fList = f.listFiles();
         for (File aFList : fList) {

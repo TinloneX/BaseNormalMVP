@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.company.project.R;
 import com.company.project.util.DensityUtil;
@@ -44,7 +43,7 @@ public class LoadingProgressDialog {
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
         Window window = dialog.getWindow();
-        if (window!=null) {
+        if (window != null) {
             window.setContentView(view);
             window.setBackgroundDrawable(new ColorDrawable(0));
             WindowManager.LayoutParams p = window.getAttributes();

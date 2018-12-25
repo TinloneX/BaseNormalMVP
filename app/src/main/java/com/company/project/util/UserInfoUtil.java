@@ -19,19 +19,17 @@ public class UserInfoUtil {
      * @return 用户信息
      */
     public static UserInfoBean getUserInfo() {
-        if (mUserInfo == null) {
-            synchronized (UserInfoUtil.class) {
+        synchronized (UserInfoUtil.class) {
+            if (mUserInfo == null) {
+                Gson gson = new Gson();
+                String json = (String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, "");
+                try {
+                    mUserInfo = gson.fromJson(json, UserInfoBean.class);
+                } catch (Exception e) {
+                    mUserInfo = new UserInfoBean();
+                }
                 if (mUserInfo == null) {
-                    Gson gson = new Gson();
-                    String json = (String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, "");
-                    try {
-                        mUserInfo = gson.fromJson(json, UserInfoBean.class);
-                    } catch (Exception e) {
-                        mUserInfo = new UserInfoBean();
-                    }
-                    if (mUserInfo == null) {
-                        mUserInfo = new UserInfoBean();
-                    }
+                    mUserInfo = new UserInfoBean();
                 }
             }
         }

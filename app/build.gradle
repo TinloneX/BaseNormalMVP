@@ -30,7 +30,7 @@ android {
     applicationVariants.all { variant ->
         variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
             //这个修改输出APK的文件名
-            apkData.outputFileName = "AppName_V" + variant.versionName + "_" + variant.buildType.name + ".apk"
+            apkData.outputFileName = "AppName_" + variant.versionName + "_" + variant.buildType.name + ".apk"
         }
     }
 

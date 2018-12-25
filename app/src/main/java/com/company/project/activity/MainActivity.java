@@ -10,16 +10,11 @@ import com.company.project.adapter.PagerFragmentAdapter;
 import com.company.project.base.BaseActivity;
 import com.company.project.base.IPresenter;
 import com.company.project.fragment.BlankFragment;
-import com.company.project.util.CountObserver;
-import com.company.project.util.CountUtil;
-import com.company.project.util.TLog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import io.reactivex.disposables.Disposable;
 
 /**
  * @author Tinlone
