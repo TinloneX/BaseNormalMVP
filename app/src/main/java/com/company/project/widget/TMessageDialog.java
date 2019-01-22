@@ -35,6 +35,8 @@ public class TMessageDialog {
     private TextView tvLine;
     private TextView tvContent;
     private TextView tvLine2;
+    private View tvLine9;
+    private View tvLine10;
     private TextView tvLeft;
     private TextView tvMid;
     private TextView tvRight;
@@ -87,6 +89,8 @@ public class TMessageDialog {
         tvLine = view.findViewById(R.id.tv_line);
         tvContent = view.findViewById(R.id.tv_content);
         tvLine2 = view.findViewById(R.id.tv_line2);
+        tvLine9 = view.findViewById(R.id.line9);
+        tvLine10 = view.findViewById(R.id.line10);
         tvLeft = view.findViewById(R.id.tv_left);
         tvMid = view.findViewById(R.id.tv_mid);
         tvRight = view.findViewById(R.id.tv_right);
@@ -227,11 +231,14 @@ public class TMessageDialog {
         tvMid.setVisibility(View.VISIBLE);
         tvLeft.setVisibility(View.GONE);
         tvRight.setVisibility(View.GONE);
+        tvLine9.setVisibility(View.GONE);
+        tvLine10.setVisibility(View.GONE);
         return this;
     }
 
     public TMessageDialog withoutMid() {
         tvMid.setVisibility(View.GONE);
+        tvLine9.setVisibility(View.VISIBLE);
         tvLeft.setVisibility(View.VISIBLE);
         tvRight.setVisibility(View.VISIBLE);
         return this;
@@ -240,6 +247,8 @@ public class TMessageDialog {
     public TMessageDialog threeChoose() {
         tvLeft.setVisibility(View.VISIBLE);
         tvMid.setVisibility(View.VISIBLE);
+        tvLine9.setVisibility(View.VISIBLE);
+        tvLine10.setVisibility(View.VISIBLE);
         tvRight.setVisibility(View.VISIBLE);
         return this;
     }

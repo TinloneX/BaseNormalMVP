@@ -123,6 +123,9 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             unbinder.unbind();
             unbinder = null;
         }
+        if (immersionBar!=null){
+            immersionBar.destroy();
+        }
         lastClick = 0L;
         super.onDestroy();
     }
@@ -349,4 +352,5 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             }
         }
     }
+
 }

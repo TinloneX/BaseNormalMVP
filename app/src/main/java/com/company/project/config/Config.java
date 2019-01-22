@@ -65,7 +65,6 @@ public interface Config {
         long CLICK_LIMIT = 666L;
     }
 
-
     /**
      * 字符常量
      */

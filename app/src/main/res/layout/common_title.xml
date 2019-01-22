@@ -53,4 +53,8 @@
             android:scaleType="centerInside"
             android:visibility="gone" />
     </RelativeLayout>
+    <View
+        android:background="@color/color_dfdfdf"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
 </LinearLayout>

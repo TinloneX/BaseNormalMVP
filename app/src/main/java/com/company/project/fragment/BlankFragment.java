@@ -58,7 +58,7 @@ public class BlankFragment extends BaseFragment {
     protected void initView() {
         textView.setBackgroundColor(Color.parseColor(mColor));
         textView.setText(mTextRes);
-        textView.setOnClickListener(v -> openWebsite("https:www.baidu.com", true, "", true));
+        textView.setOnClickListener(v -> openWebsite("https:www.baidu.com", true, "", false));
     }
 
     @Override

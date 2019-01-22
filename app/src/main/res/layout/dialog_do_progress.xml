@@ -82,6 +82,7 @@
                 tools:text="残忍拒绝" />
 
             <View
+                android:id="@+id/line9"
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:background="@color/c_f6f6f6" />
@@ -95,6 +96,7 @@
                 tools:text="容我想想" />
 
             <View
+                android:id="@+id/line10"
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:background="@color/c_f6f6f6" />
