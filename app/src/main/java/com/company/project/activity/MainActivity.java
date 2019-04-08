@@ -75,22 +75,4 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void initData() {
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onLoadData(Object resultData) {
-        hideLoading();
-    }
-
-    @Override
-    public void onLoadFail(String resultMsg, String resultCode) {
-        hideLoading();
-    }
 }

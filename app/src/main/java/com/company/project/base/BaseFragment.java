@@ -1,19 +1,31 @@
 package com.company.project.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Size;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.company.project.R;
 import com.company.project.activity.WebsiteActivity;
 import com.company.project.config.Config;
 import com.company.project.mvp.IView;
+import com.company.project.util.Check;
+import com.company.project.util.TLog;
+import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
 
 import butterknife.ButterKnife;
@@ -25,7 +37,7 @@ import butterknife.Unbinder;
  * The little flower lies in the dust. It sought the path of the butterfly.
  */
 
-public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends Fragment implements IView<DATA> {
+public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment implements IView<DATA> {
     public static final String FULL_SCREEN = "full_screen";
     public static final String AUTO_TITLE = "auto_title";
     public static final String RIGHT_TEXT = "right_text";
@@ -34,12 +46,13 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
 
     protected P mPresenter;
     protected Context mContext;
-    protected View mRootView;
+    protected ViewGroup mRootView;
     /**
      * 限制666ms内多次跳转同一界面
      */
     private long lastClick = 0L;
     private Unbinder unbinder;
+    protected boolean hasLoadData = false;
 
     @Override
     public void onAttach(Context context) {
@@ -51,7 +64,7 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if (mRootView == null) {
-            mRootView = inflater.inflate(layoutId(), container, false);
+            mRootView = (ViewGroup) inflater.inflate(layoutId(), container, false);
         }
         unbinder = ButterKnife.bind(this, mRootView);
         mPresenter = getPresenter();
@@ -60,10 +73,15 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
         }
         initView();
         initData();
-
+        TLog.w("构建" + getClass().getSimpleName());
         return mRootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        hideLoading();
+        super.onDestroyView();
+    }
 
     @Override
     public void onDestroy() {
@@ -106,6 +124,115 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
      */
     protected void initData() {
     }
+
+    /**
+     * 设置title样式
+     *
+     * @param title title文字
+     */
+    protected void setTitle(String title) {
+        setTitle(0, title, "", 0, true);
+    }
+
+    protected void setTitle(String title, boolean white) {
+        setTitle(0, title, "", 0, white);
+    }
+
+    /**
+     * 设置title样式
+     *
+     * @param title title文字
+     */
+    protected void setTitle(@StringRes int title) {
+        setTitle(mContext.getResources().getString(title));
+    }
+
+    protected void setTitle(@StringRes int title, boolean white) {
+        setTitle(mContext.getResources().getString(title), white);
+    }
+
+    /**
+     * 设置title样式
+     *
+     * @param title title文字
+     * @param right 右侧文字
+     */
+    protected void setTitleBack(String title, String right) {
+        setTitle(R.mipmap.back, title, right, 0, true);
+    }
+
+    protected void setTitleBack(String title, String right, boolean white) {
+        setTitle(R.mipmap.back, title, right, 0, white);
+    }
+
+    /**
+     * 设置title样式
+     *
+     * @param leftRes 左侧资源
+     * @param title   title文字
+     */
+    protected void setTitle(@DrawableRes int leftRes, String title) {
+        setTitle(leftRes, title, "", 0, true);
+    }
+
+    /**
+     * 设置title样式
+     *
+     * @param leftRes    左侧资源
+     * @param title      title文字
+     * @param rightTitle 右侧文字
+     * @param rightRes   右侧资源
+     */
+    protected void setTitle(@DrawableRes int leftRes, String title, String rightTitle, @DrawableRes int rightRes, boolean white) {
+        try {
+            RelativeLayout statusBar = mRootView.findViewById(R.id.rl_title);
+            ImageView ivLeft = mRootView.findViewById(R.id.iv_back);
+            ImageView ivRight = mRootView.findViewById(R.id.iv_title_right);
+            TextView tvTitle = mRootView.findViewById(R.id.tv_title_text);
+            TextView tvRight = mRootView.findViewById(R.id.tv_title_right);
+            if (leftRes != 0) {
+                ivLeft.setImageResource(leftRes);
+            }
+            if (rightRes != 0) {
+                ivRight.setImageResource(rightRes);
+            }
+            ivLeft.setVisibility(leftRes != 0 ? View.VISIBLE : View.GONE);
+            ivRight.setVisibility(rightRes != 0 ? View.VISIBLE : View.GONE);
+            tvTitle.setText(title);
+            tvRight.setText(rightTitle);
+            tvRight.setVisibility(Check.hasContent(rightTitle) ? View.VISIBLE : View.GONE);
+            ivLeft.setOnClickListener(view -> onTitleLeftClick());
+            if (Check.hasContent(rightTitle)) {
+                tvRight.setOnClickListener(view -> onTitleRightClick());
+            }
+            if (white) {
+                statusBar.setBackgroundColor(Color.WHITE);
+                tvTitle.setTextColor(Color.BLACK);
+                tvRight.setTextColor(Color.BLACK);
+            } else {
+                statusBar.setBackgroundColor(Color.TRANSPARENT);
+                tvTitle.setTextColor(Color.WHITE);
+                tvRight.setTextColor(Color.WHITE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 右侧点击事件
+     */
+    protected void onTitleRightClick() {
+
+    }
+
+    /**
+     * title左图标点击，默认关闭界面，可重写
+     */
+    protected void onTitleLeftClick() {
+
+    }
+
 
     /**
      * 打开新界面
@@ -176,6 +303,19 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
         startActivity(WebsiteActivity.class, bundle);
     }
 
+    public void startActivityForResult(Class<? extends Activity> clazz, Bundle bundle, int requestCode) {
+        if (noDoubleClick()) {
+            Intent intent = new Intent();
+            intent.setClass(mContext, clazz);
+            if (bundle == null) {
+                bundle = new Bundle();
+            }
+            intent.putExtras(bundle);
+            lastClick = System.currentTimeMillis();
+            startActivityForResult(intent, requestCode);
+        }
+    }
+
     /**
      * 成功响应
      *
@@ -189,34 +329,41 @@ public abstract class BaseFragment<P extends IPresenter<IView<?>>, DATA> extends
     /**
      * 失败响应
      *
-     * @param resultMsg  失败返回信息
-     * @param resultCode 失败返回码
      */
     @Override
-    public void onLoadFail(String resultMsg, String resultCode) {
+    public void onLoadFail(BaseResponse response) {
         hideLoading();
-        ToastUtils.showShort(resultMsg);
+        if (response != null) {
+            ToastUtils.showShort(response.getMessage());
+        }
     }
 
     public void showLoading() {
         LoadingProgressDialog.showProgressDialog(mContext);
     }
 
+    public void showLoading(String msg) {
+        LoadingProgressDialog.showProgressDialog(mContext, msg);
+    }
+
+    public void showLoading(int msg) {
+        LoadingProgressDialog.showProgressDialog(mContext, mContext.getResources().getString(msg));
+    }
+
     public void hideLoading() {
         LoadingProgressDialog.dismissProgressDialog();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     protected boolean noDoubleClick() {
         return System.currentTimeMillis() - lastClick >= Config.Numbers.CLICK_LIMIT;
     }
+
+    protected void dismiss(@Size(min = 1) Dismissable... dialogs) {
+        for (Dismissable dialog : dialogs) {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+        }
+    }
+
 }

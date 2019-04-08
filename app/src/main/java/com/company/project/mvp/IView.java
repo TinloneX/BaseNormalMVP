@@ -1,5 +1,7 @@
 package com.company.project.mvp;
 
+import com.company.project.base.BaseResponse;
+
 /**
  * @author Tinlone
  * @date 2018/3/23.
@@ -16,9 +18,7 @@ public interface IView<Data> {
     /**
      * 加载数据失败
      *
-     * @param resultMsg  失败返回信息
-     * @param resultCode 失败返回码
      */
-    void onLoadFail(String resultMsg, String resultCode);
+    void onLoadFail(BaseResponse response);
 
 }

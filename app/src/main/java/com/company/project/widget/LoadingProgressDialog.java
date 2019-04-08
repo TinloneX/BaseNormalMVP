@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.company.project.R;
 import com.company.project.util.DensityUtil;
@@ -23,12 +24,16 @@ public class LoadingProgressDialog {
 
     private static Dialog dialog;
 
+    public static void showProgressDialog(Context context) {
+        showProgressDialog(context, "加载中...");
+    }
+
     /**
      * 显示dialog
      *
      * @param context 上下文对象
      */
-    public static void showProgressDialog(Context context) {
+    public static void showProgressDialog(Context context, String tips) {
         if (((Activity) context).isFinishing()) {
             return;
         }
@@ -39,6 +44,8 @@ public class LoadingProgressDialog {
 
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null, false);
+        TextView tvTips = view.findViewById(R.id.tv_tip);
+        tvTips.setText(tips);
         dialog.setCancelable(true);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
@@ -52,6 +59,13 @@ public class LoadingProgressDialog {
             window.setAttributes(p);
             dialog.show();
         }
+    }
+
+    public static boolean isShowing() {
+        if (dialog != null) {
+            return dialog.isShowing();
+        }
+        return false;
     }
 
     /**

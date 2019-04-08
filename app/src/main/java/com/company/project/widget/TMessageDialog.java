@@ -26,7 +26,7 @@ import com.company.project.util.DensityUtil;
  * 定制化多按键
  * 包含水平进度条，默认不展示
  */
-public class TMessageDialog {
+public class TMessageDialog implements Dismissable{
 
     private Context mContext;
     private Dialog mDialog;
@@ -292,6 +292,7 @@ public class TMessageDialog {
         show();
     }
 
+    @Override
     public void dismiss() {
         mDialog.dismiss();
     }

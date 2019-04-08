@@ -40,14 +40,14 @@ public class HttpObserver {
                 if (Config.Strings.RESPONSE_OK.equals(response.getResultCode())) {
                     callBack.onSuccess(response);
                 } else {
-                    callBack.onFailed(response.getMessage(), response.getResultCode());
+                    callBack.onFailed(response);
                 }
                 TLog.i("tag", "(HttpObserver.java:45) ~ onNext:" + response.toString());
             }
 
             @Override
             public void onError(Throwable e) {
-                callBack.onFailed(e.getMessage(), "-1");
+                callBack.onFailed(null);
             }
 
             @Override

@@ -27,12 +27,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    applicationVariants.all { variant ->
-        variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
-            //这个修改输出APK的文件名
-            apkData.outputFileName = "AppName_" + variant.versionName + "_" + variant.buildType.name + ".apk"
-        }
-    }
+//    applicationVariants.all { variant ->
+//        variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
+//            //这个修改输出APK的文件名
+//            apkData.outputFileName = "AppName_" + variant.versionName + "_" + variant.buildType.name + ".apk"
+//        }
+//    }
 
     signingConfigs {
         release {
@@ -69,12 +69,12 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     //glide
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     //防止三方框架爆包
     implementation 'com.android.support:multidex:1.0.3'
     // util集合
-    implementation 'com.blankj:utilcode:1.21.2'
+    implementation 'com.blankj:utilcode:1.23.5'
     //    权限
     implementation 'com.github.jokermonn:permissions4m:2.1.2-lib'
     annotationProcessor 'com.github.jokermonn:permissions4m:2.1.2-processor'

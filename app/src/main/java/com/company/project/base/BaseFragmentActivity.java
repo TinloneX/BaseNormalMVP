@@ -5,20 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.LayoutRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.annotation.StringRes;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -28,21 +30,21 @@ import com.company.project.config.Config;
 import com.company.project.mvp.IView;
 import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
+import com.company.project.util.TLog;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
 import com.gyf.barlibrary.ImmersionBar;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.Disposable;
 
 /**
- * @author Tinlone
- * @date 2018/3/23.
- * If you shed tears when you miss the sun, you also miss the stars.
+ * @author Administrator
  */
-
-public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompatActivity implements IView<DATA> {
+public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends FragmentActivity implements IView<DATA> {
     public static final String FULL_SCREEN = "full_screen";
     public static final String AUTO_TITLE = "auto_title";
     public static final String RIGHT_TEXT = "right_text";
@@ -59,15 +61,28 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      */
     private long lastClick = 0L;
     private Unbinder unbinder;
+    /**
+     * fragment管理器
+     */
+    private FragmentManager fragmentManager;
+    /**
+     * 当前fragment的Index
+     */
+    public int currentFragmentIndex = 0;
+    /**
+     * fragment栈
+     */
+    public ArrayList<Fragment> mFragments = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layoutId());
         initImmersionBar();
-        statusTransparentFontWhite();
+        statusWhiteFontBlack();
         unbinder = ButterKnife.bind(this);
-        pressThis(inAll());
+        ActivityStackUtils.pressActivity(Config.Tags.ALL, this);
+        fragmentManager = getSupportFragmentManager();
         initParams(getIntent().getExtras());
         mPresenter = getPresenter();
         if (mPresenter != null) {
@@ -76,17 +91,6 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         initView();
         initData();
     }
-
-    protected boolean inAll() {
-        return true;
-    }
-
-    protected void pressThis(boolean inAll) {
-        if (inAll) {
-            ActivityStackUtils.pressActivity(Config.Tags.ALL, this);
-        }
-    }
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -99,8 +103,6 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     /**
      * 限制应用字体随系统改变
-     *
-     * @return
      */
     @Override
     public Resources getResources() {
@@ -139,6 +141,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
     /**
      * 透明底黑字
      */
+    @SuppressWarnings("unused")
     public void statusTransparentFontBlack() {
         immersionBar
                 .transparentStatusBar()
@@ -163,7 +166,6 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     @Override
     protected void onDestroy() {
-        hideLoading();
         ActivityStackUtils.popActivity(Config.Tags.ALL, this);
         if (mPresenter != null) {
             mPresenter.dettachView();
@@ -184,8 +186,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      *
      * @return id
      */
-    public abstract @LayoutRes
-    int layoutId();
+    public abstract int layoutId();
 
     /**
      * 获取presenter
@@ -197,6 +198,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
     }
 
     public void initParams(Bundle params) {
+        TLog.i(params);
     }
 
     /**
@@ -237,7 +239,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param title title文字
      */
     protected void setTitle(String title) {
-        setTitle(0, title, "", 0, true);
+        setTitle(0, title, "", 0);
     }
 
     /**
@@ -247,17 +249,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param right 右侧文字
      */
     protected void setTitleBack(String title, String right) {
-        setTitle(R.mipmap.back, title, right, 0, true);
-    }
-
-    /**
-     * 设置title样式
-     *
-     * @param title title文字
-     * @param right 右侧文字
-     */
-    protected void setTitleBack(int title, int right) {
-        setTitle(R.mipmap.back, getString(title), getString(right), 0, true);
+        setTitle(R.mipmap.back, title, right, 0);
     }
 
     /**
@@ -266,8 +258,9 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param leftRes 左侧资源
      * @param title   title文字
      */
+    @SuppressWarnings("unchecked")
     protected void setTitle(@DrawableRes int leftRes, String title) {
-        setTitle(leftRes, title, "", 0, true);
+        setTitle(leftRes, title, "", 0);
     }
 
     /**
@@ -278,9 +271,9 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param rightTitle 右侧文字
      * @param rightRes   右侧资源
      */
-    protected void setTitle(@DrawableRes int leftRes, String title, String rightTitle, @DrawableRes int rightRes, boolean white) {
+    @SuppressWarnings("unchecked")
+    protected void setTitle(@DrawableRes int leftRes, String title, String rightTitle, @DrawableRes int rightRes) {
         try {
-            RelativeLayout statusBar = findViewById(R.id.rl_title);
             ImageView ivLeft = findViewById(R.id.iv_back);
             ImageView ivRight = findViewById(R.id.iv_title_right);
             TextView tvTitle = findViewById(R.id.tv_title_text);
@@ -299,15 +292,6 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             ivLeft.setOnClickListener(view -> onTitleLeftClick());
             if (Check.hasContent(rightTitle)) {
                 tvRight.setOnClickListener(view -> onTitleRightClick());
-            }
-            if (white) {
-                tvRight.setTextColor(Color.BLACK);
-                tvTitle.setTextColor(Color.BLACK);
-                statusBar.setBackgroundColor(Color.WHITE);
-            } else {
-                tvRight.setTextColor(Color.WHITE);
-                tvTitle.setTextColor(Color.WHITE);
-                statusBar.setBackgroundColor(Color.TRANSPARENT);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -397,25 +381,12 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         }
     }
 
-    public void startActivityForResult(Class<? extends Activity> clazz, Bundle bundle, int requestCode) {
-        if (noDoubleClick()) {
-            Intent intent = new Intent();
-            intent.setClass(this, clazz);
-            if (bundle == null) {
-                bundle = new Bundle();
-            }
-            intent.putExtras(bundle);
-            lastClick = System.currentTimeMillis();
-            startActivityForResult(intent, requestCode);
-            rightStart();
-        }
-    }
-
     /**
      * 打开网页界面
      *
      * @param url URL网址
      */
+    @SuppressWarnings("unused")
     public void openWebsite(String url) {
         openWebsite(url, "", true, "", false);
     }
@@ -426,6 +397,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param url   URL网址
      * @param title 标题文字
      */
+    @SuppressWarnings("unused")
     public void openWebsite(String url, String title) {
         openWebsite(url, title, true, "", false);
     }
@@ -436,6 +408,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param url        URL 网址
      * @param fullScreen 是否全屏
      */
+    @SuppressWarnings("unused")
     public void openWebsite(String url, boolean fullScreen) {
         openWebsite(url, "", true, "", fullScreen);
     }
@@ -447,6 +420,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param title      标题文字
      * @param fullScreen 是否全屏
      */
+    @SuppressWarnings("unused")
     public void openWebsite(String url, String title, boolean fullScreen) {
         openWebsite(url, title, false, "", fullScreen);
     }
@@ -459,6 +433,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * @param rightText  右侧文字
      * @param fullScreen 是否全屏
      */
+    @SuppressWarnings("unused")
     public void openWebsite(String url, boolean autoTitle, String rightText, boolean fullScreen) {
         openWebsite(url, "", autoTitle, rightText, fullScreen);
     }
@@ -512,14 +487,6 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         LoadingProgressDialog.showProgressDialog(this);
     }
 
-    public void showLoading(String tips) {
-        LoadingProgressDialog.showProgressDialog(this, tips);
-    }
-
-    public void showLoading(@StringRes int tips) {
-        LoadingProgressDialog.showProgressDialog(this, getString(tips));
-    }
-
     /**
      * 隐藏加载框，暂时未使用
      */
@@ -537,14 +504,13 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     @Override
     public void onBackPressed() {
-        if (!LoadingProgressDialog.isShowing()) {
-            onTitleLeftClick();
-        }
+        onTitleLeftClick();
     }
 
     /**
      * 释放订阅者
      */
+    @SuppressWarnings("unused")
     protected void dispose(Disposable... disposables) {
         for (Disposable i : disposables) {
             if (i != null) {
@@ -553,13 +519,94 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         }
     }
 
+
     /**
-     * 设置添加屏幕的背景透明度
+     * 替换fragment
+     *
+     * @param position    位置
+     * @param newFragment 新fragment
      */
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        getWindow().setAttributes(lp);
+    protected void replaceFragment(int position, Fragment newFragment) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment oldFragment = mFragments.get(position);
+        fragmentTransaction.hide(oldFragment);
+        if (!mFragments.contains(newFragment)) {
+            mFragments.add(newFragment);
+            fragmentTransaction.add(getFragmentHolderId(), newFragment);
+        }
+        mFragments.set(position, newFragment);
+        mFragments.set(mFragments.size() - 1, oldFragment);
+        mFragments.remove(oldFragment);
+        fragmentTransaction.remove(oldFragment);
+        fragmentTransaction.show(mFragments.get(currentFragmentIndex));
+        fragmentTransaction.commitNow();
+    }
+
+    /**
+     * 正常切换fragment
+     *
+     * @param newIndex 新下标
+     */
+    protected void showFragment(int newIndex) {
+        if (newIndex != currentFragmentIndex) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.hide(mFragments.get(currentFragmentIndex));
+            fragmentTransaction.show(mFragments.get(newIndex));
+            currentFragmentIndex = newIndex;
+            fragmentTransaction.commit();
+        }
+    }
+
+    /**
+     * 获取fragment holder的id
+     *
+     * @return holder的id
+     */
+    protected abstract @IdRes
+    int getFragmentHolderId();
+
+    /**
+     * 添加fragments
+     */
+    @SuppressWarnings("unused")
+    protected void addFragments(Fragment... fragments) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (fragmentTransaction.isEmpty()) {
+            for (Fragment fragment : fragments) {
+                if (!mFragments.contains(fragment)) {
+                    mFragments.add(fragment);
+                    fragmentTransaction.add(getFragmentHolderId(), fragment, fragment.getClass().getSimpleName());
+                    fragmentTransaction.hide(fragment);
+                }
+            }
+            currentFragmentIndex = 0;
+            fragmentTransaction.show(mFragments.get(currentFragmentIndex));
+        }
+        fragmentTransaction.commitNowAllowingStateLoss();
+    }
+
+    /**
+     * 添加fragments
+     */
+    protected void addFragments(ArrayList<Fragment> fragments) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (fragmentTransaction.isEmpty()) {
+            for (Fragment fragment : fragments) {
+                if (!mFragments.contains(fragment)) {
+                    mFragments.add(fragment);
+                    fragmentTransaction.add(getFragmentHolderId(), fragment, fragment.getClass().getSimpleName());
+                    fragmentTransaction.hide(fragment);
+                }
+            }
+            currentFragmentIndex = 0;
+            fragmentTransaction.show(mFragments.get(currentFragmentIndex));
+        }
+        fragmentTransaction.commitNowAllowingStateLoss();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+//        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     protected void dismiss(@Size(min = 1) Dismissable... dialogs) {
@@ -569,6 +616,5 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             }
         }
     }
-
 
 }

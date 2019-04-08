@@ -1,5 +1,7 @@
 package com.company.project.mvp;
 
+import com.company.project.base.BaseResponse;
+
 /**
  * @author Tinlone
  * @date 2018/3/23.
@@ -24,9 +26,7 @@ public interface IModel {
         /**
          * 失败
          *
-         * @param resultMsg  信息
-         * @param resultCode 错误码
          */
-        void onFailed(String resultMsg, String resultCode);
+        void onFailed(BaseResponse response);
     }
 }

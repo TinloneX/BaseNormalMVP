@@ -14,6 +14,9 @@ public interface Config {
     interface BaseUrls {
         String BASE_URL = "https://www.tinlone.com/api/";
     }
+    interface Tags{
+        String ALL = "application.all";
+    }
 
     /**
      * 数字常量
