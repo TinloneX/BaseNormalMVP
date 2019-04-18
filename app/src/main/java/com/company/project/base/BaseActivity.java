@@ -7,13 +7,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Size;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -24,14 +17,24 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.company.project.R;
 import com.company.project.activity.WebsiteActivity;
+import com.company.project.bean.UserInfoBean;
 import com.company.project.config.Config;
+import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
 import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
+import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
 import com.gyf.barlibrary.ImmersionBar;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.Disposable;
@@ -65,7 +68,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         super.onCreate(savedInstanceState);
         setContentView(layoutId());
         initImmersionBar();
-        statusTransparentFontWhite();
+        statusWhiteFontBlack();
         unbinder = ButterKnife.bind(this);
         pressThis(inAll());
         initParams(getIntent().getExtras());
@@ -86,7 +89,6 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             ActivityStackUtils.pressActivity(Config.Tags.ALL, this);
         }
     }
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -494,13 +496,32 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     /**
      * 失败响应
-     *
      */
     @Override
-    public void onLoadFail(BaseResponse response) {
+    public void onLoadFail(BaseResponse resultData) {
         hideLoading();
-        if (response != null) {
-            ToastUtils.showShort(response.getMessage());
+        if (resultData == null) {
+            return;
+        }
+        switch (resultData.getResultCode()) {
+            case ApiCode.TOKEN_EXPIRED:
+            case ApiCode.TOKEN_INVALID:
+                ToastUtils.showShort(R.string.sign_in_info_overdue_reload);
+                UserInfoUtil.updateUserInfo(new UserInfoBean());
+//                startActivity(SignInActivity.class);
+//                SignInAActivity的inAll()方法返回false,即可避免关闭关埠界面时被关闭
+                ActivityStackUtils.finishAll(Config.Tags.ALL);
+                break;
+            case -1:
+                ToastUtils.showShort(R.string.message_error_check_retry);
+                break;
+            default:
+                if (Check.hasContent(resultData.getMessage())) {
+                    ToastUtils.showShort(resultData.getMessage());
+                } else {
+                    ToastUtils.showShort(R.string.request_failed_retry);
+                }
+                break;
         }
     }
 
@@ -518,6 +539,10 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     public void showLoading(@StringRes int tips) {
         LoadingProgressDialog.showProgressDialog(this, getString(tips));
+    }
+
+    public void showLoading(@StringRes int tips, boolean canceled) {
+        LoadingProgressDialog.showProgressDialog(this, getString(tips), canceled);
     }
 
     /**
@@ -569,6 +594,5 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             }
         }
     }
-
 
 }

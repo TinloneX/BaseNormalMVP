@@ -7,16 +7,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Size;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.util.ArrayMap;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -26,17 +17,30 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.company.project.R;
 import com.company.project.activity.WebsiteActivity;
+import com.company.project.bean.UserInfoBean;
 import com.company.project.config.Config;
+import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
 import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
 import com.company.project.util.TLog;
+import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.Disposable;
@@ -50,7 +54,14 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
     public static final String RIGHT_TEXT = "right_text";
     public static final String TITLE = "title";
     public static final String URL = "url";
-
+    /**
+     * 多容器的fragment栈
+     */
+    public ArrayMap<Integer, ArrayList<Fragment>> fragmentLists = new ArrayMap<>();
+    /**
+     * 当前fragment的Index
+     */
+    public ArrayMap<Integer, Integer> fragmentIndexMap = new ArrayMap<>();
     protected P mPresenter;
     /**
      * 暴露出来供给单个界面更改样式
@@ -65,14 +76,6 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
      * fragment管理器
      */
     private FragmentManager fragmentManager;
-    /**
-     * 当前fragment的Index
-     */
-    public int currentFragmentIndex = 0;
-    /**
-     * fragment栈
-     */
-    public ArrayList<Fragment> mFragments = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -472,10 +475,30 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
      *
      */
     @Override
-    public void onLoadFail(BaseResponse response) {
+    public void onLoadFail(BaseResponse resultData) {
         hideLoading();
-        if (response != null) {
-            ToastUtils.showShort(response.getMessage());
+        if (resultData == null) {
+            return;
+        }
+        switch (resultData.getResultCode()) {
+            case ApiCode.TOKEN_EXPIRED:
+            case ApiCode.TOKEN_INVALID:
+                ToastUtils.showShort(R.string.sign_in_info_overdue_reload);
+                UserInfoUtil.updateUserInfo(new UserInfoBean());
+//                startActivity(SignInActivity.class);
+//                SignInAActivity的inAll()方法返回false,即可避免关闭关埠界面时被关闭
+                ActivityStackUtils.finishAll(Config.Tags.ALL);
+                break;
+            case -1:
+                ToastUtils.showShort(R.string.message_error_check_retry);
+                break;
+            default:
+                if (Check.hasContent(resultData.getMessage())) {
+                    ToastUtils.showShort(resultData.getMessage());
+                } else {
+                    ToastUtils.showShort(R.string.request_failed_retry);
+                }
+                break;
         }
     }
 
@@ -526,20 +549,47 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
      * @param position    位置
      * @param newFragment 新fragment
      */
-    protected void replaceFragment(int position, Fragment newFragment) {
+    protected void replaceFragment(@IdRes int wrapperId, int position, Fragment newFragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment oldFragment = mFragments.get(position);
+        Fragment oldFragment = getFragments(wrapperId).get(position);
         fragmentTransaction.hide(oldFragment);
-        if (!mFragments.contains(newFragment)) {
-            mFragments.add(newFragment);
-            fragmentTransaction.add(getFragmentHolderId(), newFragment);
+        getFragments(wrapperId).remove(oldFragment);
+        if (!getFragments(wrapperId).contains(newFragment)) {
+            getFragments(wrapperId).add(position, newFragment);
+            fragmentTransaction.add(wrapperId, newFragment);
         }
-        mFragments.set(position, newFragment);
-        mFragments.set(mFragments.size() - 1, oldFragment);
-        mFragments.remove(oldFragment);
+        fragmentTransaction.show(getCurrentFragment(wrapperId));
         fragmentTransaction.remove(oldFragment);
-        fragmentTransaction.show(mFragments.get(currentFragmentIndex));
-        fragmentTransaction.commitNow();
+        fragmentTransaction.commit();
+        forceUpdateFragment(wrapperId, getCurrentFragmentIndex(wrapperId));
+    }
+
+    protected ArrayList<Fragment> getFragments(@IdRes int wrapperId) {
+        if (fragmentLists.containsKey(wrapperId)) {
+            return fragmentLists.get(wrapperId);
+        } else {
+            ArrayList<Fragment> fragments = new ArrayList<>();
+            fragmentLists.put(wrapperId, fragments);
+            return fragments;
+        }
+    }
+
+    protected int getCurrentFragmentIndex(@IdRes int wrapperId) {
+        if (fragmentIndexMap.containsKey(wrapperId)) {
+            Integer position = fragmentIndexMap.get(wrapperId);
+            return position == null ? 0 : position;
+        } else {
+            fragmentIndexMap.put(wrapperId, 0);
+            return 0;
+        }
+    }
+
+    protected void setCurrentFragmentIndex(@IdRes int wrapperId, int index) {
+        fragmentIndexMap.put(wrapperId, index);
+    }
+
+    protected Fragment getCurrentFragment(@IdRes int wrapperId) {
+        return getFragments(wrapperId).get(getCurrentFragmentIndex(wrapperId));
     }
 
     /**
@@ -547,40 +597,71 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
      *
      * @param newIndex 新下标
      */
-    protected void showFragment(int newIndex) {
-        if (newIndex != currentFragmentIndex) {
+    protected void updateFragment(@IdRes int wrapperId, int newIndex) {
+        if (newIndex != getCurrentFragmentIndex(wrapperId)) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.hide(mFragments.get(currentFragmentIndex));
-            fragmentTransaction.show(mFragments.get(newIndex));
-            currentFragmentIndex = newIndex;
+            fragmentTransaction.hide(getCurrentFragment(wrapperId));
+            fragmentTransaction.show(getFragments(wrapperId).get(newIndex));
+            setCurrentFragmentIndex(wrapperId, newIndex);
             fragmentTransaction.commit();
         }
     }
 
     /**
-     * 获取fragment holder的id
+     * 强制切换fragment
      *
-     * @return holder的id
+     * @param newIndex 新下标
      */
-    protected abstract @IdRes
-    int getFragmentHolderId();
+    protected void forceUpdateFragment(@IdRes int wrapperId, int newIndex) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.hide(getCurrentFragment(wrapperId));
+        fragmentTransaction.show(getFragments(wrapperId).get(newIndex));
+        setCurrentFragmentIndex(wrapperId, newIndex);
+        fragmentTransaction.commit();
+    }
+
+    protected void removeFragment(@IdRes int wrapperId, Fragment fragment, boolean hideWrapper) {
+        if (fragmentLists.containsKey(wrapperId) && getFragments(wrapperId).contains(fragment)) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.hide(fragment);
+            getFragments(wrapperId).remove(fragment);
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commit();
+            if (hideWrapper) {
+                findViewById(wrapperId).setVisibility(View.GONE);
+            }
+        }
+    }
+
+    protected void hideFragment(@IdRes int wrapperId, Fragment fragment, boolean hideWrapper) {
+        if (hideWrapper) {
+            findViewById(wrapperId).setVisibility(View.GONE);
+            return;
+        }
+        if (fragmentLists.containsKey(wrapperId) && getFragments(wrapperId).contains(fragment)) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.hide(fragment);
+            fragmentTransaction.commit();
+        }
+    }
 
     /**
      * 添加fragments
      */
     @SuppressWarnings("unused")
-    protected void addFragments(Fragment... fragments) {
+    protected void addFragments(@IdRes int wrapperId, Fragment... fragments) {
+        findViewById(wrapperId).setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (fragmentTransaction.isEmpty()) {
             for (Fragment fragment : fragments) {
-                if (!mFragments.contains(fragment)) {
-                    mFragments.add(fragment);
-                    fragmentTransaction.add(getFragmentHolderId(), fragment, fragment.getClass().getSimpleName());
+                if (!getFragments(wrapperId).contains(fragment)) {
+                    getFragments(wrapperId).add(fragment);
+                    fragmentTransaction.add(wrapperId, fragment, fragment.getClass().getSimpleName());
                     fragmentTransaction.hide(fragment);
                 }
             }
-            currentFragmentIndex = 0;
-            fragmentTransaction.show(mFragments.get(currentFragmentIndex));
+            setCurrentFragmentIndex(wrapperId, 0);
+            fragmentTransaction.show(getCurrentFragment(wrapperId));
         }
         fragmentTransaction.commitNowAllowingStateLoss();
     }
@@ -588,18 +669,19 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
     /**
      * 添加fragments
      */
-    protected void addFragments(ArrayList<Fragment> fragments) {
+    protected void addFragments(@IdRes int wrapperId, ArrayList<Fragment> fragments) {
+        findViewById(wrapperId).setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (fragmentTransaction.isEmpty()) {
             for (Fragment fragment : fragments) {
-                if (!mFragments.contains(fragment)) {
-                    mFragments.add(fragment);
-                    fragmentTransaction.add(getFragmentHolderId(), fragment, fragment.getClass().getSimpleName());
+                if (!getFragments(wrapperId).contains(fragment)) {
+                    getFragments(wrapperId).add(fragment);
+                    fragmentTransaction.add(wrapperId, fragment, fragment.getClass().getSimpleName());
                     fragmentTransaction.hide(fragment);
                 }
             }
-            currentFragmentIndex = 0;
-            fragmentTransaction.show(mFragments.get(currentFragmentIndex));
+            setCurrentFragmentIndex(wrapperId, 0);
+            fragmentTransaction.show(getCurrentFragment(wrapperId));
         }
         fragmentTransaction.commitNowAllowingStateLoss();
     }

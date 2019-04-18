@@ -25,7 +25,11 @@ public class LoadingProgressDialog {
     private static Dialog dialog;
 
     public static void showProgressDialog(Context context) {
-        showProgressDialog(context, "加载中...");
+        showProgressDialog(context, "加载中...", true);
+    }
+
+    public static void showProgressDialog(Context context, String tips) {
+        showProgressDialog(context, tips, true);
     }
 
     /**
@@ -33,7 +37,7 @@ public class LoadingProgressDialog {
      *
      * @param context 上下文对象
      */
-    public static void showProgressDialog(Context context, String tips) {
+    public static void showProgressDialog(Context context, String tips, boolean canceled) {
         if (((Activity) context).isFinishing()) {
             return;
         }
@@ -48,7 +52,7 @@ public class LoadingProgressDialog {
         tvTips.setText(tips);
         dialog.setCancelable(true);
         dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCanceledOnTouchOutside(canceled);
         Window window = dialog.getWindow();
         if (window != null) {
             window.setContentView(view);
@@ -72,7 +76,7 @@ public class LoadingProgressDialog {
      * 让dialog消失
      */
     public static void dismissProgressDialog() {
-        if (dialog != null && dialog.isShowing()) {
+        if (dialog != null) {
             dialog.dismiss();
         }
         if (dialog != null) {

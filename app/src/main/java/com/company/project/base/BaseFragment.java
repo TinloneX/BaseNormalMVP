@@ -5,12 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Size;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +15,23 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.company.project.R;
 import com.company.project.activity.WebsiteActivity;
+import com.company.project.bean.UserInfoBean;
 import com.company.project.config.Config;
+import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
+import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
 import com.company.project.util.TLog;
+import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -47,12 +51,13 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
     protected P mPresenter;
     protected Context mContext;
     protected ViewGroup mRootView;
+    protected boolean hasLoadData = false;
     /**
      * 限制666ms内多次跳转同一界面
      */
     private long lastClick = 0L;
     private Unbinder unbinder;
-    protected boolean hasLoadData = false;
+    private boolean useButterKnife = true;
 
     @Override
     public void onAttach(Context context) {
@@ -66,7 +71,9 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
         if (mRootView == null) {
             mRootView = (ViewGroup) inflater.inflate(layoutId(), container, false);
         }
-        unbinder = ButterKnife.bind(this, mRootView);
+        if (useButterKnife()) {
+            unbinder = ButterKnife.bind(this, mRootView);
+        }
         mPresenter = getPresenter();
         if (mPresenter != null) {
             mPresenter.attachView(this);
@@ -75,6 +82,20 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
         initData();
         TLog.w("构建" + getClass().getSimpleName());
         return mRootView;
+    }
+
+    protected boolean useButterKnife() {
+        return useButterKnife;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -328,13 +349,33 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
 
     /**
      * 失败响应
-     *
      */
     @Override
-    public void onLoadFail(BaseResponse response) {
+    public void onLoadFail(BaseResponse resultData) {
         hideLoading();
-        if (response != null) {
-            ToastUtils.showShort(response.getMessage());
+        hideLoading();
+        if (resultData == null) {
+            return;
+        }
+        switch (resultData.getResultCode()) {
+            case ApiCode.TOKEN_EXPIRED:
+            case ApiCode.TOKEN_INVALID:
+                ToastUtils.showShort(R.string.sign_in_info_overdue_reload);
+                UserInfoUtil.updateUserInfo(new UserInfoBean());
+//                startActivity(SignInActivity.class);
+//                SignInAActivity的inAll()方法返回false,即可避免关闭关埠界面时被关闭
+                ActivityStackUtils.finishAll(Config.Tags.ALL);
+                break;
+            case -1:
+                ToastUtils.showShort(R.string.message_error_check_retry);
+                break;
+            default:
+                if (Check.hasContent(resultData.getMessage())) {
+                    ToastUtils.showShort(resultData.getMessage());
+                } else {
+                    ToastUtils.showShort(R.string.request_failed_retry);
+                }
+                break;
         }
     }
 

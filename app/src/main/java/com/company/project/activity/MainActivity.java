@@ -1,11 +1,10 @@
 package com.company.project.activity;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chaychan.library.BottomBarLayout;
 import com.company.project.R;
+import com.company.project.R2;
 import com.company.project.adapter.PagerFragmentAdapter;
 import com.company.project.base.BaseActivity;
 import com.company.project.base.IPresenter;
@@ -14,6 +13,8 @@ import com.company.project.fragment.BlankFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 /**
@@ -23,9 +24,9 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.vp_fragments)
+    @BindView(R2.id.vp_fragments)
     ViewPager vpFragments;
-    @BindView(R.id.bottom_bar)
+    @BindView(R2.id.bottom_bar)
     BottomBarLayout bottomBar;
     String msg = "";
     private List<Fragment> fragments = new ArrayList<Fragment>() {

@@ -1,7 +1,7 @@
 package com.company.project.util;
 
 import android.app.Activity;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;

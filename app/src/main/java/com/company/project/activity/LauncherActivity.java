@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.company.project.BuildConfig;
 import com.company.project.MyApplication;
 import com.company.project.R;
+import com.company.project.R2;
 import com.company.project.base.BaseActivity;
 import com.company.project.bean.AdvertisementBean;
 import com.company.project.config.Config;
@@ -28,11 +29,11 @@ import io.reactivex.disposables.Disposable;
  */
 public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvertisementPresenter, AdvertisementBean> implements AdvertisementContract.IAdvertisementView {
 
-    @BindView(R.id.tvSkip)
+    @BindView(R2.id.tvSkip)
     TextView tvSkip;
-    @BindView(R.id.ivAdvertisement)
+    @BindView(R2.id.ivAdvertisement)
     ImageView ivAdvertisement;
-    @BindView(R.id.ivBottomLogo)
+    @BindView(R2.id.ivBottomLogo)
     ImageView ivBottomLogo;
     private Disposable disposable;
 
@@ -84,7 +85,7 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
         });
     }
 
-    @OnClick(R.id.tvSkip)
+    @OnClick(R2.id.tvSkip)
     public void onSkipClick() {
         dispose(disposable);
         doNext();

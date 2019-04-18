@@ -1,7 +1,7 @@
 package com.company.project.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Size;
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 
 import java.io.File;
 import java.io.FileInputStream;

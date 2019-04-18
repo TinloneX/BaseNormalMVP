@@ -16,17 +16,17 @@ public class BaseResponse<T> {
      * resultData：{}
      */
     @SerializedName("resultCode")
-    private String resultCode;
+    private int resultCode;
     @SerializedName("resultData")
     private T resultData;
     @SerializedName("message")
     private String message;
 
-    public String getResultCode() {
+    public int getResultCode() {
         return resultCode;
     }
 
-    public void setResultCode(String resultCode) {
+    public void setResultCode(int resultCode) {
         this.resultCode = resultCode;
     }
 

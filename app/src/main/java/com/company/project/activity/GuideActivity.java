@@ -1,12 +1,13 @@
 package com.company.project.activity;
 
-import android.support.v4.view.ViewPager;
 
 import com.company.project.R;
+import com.company.project.R2;
 import com.company.project.adapter.GuideAdapter;
 import com.company.project.base.BaseActivity;
 import com.company.project.base.IPresenter;
 
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 /**
@@ -15,7 +16,7 @@ import butterknife.BindView;
  */
 public class GuideActivity extends BaseActivity {
 
-    @BindView(R.id.vpGuide)
+    @BindView(R2.id.vpGuide)
     ViewPager vpGuide;
 
     @Override

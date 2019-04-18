@@ -2,24 +2,23 @@ package com.company.project.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
 import com.company.project.R;
+import com.company.project.R2;
 import com.company.project.base.BaseFragment;
 
+import androidx.annotation.StringRes;
 import butterknife.BindView;
 
 /**
- * A simple {@link Fragment} subclass.
  * Use the {@link BlankFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class BlankFragment extends BaseFragment {
     private static final String TEXT = "text";
     private static final String COLOR = "color";
-    @BindView(R.id.tv_msg)
+    @BindView(R2.id.tv_msg)
     TextView textView;
     private int mTextRes;
     private String mColor;

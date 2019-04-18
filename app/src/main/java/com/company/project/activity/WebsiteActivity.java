@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -16,24 +14,26 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 import com.company.project.R;
+import com.company.project.R2;
 import com.company.project.base.BaseActivity;
 
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class WebsiteActivity extends BaseActivity {
     private static final String TAG = "WebsiteActivity";
 
-    @BindView(R.id.toolbar)
+    @BindView(R2.id.toolbar)
     LinearLayout llTitle;
-    @BindView(R.id.wv_website)
+    @BindView(R2.id.wv_website)
     WebView wvWebsite;
     private boolean isFullScreen;
     private String title;
@@ -106,12 +106,12 @@ public class WebsiteActivity extends BaseActivity {
                         url, userAgent, contentDisposition, mimetype, contentLength)));
     }
 
-    @OnClick(R.id.iv_back)
+    @OnClick(R2.id.iv_back)
     public void onIvBackClicked() {
         finish();
     }
 
-    @OnClick(R.id.tv_title_right)
+    @OnClick(R2.id.tv_title_right)
     public void onTvTitleRightClicked() {
     }
 
