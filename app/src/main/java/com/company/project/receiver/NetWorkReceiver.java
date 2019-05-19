@@ -10,7 +10,7 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.company.project.BuildConfig;
-import com.company.project.util.TLog;
+import com.company.project.util.Tog;
 
 import java.util.List;
 
@@ -34,9 +34,9 @@ public class NetWorkReceiver extends BroadcastReceiver {
             return null;
         }
         for (ActivityManager.RunningAppProcessInfo procInfo : runningApps) {
-            TLog.i("NetWorkReceiver", procInfo.processName);
+            Tog.i("NetWorkReceiver", procInfo.processName);
             if (procInfo.pid == pid) {
-                TLog.i("NetWorkReceiver-this", procInfo.processName);
+                Tog.i("NetWorkReceiver-this", procInfo.processName);
                 return procInfo.processName;
             }
         }
@@ -46,7 +46,7 @@ public class NetWorkReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (!BuildConfig.APPLICATION_ID.equals(getProcessName(context, android.os.Process.myPid()))) {
-            TLog.i("NetWorkReceiver", getProcessName(context, android.os.Process.myPid()) + "非本进程");
+            Tog.i("NetWorkReceiver", getProcessName(context, android.os.Process.myPid()) + "非本进程");
             return;
         }
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

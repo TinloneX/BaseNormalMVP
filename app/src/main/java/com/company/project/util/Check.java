@@ -6,7 +6,6 @@ import com.company.project.base.BaseResponse;
 import com.company.project.mvp.IView;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +20,13 @@ public final class Check {
     private Check() {
     }
 
+    public static int size(Collection list) {
+        if (empty(list)) {
+            return 0;
+        }
+        return list.size();
+    }
+
     /**
      * 判断字符
      *
@@ -29,6 +35,16 @@ public final class Check {
      */
     public static boolean hasContent(CharSequence text) {
         return text != null && text.toString().trim().length() > 0;
+    }
+
+    /**
+     * 判断字符
+     *
+     * @param text 字符
+     * @return 值状态
+     */
+    public static boolean empty(CharSequence text) {
+        return text == null || text.length() == 0;
     }
 
 
@@ -51,10 +67,27 @@ public final class Check {
     }
 
     /**
+     * 判断集合
+     *
+     * @param list 集合
+     * @return 集合状态
+     */
+    public static boolean empty(Collection list) {
+        return list == null || list.size() == 0;
+    }
+
+    /**
      * 判断是否有输入
      */
     public static boolean hasContent(TextView view) {
         return view != null && hasContent(view.getText());
+    }
+
+    /**
+     * 判断是否有输入
+     */
+    public static boolean empty(TextView view) {
+        return view == null || empty(view.getText());
     }
 
     /**
@@ -74,7 +107,9 @@ public final class Check {
      * @return 响应实体状态
      */
     public static boolean hasContent(BaseResponse response, IView view) {
-        return response != null && response.getResultData() != null && view != null;
+        return response != null
+//                && response.getData() != null
+                && view != null;
     }
 
     /**
@@ -90,6 +125,19 @@ public final class Check {
         String regExp = "\\b(([\\w-]+://?|www[.])[^\\s()<>]+(?:\\([\\w\\d]+\\)|([^[:punct:]\\s]|/)))";
         Pattern p = Pattern.compile(regExp);
         Matcher m = p.matcher(url);
+        return m.matches();
+    }
+
+    /**
+     * 是否是路径格式
+     */
+    public static boolean isPath(String path) {
+        if (empty(path)) {
+            return false;
+        }
+        String regExp = "[/\\\\]+(\\w+\\.)+[a-zA-Z]+$";
+        Pattern p = Pattern.compile(regExp);
+        Matcher m = p.matcher(path);
         return m.matches();
     }
 
@@ -113,5 +161,6 @@ public final class Check {
         Matcher matcher = compile.matcher(text);
         return matcher.matches();
     }
+
 
 }

@@ -7,7 +7,7 @@ import com.company.project.http.HttpClient;
 import com.company.project.http.HttpObserver;
 import com.company.project.http.HttpService;
 import com.company.project.mvp.IModel;
-import com.company.project.util.TLog;
+import com.company.project.util.Tog;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,7 +53,7 @@ public class BaseModel implements IModel {
     public void cancelRequest() {
         if (queue != null && queue.size() > 0) {
             for (int i = 0; i < queue.size(); i++) {
-                TLog.i(queue.get(i).unsubscribeOn(AndroidSchedulers.mainThread()));
+                Tog.i(queue.get(i).unsubscribeOn(AndroidSchedulers.mainThread()));
             }
             queue.clear();
             index = 0;

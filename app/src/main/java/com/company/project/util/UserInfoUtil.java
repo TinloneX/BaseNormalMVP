@@ -4,6 +4,7 @@ import com.company.project.MyApplication;
 import com.company.project.bean.UserInfoBean;
 import com.google.gson.Gson;
 
+
 /**
  * Created by Administrator on 2017/11/22.
  * 管理用户信息
@@ -11,7 +12,7 @@ import com.google.gson.Gson;
 
 public class UserInfoUtil {
 
-    static UserInfoBean mUserInfo;
+    static UserInfoBean mUserInfoBean;
 
     /**
      * 获取用户信息
@@ -20,20 +21,21 @@ public class UserInfoUtil {
      */
     public static UserInfoBean getUserInfo() {
         synchronized (UserInfoUtil.class) {
-            if (mUserInfo == null) {
+            if (mUserInfoBean == null) {
                 Gson gson = new Gson();
-                String json = (String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, "");
+                String json = (String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, "{}");
+                Tog.w("OkHttp-json", json);
                 try {
-                    mUserInfo = gson.fromJson(json, UserInfoBean.class);
+                    mUserInfoBean = gson.fromJson(json, UserInfoBean.class);
                 } catch (Exception e) {
-                    mUserInfo = new UserInfoBean();
+                    mUserInfoBean = new UserInfoBean();
                 }
-                if (mUserInfo == null) {
-                    mUserInfo = new UserInfoBean();
+                if (mUserInfoBean == null) {
+                    mUserInfoBean = new UserInfoBean();
                 }
             }
         }
-        return mUserInfo;
+        return mUserInfoBean;
     }
 
     /**
@@ -45,9 +47,15 @@ public class UserInfoUtil {
         synchronized (UserInfoUtil.class) {
             Gson gson = new Gson();
             String json = gson.toJson(info);
+            Tog.w("OkHttp", json);
             SharedPreferencesUtil.setParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, json);
-            mUserInfo = info;
+            mUserInfoBean = info;
         }
+    }
+
+    public static void clearUserInfo() {
+        Tog.w("OkHttp - clearUserInfo");
+        updateUserInfo(new UserInfoBean());
     }
 
     public static boolean isLogin() {

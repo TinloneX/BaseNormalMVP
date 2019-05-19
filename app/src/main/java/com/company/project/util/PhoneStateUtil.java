@@ -96,7 +96,7 @@ public class PhoneStateUtil {
 
                     @Override
                     public void onDenied() {
-                        TLog.i("No Permission : Manifest.permission.READ_PHONE_STATE, 无法获取IMEI");
+                        Tog.i("No Permission : Manifest.permission.READ_PHONE_STATE, 无法获取IMEI");
                     }
                 }).request();
         return deviceId[0];
@@ -199,7 +199,7 @@ public class PhoneStateUtil {
             localBufferedReader.close();
         } catch (IOException ignored) {
         }
-        TLog.i("CPU型号:" + cpuInfo[0] + ", CPU频率：" + cpuInfo[1]);
+        Tog.i("CPU型号:" + cpuInfo[0] + ", CPU频率：" + cpuInfo[1]);
         return cpuInfo;
     }
 }

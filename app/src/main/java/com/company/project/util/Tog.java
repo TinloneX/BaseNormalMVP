@@ -21,12 +21,12 @@ import java.net.UnknownHostException;
  * @author zhaojinlong
  * @date 2016/12/20 0020
  */
-public class TLog {
+public class Tog {
 
     private static String TAG = "tag";
     private static boolean showLog = BuildConfig.DEBUG;
 
-    private TLog() {
+    private Tog() {
     }
 
     public static void d(Object object) {

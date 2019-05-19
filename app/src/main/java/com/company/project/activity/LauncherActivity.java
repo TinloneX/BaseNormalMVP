@@ -44,6 +44,7 @@ public class LauncherActivity extends BaseActivity<AdvertisementContract.IAdvert
 
     @Override
     protected void initView() {
+        statusTransparentFontWhite();
         skipDown();
     }
 

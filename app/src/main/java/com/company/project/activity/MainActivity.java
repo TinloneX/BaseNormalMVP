@@ -1,6 +1,9 @@
 package com.company.project.activity;
 
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.chaychan.library.BottomBarLayout;
 import com.company.project.R;
@@ -13,8 +16,6 @@ import com.company.project.fragment.BlankFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 /**
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        statusTransparentFontWhite();
         vpFragments.setAdapter(new PagerFragmentAdapter(getSupportFragmentManager(), fragments));
         bottomBar.setViewPager(vpFragments);
         bottomBar.getBottomItem(0).setUnreadNum(10000);

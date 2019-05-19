@@ -8,10 +8,35 @@
 
     <include
         layout="@layout/common_title" />
-
-    <WebView
-        android:id="@+id/wv_website"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/wv_website"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+       <FrameLayout
+           android:id="@+id/empty_view"
+           android:visibility="gone"
+           tools:visibility="visible"
+           android:background="@color/white"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <TextView
+               android:id="@+id/tv_empty_view"
+               android:drawablePadding="40dp"
+               android:drawableTop="@mipmap/gallery_empty"
+               android:gravity="center"
+               android:textSize="17sp"
+               android:layout_gravity="center"
+               android:textColor="@color/text_28354C"
+               android:text="@string/no_content_click_reload"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+       </FrameLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -3,7 +3,7 @@ package com.company.project.base;
 import com.company.project.BuildConfig;
 import com.company.project.mvp.IModel;
 import com.company.project.mvp.IView;
-import com.company.project.util.TLog;
+import com.company.project.util.Tog;
 import com.company.project.util.UserInfoUtil;
 
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public abstract class BasePresenter<V extends IView, M extends IModel> implement
             mModel = null;
         }
         mView = null;
-        TLog.i("(BasePresenter.java:31) -> dettachView");
+        Tog.i("(BasePresenter.java:31) -> dettachView");
     }
 
     protected abstract class BaseAsyncCallback<Data> implements IModel.AsyncCallBack<Data> {

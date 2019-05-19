@@ -57,7 +57,7 @@ public class FileSizeUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            TLog.e("获取文件大小---获取失败!");
+            Tog.e("获取文件大小---获取失败!");
         }
         return formatFileSize(blockSize, sizeType);
     }
@@ -80,7 +80,7 @@ public class FileSizeUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            TLog.e("获取文件大小---获取失败!");
+            Tog.e("获取文件大小---获取失败!");
         }
         return formatFileSize(blockSize);
     }
@@ -100,9 +100,9 @@ public class FileSizeUtil {
             size = fis.available();
             fis.close();
         } else {
-            TLog.e("获取文件大小---文件不存在!");
+            Tog.e("获取文件大小---文件不存在!");
             if (file.createNewFile()) {
-                TLog.e("创建文件成功");
+                Tog.e("创建文件成功");
             }
         }
         return size;

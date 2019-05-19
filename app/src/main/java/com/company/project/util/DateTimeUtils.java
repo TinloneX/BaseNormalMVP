@@ -28,12 +28,12 @@ public class DateTimeUtils {
     private DateTimeUtils() {
     }
 
-    public static void main(String[] args) {
-//        System.out.println(formatMDHmm(System.currentTimeMillis() - 86400 * 1000L));
-//        System.out.println(formatY_M_dHmm(System.currentTimeMillis() - 86400 * 1000L));
-//        getLastWeekDays();
-        System.out.println(fmtYMDhmss(System.currentTimeMillis()));
-    }
+//    public static void main(String[] args) {
+////        System.out.println(formatMDHmm(System.currentTimeMillis() - 86400 * 1000L));
+////        System.out.println(formatY_M_dHmm(System.currentTimeMillis() - 86400 * 1000L));
+////        getLastWeekDays();
+//        System.out.println(fmtYMDhmss(System.currentTimeMillis()));
+//    }
 
     public static String[] getLastWeekDays() {
         String[] days = new String[7];

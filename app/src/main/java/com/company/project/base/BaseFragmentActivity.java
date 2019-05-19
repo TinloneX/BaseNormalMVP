@@ -14,23 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
-import com.company.project.R;
-import com.company.project.activity.WebsiteActivity;
-import com.company.project.bean.UserInfoBean;
-import com.company.project.config.Config;
-import com.company.project.http.ApiCode;
-import com.company.project.mvp.IView;
-import com.company.project.util.ActivityStackUtils;
-import com.company.project.util.Check;
-import com.company.project.util.TLog;
-import com.company.project.util.UserInfoUtil;
-import com.company.project.widget.Dismissable;
-import com.company.project.widget.LoadingProgressDialog;
-import com.gyf.barlibrary.ImmersionBar;
-
-import java.util.ArrayList;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -41,6 +24,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.blankj.utilcode.util.ToastUtils;
+import com.company.project.R;
+import com.company.project.activity.WebsiteActivity;
+import com.company.project.config.Config;
+import com.company.project.http.ApiCode;
+import com.company.project.mvp.IView;
+import com.company.project.util.ActivityStackUtils;
+import com.company.project.util.Check;
+import com.company.project.util.Tog;
+import com.company.project.util.UserInfoUtil;
+import com.company.project.widget.Dismissable;
+import com.company.project.widget.LoadingProgressDialog;
+import com.gyf.barlibrary.ImmersionBar;
+
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.Disposable;
@@ -201,7 +201,7 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
     }
 
     public void initParams(Bundle params) {
-        TLog.i(params);
+        Tog.i(params);
     }
 
     /**
@@ -475,32 +475,32 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
      *
      */
     @Override
-    public void onLoadFail(BaseResponse resultData) {
+    public void onLoadFail(BaseResponse response) {
         hideLoading();
-        if (resultData == null) {
+        if (response==null){
             return;
         }
-        switch (resultData.getResultCode()) {
+        switch (response.getResultCode()) {
+            case ApiCode.HAS_NO_NETWORK:
+                ToastUtils.showShort(response.getMessage());
+                break;
             case ApiCode.TOKEN_EXPIRED:
             case ApiCode.TOKEN_INVALID:
                 ToastUtils.showShort(R.string.sign_in_info_overdue_reload);
-                UserInfoUtil.updateUserInfo(new UserInfoBean());
+                UserInfoUtil.clearUserInfo();
 //                startActivity(SignInActivity.class);
-//                SignInAActivity的inAll()方法返回false,即可避免关闭关埠界面时被关闭
                 ActivityStackUtils.finishAll(Config.Tags.ALL);
                 break;
-            case -1:
-                ToastUtils.showShort(R.string.message_error_check_retry);
-                break;
             default:
-                if (Check.hasContent(resultData.getMessage())) {
-                    ToastUtils.showShort(resultData.getMessage());
+                if (Check.hasContent(response.getMessage())) {
+                    ToastUtils.showShort(response.getMessage());
                 } else {
                     ToastUtils.showShort(R.string.request_failed_retry);
                 }
                 break;
         }
     }
+
 
     /**
      * 显示加载框，暂时未使用

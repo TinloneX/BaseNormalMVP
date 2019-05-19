@@ -12,4 +12,6 @@
     <string name="message_error_check_retry">网络异常或信息有误，请检查后重试</string>
     <string name="sign_in_info_overdue_reload">登录信息过期，请重新登陆</string>
     <string name="request_failed_retry">请求失败，请稍后再试</string>
+    <string name="no_content_click_reload">暂无内容，点击重新加载</string>
+    <string name="load_ing">加载中...</string>
 </resources>

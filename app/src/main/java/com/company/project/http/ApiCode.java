@@ -9,6 +9,8 @@ public interface ApiCode {
 
     int SUCC = 0;
 
+    int HAS_NO_NETWORK = -1;
+
     int TOKEN_EXPIRED = 1; // token过期
 
     int TOKEN_INVALID = 2; // token非法

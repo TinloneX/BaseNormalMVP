@@ -23,6 +23,7 @@ import com.company.project.util.DensityUtil;
 public class LoadingProgressDialog {
 
     private static Dialog dialog;
+    private static TextView tvTips;
 
     public static void showProgressDialog(Context context) {
         showProgressDialog(context, "加载中...", true);
@@ -30,6 +31,14 @@ public class LoadingProgressDialog {
 
     public static void showProgressDialog(Context context, String tips) {
         showProgressDialog(context, tips, true);
+    }
+
+    public static void updateTips(Context context, String tips) {
+        if (isShowing() && tvTips != null) {
+            tvTips.setText(tips);
+        } else {
+            showProgressDialog(context, tips);
+        }
     }
 
     /**
@@ -48,7 +57,7 @@ public class LoadingProgressDialog {
 
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null, false);
-        TextView tvTips = view.findViewById(R.id.tv_tip);
+        tvTips = view.findViewById(R.id.tv_tip);
         tvTips.setText(tips);
         dialog.setCancelable(true);
         dialog.setContentView(view);

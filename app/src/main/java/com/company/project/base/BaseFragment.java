@@ -8,23 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.blankj.utilcode.util.ToastUtils;
-import com.company.project.R;
-import com.company.project.activity.WebsiteActivity;
-import com.company.project.bean.UserInfoBean;
-import com.company.project.config.Config;
-import com.company.project.http.ApiCode;
-import com.company.project.mvp.IView;
-import com.company.project.util.ActivityStackUtils;
-import com.company.project.util.Check;
-import com.company.project.util.TLog;
-import com.company.project.util.UserInfoUtil;
-import com.company.project.widget.Dismissable;
-import com.company.project.widget.LoadingProgressDialog;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -32,6 +19,19 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Size;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
+
+import com.blankj.utilcode.util.ToastUtils;
+import com.company.project.R;
+import com.company.project.activity.WebsiteActivity;
+import com.company.project.config.Config;
+import com.company.project.http.ApiCode;
+import com.company.project.mvp.IView;
+import com.company.project.util.ActivityStackUtils;
+import com.company.project.util.Check;
+import com.company.project.util.UserInfoUtil;
+import com.company.project.widget.Dismissable;
+import com.company.project.widget.LoadingProgressDialog;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -80,7 +80,6 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
         }
         initView();
         initData();
-        TLog.w("构建" + getClass().getSimpleName());
         return mRootView;
     }
 
@@ -349,29 +348,28 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
 
     /**
      * 失败响应
+     *
      */
     @Override
-    public void onLoadFail(BaseResponse resultData) {
+    public void onLoadFail(BaseResponse response) {
         hideLoading();
-        hideLoading();
-        if (resultData == null) {
+        if (response==null){
             return;
         }
-        switch (resultData.getResultCode()) {
+        switch (response.getResultCode()) {
+            case ApiCode.HAS_NO_NETWORK:
+                ToastUtils.showShort(response.getMessage());
+                break;
             case ApiCode.TOKEN_EXPIRED:
             case ApiCode.TOKEN_INVALID:
                 ToastUtils.showShort(R.string.sign_in_info_overdue_reload);
-                UserInfoUtil.updateUserInfo(new UserInfoBean());
+                UserInfoUtil.clearUserInfo();
 //                startActivity(SignInActivity.class);
-//                SignInAActivity的inAll()方法返回false,即可避免关闭关埠界面时被关闭
                 ActivityStackUtils.finishAll(Config.Tags.ALL);
                 break;
-            case -1:
-                ToastUtils.showShort(R.string.message_error_check_retry);
-                break;
             default:
-                if (Check.hasContent(resultData.getMessage())) {
-                    ToastUtils.showShort(resultData.getMessage());
+                if (Check.hasContent(response.getMessage())) {
+                    ToastUtils.showShort(response.getMessage());
                 } else {
                     ToastUtils.showShort(R.string.request_failed_retry);
                 }
@@ -379,16 +377,32 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
         }
     }
 
+    /**
+     * 显示加载框，暂时未使用
+     */
+    @SuppressWarnings("unused")
     public void showLoading() {
         LoadingProgressDialog.showProgressDialog(mContext);
     }
 
-    public void showLoading(String msg) {
-        LoadingProgressDialog.showProgressDialog(mContext, msg);
+    public void showLoading(String tips) {
+        LoadingProgressDialog.showProgressDialog(mContext, tips);
     }
 
-    public void showLoading(int msg) {
-        LoadingProgressDialog.showProgressDialog(mContext, mContext.getResources().getString(msg));
+    public void showLoading(@StringRes int tips) {
+        LoadingProgressDialog.showProgressDialog(mContext, getString(tips));
+    }
+
+    public void updateLoading(String tips) {
+        LoadingProgressDialog.updateTips(mContext, tips);
+    }
+
+    public void updateLoading(@StringRes int tips) {
+        LoadingProgressDialog.updateTips(mContext, getString(tips));
+    }
+
+    public void showLoading(@StringRes int tips, boolean canceled) {
+        LoadingProgressDialog.showProgressDialog(mContext, getString(tips), canceled);
     }
 
     public void hideLoading() {
@@ -397,6 +411,17 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
 
     protected boolean noDoubleClick() {
         return System.currentTimeMillis() - lastClick >= Config.Numbers.CLICK_LIMIT;
+    }
+
+    /**
+     * 设置添加屏幕的背景透明度
+     */
+    public void backgroundAlpha(float bgAlpha) {
+        if (mContext instanceof BaseActivity) {
+            WindowManager.LayoutParams lp = ((BaseActivity) mContext).getWindow().getAttributes();
+            lp.alpha = bgAlpha;
+            ((BaseActivity) mContext).getWindow().setAttributes(lp);
+        }
     }
 
     protected void dismiss(@Size(min = 1) Dismissable... dialogs) {

@@ -1,17 +1,24 @@
 package com.company.project.util;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import androidx.annotation.Size;
-import androidx.core.content.FileProvider;
+import android.provider.MediaStore;
 import android.util.Log;
 
+import androidx.annotation.Size;
+import androidx.core.content.FileProvider;
+
+import com.company.project.BuildConfig;
 import com.company.project.MyApplication;
 
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import okhttp3.MultipartBody;
@@ -20,11 +27,9 @@ import okhttp3.RequestBody;
 @SuppressWarnings("unused")
 public class FileUtils {
 
+    private static final String APK = "apk";
     private static final String TAG = "FileUtils";
-
     private static final String DEFAULT_CATEGORY = "android.intent.category.DEFAULT";
-
-    public static final String APK = "apk";
 
     private FileUtils() {
     }
@@ -36,7 +41,9 @@ public class FileUtils {
     public static String getNameFromUrl(String url) {
         if (url != null && url.contains("/") && !url.endsWith("/")) {
             return url.substring(url.lastIndexOf("/") + 1);
-        } else return "";
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -63,6 +70,19 @@ public class FileUtils {
      */
     public static MultipartBody.Part createBodyByPath(@Size(min = 1) String path) {
         return createBodyByPath("file", path);
+    }
+
+    /**
+     * 文件
+     *
+     * @param path
+     * @return
+     */
+    public static boolean isExists(String path) {
+        if (Check.empty(path)) {
+            return false;
+        }
+        return new File(path).exists();
     }
 
     /**
@@ -97,7 +117,7 @@ public class FileUtils {
     public static Uri createUriFromPath(String path) {
         File data = new File(path);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            return FileProvider.getUriForFile(MyApplication.getAppContext(), "com.wendu.file.t.provider", data);
+            return FileProvider.getUriForFile(MyApplication.getAppContext(), BuildConfig.APPLICATION_ID + ".file_provider", data);
         } else {
             return Uri.fromFile(data);
         }
@@ -111,7 +131,7 @@ public class FileUtils {
      */
     public static Uri createUriFromFile(File file) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            return FileProvider.getUriForFile(MyApplication.getAppContext(), "com.wendu.file.image.provider", file);
+            return FileProvider.getUriForFile(MyApplication.getAppContext(), BuildConfig.APPLICATION_ID + ".file_provider", file);
         } else {
             return Uri.fromFile(file);
         }
@@ -146,7 +166,7 @@ public class FileUtils {
             return "";
         }
         /* 取得扩展名 */
-        return file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()).toLowerCase();
+        return file.getName().substring(file.getName().lastIndexOf(".") + 1).toLowerCase();
     }
 
     /**
@@ -384,4 +404,144 @@ public class FileUtils {
         return intent;
     }
 
+    public static String getFileDisk() {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            return Environment.getExternalStorageDirectory().getAbsolutePath();
+        }
+        return Environment.getRootDirectory().getAbsolutePath() + BuildConfig.APP_NAME;
+    }
+
+    public static String getPublicDiskSafe() {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            File xiaok = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), BuildConfig.APP_NAME);
+            if (xiaok.exists() && xiaok.isDirectory()) {
+                return xiaok.getAbsolutePath();
+            } else {
+                if (xiaok.mkdirs()) {
+                    return xiaok.getAbsolutePath();
+                }
+            }
+        }
+        return Environment.getExternalStorageDirectory().getAbsolutePath();
+    }
+
+    public static String saveAsJpgToSdCard(Bitmap bmp) {
+        // 检查sd card是否存在
+        if (!Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) {
+            Tog.i("SD卡状态不满足保存条件");
+            return null;
+        }
+        // 为图片命名啊
+        String name = BuildConfig.APP_NAME + DateTimeUtils.fmtYMDhmssNow() + ".jpg";
+        Tog.i(name);
+        // 解析返回的图片成bitmap
+        // 保存文件
+        FileOutputStream fos = null;
+        File file = new File(Environment.getExternalStorageDirectory(), "xiaok/");
+        if (!file.exists()) {
+            if (file.mkdirs()) {
+                Tog.i(file.getAbsolutePath() + "文件夹生成成功");
+            }
+        }
+        Tog.i(file.getAbsolutePath() + "文件夹存在");
+        String fileName = file.getAbsolutePath() + "/" + name;
+        Tog.i(fileName);
+        try {
+            fos = new FileOutputStream(fileName);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.flush();
+                    fos.close();
+                    Tog.i("保存图片流关闭完成");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return fileName;
+    }
+
+    public static String createNewFilePath() {
+        String path = getPublicDiskSafe() + "/" + BuildConfig.APP_NAME + DateTimeUtils.fmtYMDhmssNow() + ".jpg";
+        File file = new File(path);
+        try {
+            if (file.exists() && file.isFile()) {
+                return path;
+            } else {
+                if (file.createNewFile()) {
+                    return path;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String createNewFileName() {
+        return BuildConfig.APP_NAME + DateTimeUtils.fmtYMDhmssNow() + ".jpg";
+    }
+
+    public static boolean deleteImage(Context context, String path) {
+        int delete = 0;
+        try {
+            delete = context.getApplicationContext()
+                    .getContentResolver()
+                    .delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            MediaStore.Images.Media.DATA + "=?",
+                            new String[]{path});
+        } catch (Exception e) {
+            Tog.w(e);
+        }
+        deleteFileOrDir(path);
+        return delete > 0;
+    }
+
+//    public static void main(String[] args) {
+//        System.out.println(deleteFileOrDir(new File("E:\\test\\")));
+//    }
+
+    public static boolean deleteImage(Context context, String path, String sourceId) {
+        int delete = context.getApplicationContext()
+                .getContentResolver()
+                .delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        MediaStore.Images.ImageColumns._ID + "=?",
+                        new String[]{sourceId});
+        deleteFileOrDir(path);
+        return delete > 0;
+    }
+
+    public static boolean deleteFileOrDir(String path) {
+        return deleteFileOrDir(new File(path));
+    }
+
+    public static boolean deleteFileOrDir(File file) {
+        if (file != null && file.exists()) {
+            if (file.isDirectory()) {
+                File[] files = file.listFiles();
+                if (files != null && files.length > 0) {
+                    for (File file1 : files) {
+                        deleteFileOrDir(file1);
+                    }
+                    return file.delete();
+                } else {
+                    return file.delete();
+                }
+            } else {
+                return file.delete();
+            }
+        }
+        return false;
+    }
+
+    public interface Tails {
+        String JPEG = ".jpg";
+        String APK = ".apk";
+    }
 }
