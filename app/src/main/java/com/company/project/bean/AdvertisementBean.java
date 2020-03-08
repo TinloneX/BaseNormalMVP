@@ -114,6 +114,6 @@ public class AdvertisementBean {
     @NonNull
     @Override
     public String toString() {
-        return String.format(Locale.CHINA,"AdvertisementBean{id=%d, picture='%s', millisecond=%d, app='%s', type=%d, status=%d, title='%s', url='%s', createdTime='%s', startTime='%s', endTime='%s'}", id, picture, millisecond, app, type, status, title, url, createdTime, startTime, endTime);
+        return String.format(Locale.CHINA, "AdvertisementBean{id=%d, picture='%s', millisecond=%d, app='%s', type=%d, status=%d, title='%s', url='%s', createdTime='%s', startTime='%s', endTime='%s'}", id, picture, millisecond, app, type, status, title, url, createdTime, startTime, endTime);
     }
 }

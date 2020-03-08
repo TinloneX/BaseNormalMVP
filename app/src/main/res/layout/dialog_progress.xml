@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/shape_5_rect_white"
     android:paddingTop="20dp"
-    android:paddingBottom="20dp"
-    android:background="@drawable/shape_5_rect_white">
+    android:paddingBottom="20dp">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -19,11 +18,11 @@
 
     <TextView
         android:id="@+id/tv_tip"
-        android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="加载中..."
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />

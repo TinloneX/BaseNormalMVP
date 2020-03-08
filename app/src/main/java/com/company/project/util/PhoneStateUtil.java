@@ -10,8 +10,9 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import androidx.core.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+
+import androidx.core.app.ActivityCompat;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
@@ -96,7 +97,7 @@ public class PhoneStateUtil {
 
                     @Override
                     public void onDenied() {
-                        Tog.i("No Permission : Manifest.permission.READ_PHONE_STATE, 无法获取IMEI");
+                        TLog.i("No Permission : Manifest.permission.READ_PHONE_STATE, 无法获取IMEI");
                     }
                 }).request();
         return deviceId[0];
@@ -199,7 +200,7 @@ public class PhoneStateUtil {
             localBufferedReader.close();
         } catch (IOException ignored) {
         }
-        Tog.i("CPU型号:" + cpuInfo[0] + ", CPU频率：" + cpuInfo[1]);
+        TLog.i("CPU型号:" + cpuInfo[0] + ", CPU频率：" + cpuInfo[1]);
         return cpuInfo;
     }
 }

@@ -4,11 +4,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
+
 import com.company.project.R;
 import com.company.project.R2;
 import com.company.project.base.BaseFragment;
 
-import androidx.annotation.StringRes;
 import butterknife.BindView;
 
 /**

@@ -13,6 +13,10 @@ import java.text.DecimalFormat;
  */
 public class FileSizeUtil {
 
+    /**
+     * 获取文件大小单位为MB的double值
+     */
+    public static final int SIZETYPE_MB = 3;
     private static final long BYTE = 1;
     private static final long KB = 1024 * BYTE;
     private static final long MB = 1024 * KB;
@@ -26,10 +30,6 @@ public class FileSizeUtil {
      * 获取文件大小单位为KB的double值
      */
     private static final int SIZETYPE_KB = 2;
-    /**
-     * 获取文件大小单位为MB的double值
-     */
-    public static final int SIZETYPE_MB = 3;
     /**
      * 获取文件大小单位为GB的double值
      */
@@ -57,7 +57,7 @@ public class FileSizeUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Tog.e("获取文件大小---获取失败!");
+            TLog.e("获取文件大小---获取失败!");
         }
         return formatFileSize(blockSize, sizeType);
     }
@@ -80,7 +80,7 @@ public class FileSizeUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Tog.e("获取文件大小---获取失败!");
+            TLog.e("获取文件大小---获取失败!");
         }
         return formatFileSize(blockSize);
     }
@@ -100,9 +100,9 @@ public class FileSizeUtil {
             size = fis.available();
             fis.close();
         } else {
-            Tog.e("获取文件大小---文件不存在!");
+            TLog.e("获取文件大小---文件不存在!");
             if (file.createNewFile()) {
-                Tog.e("创建文件成功");
+                TLog.e("创建文件成功");
             }
         }
         return size;

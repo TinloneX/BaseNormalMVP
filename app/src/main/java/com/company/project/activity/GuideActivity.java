@@ -1,13 +1,14 @@
 package com.company.project.activity;
 
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.company.project.R;
 import com.company.project.R2;
 import com.company.project.adapter.GuideAdapter;
 import com.company.project.base.BaseActivity;
 import com.company.project.base.IPresenter;
+import com.company.project.config.CollectionConfig;
 
 import butterknife.BindView;
 
@@ -18,7 +19,7 @@ import butterknife.BindView;
 public class GuideActivity extends BaseActivity {
 
     @BindView(R2.id.vpGuide)
-    ViewPager vpGuide;
+    ViewPager2 vpGuide;
 
     @Override
     public int layoutId() {
@@ -33,8 +34,8 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        GuideAdapter guideAdapter = new GuideAdapter(this);
-        vpGuide.setAdapter(guideAdapter);
+        GuideAdapter guide2Adapter = new GuideAdapter(CollectionConfig.GUIDE_IMAGES);
+        vpGuide.setAdapter(guide2Adapter);
     }
 
     @Override

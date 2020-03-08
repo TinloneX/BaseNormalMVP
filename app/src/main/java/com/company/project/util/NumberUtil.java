@@ -1,7 +1,8 @@
 package com.company.project.util;
 
-import androidx.annotation.Size;
 import android.text.TextUtils;
+
+import androidx.annotation.Size;
 
 import java.text.DecimalFormat;
 

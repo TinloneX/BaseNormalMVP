@@ -25,7 +25,6 @@ public interface IModel {
 
         /**
          * 失败
-         *
          */
         void onFailed(BaseResponse response);
     }

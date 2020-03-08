@@ -4,12 +4,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import androidx.annotation.ColorInt;
-import androidx.annotation.IntRange;
-import androidx.annotation.Size;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
+import androidx.annotation.Size;
 
 import com.company.project.util.DensityUtil;
 

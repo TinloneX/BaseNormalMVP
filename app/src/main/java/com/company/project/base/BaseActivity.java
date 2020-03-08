@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -35,17 +36,19 @@ import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
 import com.gyf.barlibrary.ImmersionBar;
 
+import org.jetbrains.annotations.NotNull;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.Disposable;
 
 /**
  * @author Tinlone
- * @date 2018/3/23.
+ *  2018/3/23.
  * If you shed tears when you miss the sun, you also miss the stars.
  */
 
-public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompatActivity implements IView<DATA> {
+public abstract class BaseActivity<P extends IPresenter<IView<DATA>>, DATA> extends AppCompatActivity implements IView<DATA> {
     public static final String FULL_SCREEN = "full_screen";
     public static final String AUTO_TITLE = "auto_title";
     public static final String RIGHT_TEXT = "right_text";
@@ -92,7 +95,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.fontScale != 1) {
             //fontScale不为1，需要强制设置为1
@@ -102,8 +105,6 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     /**
      * 限制应用字体随系统改变
-     *
-     * @return
      */
     @Override
     public Resources getResources() {
@@ -498,12 +499,11 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     /**
      * 失败响应
-     *
      */
     @Override
     public void onLoadFail(BaseResponse response) {
         hideLoading();
-        if (response==null){
+        if (response == null) {
             return;
         }
         switch (response.getResultCode()) {
@@ -593,9 +593,14 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      * 设置添加屏幕的背景透明度
      */
     public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        getWindow().setAttributes(lp);
+        Window mWindow = getWindow();
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        // 解决部分奇葩机型导致背景透明
+        mWindow.addFlags(attributes.flags | WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        attributes.flags = (attributes.flags | WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+        attributes.alpha = bgAlpha;
+        getWindow().setAttributes(attributes);
     }
 
     protected void dismiss(@Size(min = 1) Dismissable... dialogs) {

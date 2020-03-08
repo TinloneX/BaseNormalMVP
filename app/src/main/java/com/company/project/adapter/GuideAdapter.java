@@ -1,63 +1,45 @@
 package com.company.project.adapter;
 
-import android.view.LayoutInflater;
+import android.content.Intent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.company.project.R;
 import com.company.project.activity.MainActivity;
-import com.company.project.base.BaseActivity;
-import com.company.project.config.CollectionConfig;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
+import java.util.List;
 
 /**
  * @author Tinlone
  * @date 2018/3/27.
  */
 
-public class GuideAdapter extends PagerAdapter {
+public class GuideAdapter extends BaseQuickAdapter<Integer, BaseViewHolder> {
 
-    private BaseActivity mActivity;
 
-    public GuideAdapter(BaseActivity activity) {
-        mActivity = activity;
+    public GuideAdapter(@Nullable List<Integer> data) {
+        super(R.layout.item_guide_image, data);
+    }
+
+    private int getItemPosition(Integer item) {
+        return item != null && mData != null && !mData.isEmpty() ? mData.indexOf(item) : -1;
     }
 
     @Override
-    public int getCount() {
-        return CollectionConfig.GUIDE_IMAGES.size();
-    }
+    protected void convert(BaseViewHolder helper, Integer item) {
+        ImageView imageView = helper.getView(R.id.ivGuide);
 
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == object;
-    }
-
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View view = LayoutInflater.from(mActivity).inflate(R.layout.item_guide_image, container, false);
-        ImageView imageView = view.findViewById(R.id.ivGuide);
-        TextView tvToUse = view.findViewById(R.id.tvToUse);
-        if (position == getCount() - 1) {
+        TextView tvToUse = helper.getView(R.id.tvToUse);
+        if (getItemPosition(item) == mData.size() - 1) {
             tvToUse.setVisibility(View.VISIBLE);
-            tvToUse.setOnClickListener(v -> {
-                mActivity.startActivity(MainActivity.class);
-                mActivity.finish();
-            });
+            tvToUse.setOnClickListener(v -> mContext.startActivity(new Intent(mContext, MainActivity.class)));
         }
-        imageView.setImageResource(CollectionConfig.GUIDE_IMAGES.get(position));
-        container.addView(view);
-        return view;
+        imageView.setImageResource(item);
     }
 
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        /* super.destroyItem(container, position, object); */
-        container.removeView((View) object);
-    }
 }

@@ -429,24 +429,24 @@ public class FileUtils {
         // 检查sd card是否存在
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
-            Tog.i("SD卡状态不满足保存条件");
+            TLog.i("SD卡状态不满足保存条件");
             return null;
         }
         // 为图片命名啊
         String name = BuildConfig.APP_NAME + DateTimeUtils.fmtYMDhmssNow() + ".jpg";
-        Tog.i(name);
+        TLog.i(name);
         // 解析返回的图片成bitmap
         // 保存文件
         FileOutputStream fos = null;
         File file = new File(Environment.getExternalStorageDirectory(), "xiaok/");
         if (!file.exists()) {
             if (file.mkdirs()) {
-                Tog.i(file.getAbsolutePath() + "文件夹生成成功");
+                TLog.i(file.getAbsolutePath() + "文件夹生成成功");
             }
         }
-        Tog.i(file.getAbsolutePath() + "文件夹存在");
+        TLog.i(file.getAbsolutePath() + "文件夹存在");
         String fileName = file.getAbsolutePath() + "/" + name;
-        Tog.i(fileName);
+        TLog.i(fileName);
         try {
             fos = new FileOutputStream(fileName);
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -458,7 +458,7 @@ public class FileUtils {
                 if (fos != null) {
                     fos.flush();
                     fos.close();
-                    Tog.i("保存图片流关闭完成");
+                    TLog.i("保存图片流关闭完成");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -497,7 +497,7 @@ public class FileUtils {
                             MediaStore.Images.Media.DATA + "=?",
                             new String[]{path});
         } catch (Exception e) {
-            Tog.w(e);
+            TLog.w(e);
         }
         deleteFileOrDir(path);
         return delete > 0;

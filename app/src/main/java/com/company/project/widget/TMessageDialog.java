@@ -4,11 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Size;
-import androidx.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +11,12 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Size;
+import androidx.annotation.StringRes;
 
 import com.company.project.R;
 import com.company.project.util.DensityUtil;
@@ -26,7 +27,7 @@ import com.company.project.util.DensityUtil;
  * 定制化多按键
  * 包含水平进度条，默认不展示
  */
-public class TMessageDialog implements Dismissable{
+public class TMessageDialog implements Dismissable {
 
     private Context mContext;
     private Dialog mDialog;

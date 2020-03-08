@@ -35,11 +35,11 @@ public class HttpClient {
     }
 
     public static HttpClient getInstance() {
-            synchronized (HttpClient.class) {
-                if (mRetrofitHttp == null) {
-                    mRetrofitHttp = new HttpClient();
-                }
+        synchronized (HttpClient.class) {
+            if (mRetrofitHttp == null) {
+                mRetrofitHttp = new HttpClient();
             }
+        }
         return mRetrofitHttp;
     }
 
@@ -63,7 +63,7 @@ public class HttpClient {
                         .addHeader("Content-Type", "application/json")
                         .addHeader("Accept", "application/json");
 
-                String cookies[] = ((String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), "cookies", "")).split("-");
+                String[] cookies = ((String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), "cookies", "")).split("-");
                 for (String cookie : cookies) {
                     builder.addHeader("Cookie", cookie);
                 }

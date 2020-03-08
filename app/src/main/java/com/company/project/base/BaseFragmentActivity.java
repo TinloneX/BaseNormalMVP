@@ -33,7 +33,7 @@ import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
 import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
-import com.company.project.util.Tog;
+import com.company.project.util.TLog;
 import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
@@ -201,7 +201,7 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
     }
 
     public void initParams(Bundle params) {
-        Tog.i(params);
+        TLog.i(params);
     }
 
     /**
@@ -472,12 +472,11 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
 
     /**
      * 失败响应
-     *
      */
     @Override
     public void onLoadFail(BaseResponse response) {
         hideLoading();
-        if (response==null){
+        if (response == null) {
             return;
         }
         switch (response.getResultCode()) {

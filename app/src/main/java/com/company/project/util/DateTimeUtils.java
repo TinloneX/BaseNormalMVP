@@ -16,14 +16,13 @@ public class DateTimeUtils {
     public static final long HOUR = 60 * MINUTE;
     public static final long DAY = 24 * HOUR;
     public static final long YEAR = 365 * DAY;
-
+    public static final String BEFORE = "前";
     private static final String S_MILL = "毫秒";
     private static final String S_SECENDS = "秒";
     private static final String S_MINUTE = "分钟";
     private static final String S_HOUR = "小时";
     private static final String S_DAY = "天";
     private static final String S_LESS_SECENDS = "小于1秒";
-    public static final String BEFORE = "前";
 
     private DateTimeUtils() {
     }

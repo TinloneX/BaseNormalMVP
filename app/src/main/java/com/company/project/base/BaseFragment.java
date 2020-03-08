@@ -348,12 +348,11 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
 
     /**
      * 失败响应
-     *
      */
     @Override
     public void onLoadFail(BaseResponse response) {
         hideLoading();
-        if (response==null){
+        if (response == null) {
             return;
         }
         switch (response.getResultCode()) {

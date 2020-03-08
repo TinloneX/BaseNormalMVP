@@ -38,7 +38,7 @@ import com.company.project.receiver.OpenFileReceiver;
 import com.company.project.service.ODownloadService;
 import com.company.project.service.OnDownloadListener;
 import com.company.project.util.FileUtils;
-import com.company.project.util.Tog;
+import com.company.project.util.TLog;
 import com.company.project.widget.TMessageDialog;
 
 import java.io.File;
@@ -248,8 +248,8 @@ public class WebsiteFragment extends BaseFragment {
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Tog.w("1:" + request.getUrl().getPath());
-                Tog.w("2:" + request.getUrl().getEncodedPath());
+                TLog.w("1:" + request.getUrl().getPath());
+                TLog.w("2:" + request.getUrl().getEncodedPath());
             }
             return super.shouldInterceptRequest(view, request);
         }
@@ -257,7 +257,7 @@ public class WebsiteFragment extends BaseFragment {
         @Nullable
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            Tog.i("shouldInterceptRequest = " + url);
+            TLog.i("shouldInterceptRequest = " + url);
             return super.shouldInterceptRequest(view, url);
         }
 
@@ -283,7 +283,7 @@ public class WebsiteFragment extends BaseFragment {
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
             loadProgress = newProgress;
-            Tog.i(TAG, String.format("onProgressChanged:%s", newProgress));
+            TLog.i(TAG, String.format("onProgressChanged:%s", newProgress));
             if (newProgress >= 100) {
                 hideLoading();
             }
@@ -295,7 +295,7 @@ public class WebsiteFragment extends BaseFragment {
             titleText = title;
             tvTitleText.setText(titleText);
             tvTitleText.requestFocus();
-            Tog.i(TAG, title);
+            TLog.i(TAG, title);
         }
 
         @Override
@@ -306,19 +306,19 @@ public class WebsiteFragment extends BaseFragment {
 
         @Override
         public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
-            Tog.i(TAG, String.format("onJsConfirm: url->%s; message->%s", url, message));
+            TLog.i(TAG, String.format("onJsConfirm: url->%s; message->%s", url, message));
             return super.onJsConfirm(view, url, message, result);
         }
 
         @Override
         public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
-            Tog.i(TAG, String.format("onJsPrompt: url->%s; message->%s; defaultValue->%s", url, message, defaultValue));
+            TLog.i(TAG, String.format("onJsPrompt: url->%s; message->%s; defaultValue->%s", url, message, defaultValue));
             return super.onJsPrompt(view, url, message, defaultValue, result);
         }
 
         @Override
         public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-            Tog.i(TAG, String.format("level:%s; line->%s; sourceId->%s; message->%s",
+            TLog.i(TAG, String.format("level:%s; line->%s; sourceId->%s; message->%s",
                     consoleMessage.messageLevel(), consoleMessage.lineNumber(),
                     consoleMessage.sourceId(), consoleMessage.message()));
             return super.onConsoleMessage(consoleMessage);

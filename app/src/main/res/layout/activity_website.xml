@@ -6,8 +6,8 @@
     android:orientation="vertical"
     tools:context=".activity.WebsiteActivity">
 
-    <include
-        layout="@layout/common_title" />
+    <include layout="@layout/common_title" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,27 +15,28 @@
         <WebView
             android:id="@+id/wv_website"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
-       <FrameLayout
-           android:id="@+id/empty_view"
-           android:visibility="gone"
-           tools:visibility="visible"
-           android:background="@color/white"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
-           <TextView
-               android:id="@+id/tv_empty_view"
-               android:drawablePadding="40dp"
-               android:drawableTop="@mipmap/gallery_empty"
-               android:gravity="center"
-               android:textSize="17sp"
-               android:layout_gravity="center"
-               android:textColor="@color/text_28354C"
-               android:text="@string/no_content_click_reload"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content" />
-       </FrameLayout>
+        <FrameLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@mipmap/gallery_empty"
+                android:drawablePadding="40dp"
+                android:gravity="center"
+                android:text="@string/no_content_click_reload"
+                android:textColor="@color/text_28354C"
+                android:textSize="17sp" />
+        </FrameLayout>
 
     </FrameLayout>
 

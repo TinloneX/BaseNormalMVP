@@ -1,17 +1,20 @@
 package com.company.project.activity;
 
 
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chaychan.library.BottomBarLayout;
 import com.company.project.R;
 import com.company.project.R2;
-import com.company.project.adapter.PagerFragmentAdapter;
+import com.company.project.adapter.IndexFragmentAdapter;
 import com.company.project.base.BaseActivity;
 import com.company.project.base.IPresenter;
 import com.company.project.fragment.BlankFragment;
+import com.company.project.util.TLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity {
 
     @BindView(R2.id.vp_fragments)
-    ViewPager vpFragments;
+    ViewPager2 vpFragments;
     @BindView(R2.id.bottom_bar)
     BottomBarLayout bottomBar;
     String msg = "";
@@ -52,11 +55,24 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
         statusTransparentFontWhite();
-        vpFragments.setAdapter(new PagerFragmentAdapter(getSupportFragmentManager(), fragments));
-        bottomBar.setViewPager(vpFragments);
+//        vpFragments.setAdapter(new PagerFragmentAdapter(getSupportFragmentManager(), fragments));
+//        bottomBar.setViewPager(vpFragments);
+        IndexFragmentAdapter adapter = new IndexFragmentAdapter(this, fragments);
+        vpFragments.setAdapter(adapter);
+        vpFragments.setOffscreenPageLimit(fragments.size());
+        vpFragments.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                bottomBar.setCurrentItem(position);
+                Log.i("DEBUG.T.LOG","滑选：" + position);
+            }
+        });
+
         bottomBar.getBottomItem(0).setUnreadNum(10000);
         bottomBar.getBottomItem(2).setMsg("aloha");
         bottomBar.setOnItemSelectedListener((bottomBarItem, i, i1) -> {
+            vpFragments.setCurrentItem(i1, true);
+            Log.i("DEBUG.T.LOG","点选：" + i1);
             switch (i1) {
                 case 0:
                     statusTransparentFontWhite();

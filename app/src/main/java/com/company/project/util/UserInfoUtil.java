@@ -24,7 +24,7 @@ public class UserInfoUtil {
             if (mUserInfoBean == null) {
                 Gson gson = new Gson();
                 String json = (String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, "{}");
-                Tog.w("OkHttp-json", json);
+                TLog.w("OkHttp-json", json);
                 try {
                     mUserInfoBean = gson.fromJson(json, UserInfoBean.class);
                 } catch (Exception e) {
@@ -47,14 +47,14 @@ public class UserInfoUtil {
         synchronized (UserInfoUtil.class) {
             Gson gson = new Gson();
             String json = gson.toJson(info);
-            Tog.w("OkHttp", json);
+            TLog.w("OkHttp", json);
             SharedPreferencesUtil.setParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, json);
             mUserInfoBean = info;
         }
     }
 
     public static void clearUserInfo() {
-        Tog.w("OkHttp - clearUserInfo");
+        TLog.w("OkHttp - clearUserInfo");
         updateUserInfo(new UserInfoBean());
     }
 

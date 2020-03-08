@@ -3,7 +3,7 @@ package com.company.project.http;
 import com.company.project.base.BaseResponse;
 import com.company.project.config.Config;
 import com.company.project.mvp.IModel;
-import com.company.project.util.Tog;
+import com.company.project.util.TLog;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -42,7 +42,7 @@ public class HttpObserver {
                 } else {
                     callBack.onFailed(response);
                 }
-                Tog.i("tag", "(HttpObserver.java:45) ~ onNext:" + response.toString());
+                TLog.i("tag", "(HttpObserver.java:45) ~ onNext:" + response.toString());
             }
 
             @Override

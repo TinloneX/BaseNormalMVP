@@ -15,7 +15,8 @@ public interface Config {
         String HOME = "https://www.tinlone.com/";
         String BASE_URL = "https://www.tinlone.com/api/";
     }
-    interface Tags{
+
+    interface Tags {
         String ALL = "application.all";
     }
 
