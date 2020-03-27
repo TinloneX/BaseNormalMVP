@@ -20,4 +20,5 @@ public interface IPresenter<V extends IView> {
      * 解绑V
      */
     void dettachView();
+
 }

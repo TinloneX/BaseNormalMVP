@@ -115,5 +115,6 @@ dependencies {
     // Snacky
     implementation 'com.github.matecode:Snacky:1.0.2'
     implementation 'com.alibaba:fastjson:1.2.66'
+    implementation 'org.jetbrains:annotations:15.0'
 
 }

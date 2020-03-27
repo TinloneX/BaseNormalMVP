@@ -48,7 +48,7 @@ import io.reactivex.disposables.Disposable;
  * If you shed tears when you miss the sun, you also miss the stars.
  */
 
-public abstract class BaseActivity<P extends IPresenter<IView<DATA>>, DATA> extends AppCompatActivity implements IView<DATA> {
+public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompatActivity implements IView<DATA> {
     public static final String FULL_SCREEN = "full_screen";
     public static final String AUTO_TITLE = "auto_title";
     public static final String RIGHT_TEXT = "right_text";
