@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import androidx.annotation.Size;
 import androidx.core.content.FileProvider;
@@ -52,16 +51,39 @@ public class FileUtils {
      * @param saveDir 子文件夹绝对路径
      */
     public static String createDirInStorage(@Size(min = 1) String saveDir) {
-        File downloadFile = new File(Environment.getExternalStorageDirectory(), saveDir);
+        File downloadFile = MyApplication.getAppContext().getExternalFilesDir("files");
+        if (downloadFile==null){
+            return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
+        }
         if (!downloadFile.exists()) {
-            Log.i(TAG, "创建文件夹" +
+            TLog.i("创建文件夹" +
                     (downloadFile.mkdirs() ? "成功" : "失败") + ": "
                     + downloadFile.getAbsolutePath());
         } else {
-            Log.i(TAG, "文件夹" + downloadFile.getAbsolutePath() + "存在");
+            TLog.i("文件夹" + downloadFile.getAbsolutePath() + "存在");
         }
         return downloadFile.getAbsolutePath();
     }
+
+    /**
+     * 获取data目录下file文件夹路径
+     */
+     public static String getDataFileStorage(){
+         File file = MyApplication.getAppContext().getExternalFilesDir("file");
+         if (file!=null) {
+             return file.getAbsolutePath();
+         }
+         return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
+     }
+     public static String getDataCacheStorage(){
+         File file = MyApplication.getAppContext().getExternalFilesDir("cache");
+         if (file!=null) {
+             return file.getAbsolutePath();
+         }
+         return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
+     }
+
+
 
     /**
      * 创建上传文件封装
@@ -75,8 +97,7 @@ public class FileUtils {
     /**
      * 文件
      *
-     * @param path
-     * @return
+     * @param path 文件路径
      */
     public static boolean isExists(String path) {
         if (Check.empty(path)) {
@@ -115,12 +136,7 @@ public class FileUtils {
      * @return 文件Uri
      */
     public static Uri createUriFromPath(String path) {
-        File data = new File(path);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            return FileProvider.getUriForFile(MyApplication.getAppContext(), BuildConfig.APPLICATION_ID + ".file_provider", data);
-        } else {
-            return Uri.fromFile(data);
-        }
+        return createUriFromFile(new File(path));
     }
 
     /**
@@ -188,7 +204,6 @@ public class FileUtils {
             case "xmf":
             case "ogg":
             case "wav":
-                return getAudioFileIntent(filePath);
             case "3gp":
             case "mp4":
                 return getAudioFileIntent(filePath);
@@ -230,7 +245,7 @@ public class FileUtils {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "*/*");
         return intent;
     }
@@ -242,8 +257,10 @@ public class FileUtils {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         //判读版本是否在7.0以上
-        intent.setDataAndType(createUriFromPath(param), "application/vnd.android.package-archive");
+        Uri uriFromPath = createUriFromPath(param);
+        intent.setDataAndType(uriFromPath, "application/vnd.android.package-archive");
         return intent;
     }
 
@@ -266,6 +283,7 @@ public class FileUtils {
     private static Intent getAudioFileIntent(String param) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.putExtra("oneshot", 0);
         intent.putExtra("configchange", 0);
         intent.setDataAndType(createUriFromPath(param), "audio/*");
@@ -277,13 +295,14 @@ public class FileUtils {
      */
     @SuppressWarnings("unused")
     public static Intent getHtmlFileIntent(String param) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         Uri uri = createUriFromPath(param)
                 .buildUpon()
                 .encodedAuthority("com.android.htmlfileprovider")
                 .scheme("content")
                 .encodedPath(param)
                 .build();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(createUriFromPath(param), "text/html");
         return intent;
     }
@@ -296,6 +315,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         intent.setDataAndType(createUriFromPath(param), "image/*");
         return intent;
@@ -308,6 +328,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "application/vnd.ms-powerpoint");
         return intent;
     }
@@ -316,6 +337,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "application/vnd.openxmlformats-officedocument.presentationml.presentation");
         return intent;
     }
@@ -328,7 +350,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "application/vnd.ms-excel");
         return intent;
     }
@@ -337,6 +359,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         intent.setDataAndType(createUriFromPath(param), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         return intent;
@@ -350,7 +373,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "application/msword");
         return intent;
     }
@@ -359,7 +382,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         return intent;
     }
@@ -372,7 +395,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "application/x-chm");
         return intent;
     }
@@ -385,7 +408,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "text/plain");
 
         return intent;
@@ -399,7 +422,7 @@ public class FileUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(DEFAULT_CATEGORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(createUriFromPath(param), "application/pdf");
         return intent;
     }

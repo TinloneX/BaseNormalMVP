@@ -24,7 +24,6 @@ public class UserInfoUtil {
             if (mUserInfoBean == null) {
                 Gson gson = new Gson();
                 String json = (String) SharedPreferencesUtil.getParam(MyApplication.getAppContext(), SharedPreferencesUtil.USER_INFO, "{}");
-                TLog.w("OkHttp-json", json);
                 try {
                     mUserInfoBean = gson.fromJson(json, UserInfoBean.class);
                 } catch (Exception e) {

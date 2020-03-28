@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -22,6 +21,7 @@ import com.company.project.MyApplication;
 import com.company.project.R;
 import com.company.project.receiver.OpenFileReceiver;
 import com.company.project.util.FileUtils;
+import com.company.project.util.TLog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,24 +62,20 @@ public class ODownloadService extends Service {
         if (Build.VERSION.SDK_INT >= 26 && notificationManager != null) {
             //第三个参数设置通知的优先级别
             NotificationChannel channel =
-                    new NotificationChannel(BuildConfig.APPLICATION_ID, "下载及更新", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.canBypassDnd();//是否可以绕过请勿打扰模式
+                    new NotificationChannel(BuildConfig.APPLICATION_ID + 1, "下载及更新", NotificationManager.IMPORTANCE_DEFAULT);
             channel.canShowBadge();//是否可以显示icon角标
-            channel.enableLights(true);//是否显示通知闪灯
-            channel.setBypassDnd(true);//设置绕过免打扰
             channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_SECRET);
-            channel.setLightColor(Color.GREEN);//设置闪光灯颜色
+            channel.setSound(null, null);
             notificationManager.createNotificationChannel(channel);
-            builder.setChannelId(BuildConfig.APPLICATION_ID);//这个id参数要与上面channel构建的第一个参数对应
+            builder.setChannelId(BuildConfig.APPLICATION_ID + 1);//这个id参数要与上面channel构建的第一个参数对应
         }
         builder.setContentTitle("正在下载...") //设置通知标题
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(Notification.PRIORITY_MAX) //设置通知的优先级：最大
                 .setAutoCancel(false)//设置通知被点击一次是否自动取消
                 .setContentText("下载进度:" + "0%")
                 .setProgress(100, 0, false);
-        Notification notification = builder.build();
-        notificationManager.notify(1, notification);
+
+        notificationManager.notify(1, builder.build());
     }
 
     /**
@@ -94,17 +90,20 @@ public class ODownloadService extends Service {
             @Override
             public void onFailure(Call call, IOException e) {
                 // 下载失败
+                TLog.e(e);
                 listener.onDownloadFailed(call, e);
+//                updateNotificationHandler.sendEmptyMessage(-1);
                 builder.setContentTitle("下载失败")
                         .setContentText("请稍后再试")
                         .setAutoCancel(true);//设置通知被点击一次是否自动取消
+                notificationManager.notify(1, builder.build());
             }
 
             @Override
             public void onResponse(Call call, Response response) {
                 InputStream is = null;
                 // buffer写入大小
-                byte[] buf = new byte[2048];
+                byte[] buf = new byte[1028 * 8];
                 int len;
                 FileOutputStream fos = null;
                 // 储存下载文件的目录
@@ -118,12 +117,18 @@ public class ODownloadService extends Service {
                     is = body.byteStream();
                     //获取流大小
                     long total = body.contentLength();
+                    TLog.i("字节流大小：" + total);
                     //准备文件对象
                     File file = new File(savePath, getNameFromUrl(url));
+                    TLog.i(file.getAbsolutePath());
+                    if (file.createNewFile()) {
+                        TLog.i("文件创建完成");
+                    }
                     //准备文件流
                     fos = new FileOutputStream(file);
                     long sum = 0;
                     //循环读文件，直到流结束
+                    int lastProgress = -1;
                     while ((len = is.read(buf)) != -1) {
                         //写入文件流
                         fos.write(buf, 0, len);
@@ -131,8 +136,14 @@ public class ODownloadService extends Service {
                         //计算进度
                         int progress = (int) (sum * 1.0f / total * 100);
                         // 回调下载中
-                        listener.onDownloading(progress);
+                        if (progress != lastProgress) {
+                            lastProgress = progress;
+                            listener.onDownloading(progress);
+                        }
                         //更新进度
+//                        message.what = 0;
+//                        message.arg1 = progress;
+//                        updateNotificationHandler.sendMessage(message);
                         builder.setContentText(String.format("下载进度:%s%%", progress))
                                 .setProgress(100, progress, true);
                         notificationManager.notify(1, builder.build());
@@ -140,8 +151,13 @@ public class ODownloadService extends Service {
                     //刷入文件流，防止文件写入不完整
                     fos.flush();
                     // 处理通知栏信息
+//                    Message message = Message.obtain();
+//                    message.what = 1;
+//                    message.obj = file.getAbsolutePath();
+//                    updateNotificationHandler.sendMessage(message);
                     Intent clickIntent = new Intent(MyApplication.getAppContext(), OpenFileReceiver.class);
-                    clickIntent.putExtra("path", file.getAbsolutePath());
+                    clickIntent.setAction(OpenFileReceiver.ACTION);
+                    clickIntent.putExtra(OpenFileReceiver.KEY_PATH, file.getAbsolutePath());
                     //点击通知之后要发送的广播
                     int id = (int) (System.currentTimeMillis() / 1000);
                     PendingIntent contentIntent = PendingIntent.getBroadcast(getApplicationContext(), id, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);

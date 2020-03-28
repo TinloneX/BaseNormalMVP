@@ -22,6 +22,9 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <!-- 安装应用 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- 允许装载和卸载文件系统权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".MyApplication"
@@ -34,6 +37,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="n">
         <activity
             android:name=".activity.MainActivity"

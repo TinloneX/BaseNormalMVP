@@ -70,7 +70,7 @@ public class TMessageDialog implements Dismissable {
 
     private void initDialog() {
         mDialog = new Dialog(mContext);
-        view = LayoutInflater.from(mContext).inflate(R.layout.dialog_do_progress, null);
+        view = LayoutInflater.from(mContext).inflate(R.layout.dialog_do_progress, null, false);
         findView();
         mDialog.setCancelable(false);
         mDialog.setContentView(view);
@@ -115,11 +115,13 @@ public class TMessageDialog implements Dismissable {
     }
 
     public TMessageDialog title(@StringRes int textRes) {
-        return title(getString(textRes));
+        tvTitle.setText(textRes);
+        return this;
     }
 
     public TMessageDialog title(CharSequence title) {
-        return title(title, "#222222");
+        tvTitle.setText(title);
+        return this;
     }
 
     public TMessageDialog title(CharSequence title, @Size(min = 1) String colorStr) {
@@ -129,7 +131,6 @@ public class TMessageDialog implements Dismissable {
     public TMessageDialog title(CharSequence title, @ColorInt int colorInt) {
         tvTitle.setText(title);
         tvTitle.setTextColor(colorInt);
-        tvTitle.setOnClickListener(v -> mListener.onClickTitle(tvTitle));
         return this;
     }
 
@@ -140,11 +141,13 @@ public class TMessageDialog implements Dismissable {
     }
 
     public TMessageDialog content(@StringRes int textRes) {
-        return content(getString(textRes), "#999999");
+        tvContent.setText(textRes);
+        return this;
     }
 
     public TMessageDialog content(CharSequence content) {
-        return content(content, "#999999");
+        tvContent.setText(content);
+        return this;
     }
 
     public TMessageDialog content(CharSequence content, @Size(min = 1) String colorStr) {
@@ -154,7 +157,6 @@ public class TMessageDialog implements Dismissable {
     public TMessageDialog content(CharSequence content, @ColorInt int colorInt) {
         tvContent.setText(content);
         tvContent.setTextColor(colorInt);
-        tvContent.setOnClickListener(v -> mListener.onClickTitle(tvContent));
         return this;
     }
 
@@ -170,8 +172,13 @@ public class TMessageDialog implements Dismissable {
         return left(text, colorInt, defaultListener);
     }
 
+    public TMessageDialog left(CharSequence text, @NonNull View.OnClickListener listener) {
+        return left(text, Color.parseColor("#BEC3CC"), defaultListener);
+    }
+
     public TMessageDialog left(CharSequence text, @ColorInt int colorInt, @NonNull View.OnClickListener listener) {
         tvLeft.setText(text);
+        tvLeft.setVisibility(View.VISIBLE);
         tvLeft.setTextColor(colorInt);
         tvLeft.setOnClickListener(v -> {
             listener.onClick(tvLeft);
@@ -192,9 +199,14 @@ public class TMessageDialog implements Dismissable {
         return mid(text, colorInt, defaultListener);
     }
 
+    public TMessageDialog mid(CharSequence text, @NonNull View.OnClickListener listener) {
+        return mid(text, Color.parseColor("#BEC3CC"), defaultListener);
+    }
+
     public TMessageDialog mid(CharSequence text, @ColorInt int colorInt, @NonNull View.OnClickListener listener) {
         tvMid.setText(text);
         tvMid.setTextColor(colorInt);
+        tvMid.setVisibility(View.VISIBLE);
         tvMid.setOnClickListener(v -> {
             listener.onClick(tvMid);
             mListener.onClickMid(tvMid);
@@ -218,9 +230,14 @@ public class TMessageDialog implements Dismissable {
         return right(text, colorInt, defaultListener);
     }
 
+    public TMessageDialog right(CharSequence text, @NonNull View.OnClickListener listener) {
+        return right(text, Color.parseColor("#BEC3CC"), defaultListener);
+    }
+
     public TMessageDialog right(CharSequence text, @ColorInt int colorInt, @NonNull View.OnClickListener listener) {
         tvRight.setText(text);
         tvRight.setTextColor(colorInt);
+        tvRight.setVisibility(View.VISIBLE);
         tvRight.setOnClickListener(v -> {
             listener.onClick(tvRight);
             mListener.onClickRight(tvRight);
@@ -265,6 +282,15 @@ public class TMessageDialog implements Dismissable {
         return this;
     }
 
+    public boolean progressShow() {
+        return llProgress.getVisibility() == View.VISIBLE;
+    }
+
+    public TMessageDialog hideProgress() {
+        llProgress.setVisibility(View.GONE);
+        return this;
+    }
+
     public TMessageDialog progress(int progress) {
         progressBar.setProgress(progress);
         tvProgress.setText(String.format("%s%%", progress));
@@ -290,6 +316,7 @@ public class TMessageDialog implements Dismissable {
     }
 
     public void update() {
+        view.measure(view.getMeasuredWidth(), view.getMeasuredHeight());
         show();
     }
 
@@ -298,13 +325,7 @@ public class TMessageDialog implements Dismissable {
         mDialog.dismiss();
     }
 
-    public static abstract class DoClickListener {
-
-        public void onClickTitle(View view) {
-        }
-
-        public void onClickContent(View view) {
-        }
+    public static class DoClickListener {
 
         public void onClickLeft(View view) {
         }

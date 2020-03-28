@@ -3,26 +3,22 @@
     <!--FileProvider提供的共享目录配置文件-->
     <!--内置SD卡 Environment.getExternalStorageDirectory() .表示共享所有的目录，也可以指定共享的目录-->
     <external-path
-        name="external-path"
-        path="." />
+        name="external"
+        path=".com.company.project/" />
     <!--内置SD卡 Context.getExternalCacheDir() .表示共享所有的目录，也可以指定共享的目录-->
     <external-cache-path
-        name="external-cache-path"
-        path="." />
+        name="caches"
+        path=".com.company.project/caches" />
     <!--内置SD卡 Context.getExternalFilesDir(null) .表示共享所有的目录，也可以指定共享的目录-->
     <external-files-path
-        name="external-files-path"
-        path="." />
+        name="files"
+        path="com.company.project/files" />
     <!--data目录下 Context.getFilesDir() .表示共享所有的目录，也可以指定共享的目录-->
     <files-path
-        name="files_path"
-        path="." />
+        name="images"
+        path="com.company.project/images" />
     <!--data缓存目录 Context.getCacheDir() .表示共享所有的目录，也可以指定共享的目录-->
     <cache-path
         name="cache-path"
-        path="." />
-    <!--这个标签Android官方文档中是没有提及，Android设备的根目录，该目录下包含着手机内部存储器，外置SD卡等所有文件的目录-->
-    <root-path
-        name="name"
         path="." />
 </paths>

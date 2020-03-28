@@ -29,7 +29,7 @@ import com.company.project.activity.WebsiteActivity;
 import com.company.project.config.Config;
 import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
-import com.company.project.util.ActivityStackUtils;
+import com.company.project.util.ActivityStackUtils2;
 import com.company.project.util.Check;
 import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
@@ -89,7 +89,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     protected void pressThis(boolean inAll) {
         if (inAll) {
-            ActivityStackUtils.pressActivity(Config.Tags.ALL, this);
+            ActivityStackUtils2.pressActivity(Config.Tags.ALL, this);
         }
     }
 
@@ -168,7 +168,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
     @Override
     protected void onDestroy() {
         hideLoading();
-        ActivityStackUtils.popActivity(Config.Tags.ALL, this);
+        ActivityStackUtils2.popActivity(Config.Tags.ALL, this);
         if (mPresenter != null) {
             mPresenter.dettachView();
         }
@@ -514,8 +514,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             case ApiCode.TOKEN_INVALID:
                 ToastUtils.showShort(R.string.sign_in_info_overdue_reload);
                 UserInfoUtil.clearUserInfo();
-//                startActivity(SignInActivity.class);
-                ActivityStackUtils.finishAll(Config.Tags.ALL);
+                ActivityStackUtils2.finishAll(Config.Tags.ALL);
                 break;
             default:
                 if (Check.hasContent(response.getMessage())) {

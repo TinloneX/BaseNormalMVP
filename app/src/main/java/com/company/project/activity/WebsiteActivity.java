@@ -101,8 +101,6 @@ public class WebsiteActivity extends BaseActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         settings.setDomStorageEnabled(true);
-//        settings.setAllowFileAccess(true);
-//        settings.setAllowFileAccessFromFileURLs(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setAllowContentAccess(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -115,8 +113,6 @@ public class WebsiteActivity extends BaseActivity {
         settings.setUseWideViewPort(false);
         wvWebsite.setWebViewClient(new MyWebViewClient());
         wvWebsite.setWebChromeClient(new MyChromeClient());
-//        目前没有H5交互需求，暂且注释掉
-//        wvWebsite.addJavascriptInterface(new JavaScriptInterface(), "AppInterface");
         preDownLoad();
         // 自行实现下载服务
         wvWebsite.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {

@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ThreadUtils;
-import com.company.project.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -75,27 +74,10 @@ public class TLog {
         }
     }
 
-    public static void i(String msg, Object... objs) {
-        if (showLog) {
-            Log.i(TAG, valueOf(msg, objs));
-        }
-    }
-
-    public static void i(String tag, String fmt, Object... objs) {
-        if (showLog) {
-            Log.i(tag, valueOf(fmt, objs));
-        }
-    }
 
     public static void e(Object object) {
         if (showLog) {
             Log.e(TAG, valueOf(object));
-        }
-    }
-
-    public static void e(String msg, Object... objs) {
-        if (showLog) {
-            Log.e(TAG, valueOf(msg, objs));
         }
     }
 
@@ -153,15 +135,6 @@ public class TLog {
 
     public static void keep(String tag, Object object) {
         i(tag, object);
-    }
-
-    public static String valueOf(String msg, Object... objs) {
-        try {
-            return String.format(msg, objs);
-        } catch (Exception e) {
-            e(e);
-            return "---WARNING--- 占位符对应格式有误:" + msg;
-        }
     }
 
     private static String getStackTraceString(Throwable tr) {
@@ -237,7 +210,7 @@ public class TLog {
                             }
                         }
 
-                        File file = new File(directory.getAbsolutePath(), "log-" + yyyyMMdd + ".txt");
+                        File file = new File(directory.getAbsolutePath(), "test-log-" + yyyyMMdd + ".txt");
                         if (!file.exists() || file.isDirectory()) {
                             if (file.createNewFile()) {
                                 i("创建文件" + file.getAbsolutePath() + "成功");
