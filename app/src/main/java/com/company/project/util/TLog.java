@@ -31,7 +31,7 @@ import java.util.Date;
 public class TLog {
 
     private static final String TAG = "DEBUG.T.LOG";
-//    private static boolean showLog = BuildConfig.DEBUG;
+    //    private static boolean showLog = BuildConfig.DEBUG;
     private static boolean showLog = true;
     private static String cachedValue;
     @SuppressLint("SimpleDateFormat")
@@ -161,8 +161,6 @@ public class TLog {
         if (!showLog) {
             return;
         }
-        i(object);
-
         if (PermissionUtils.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 &&
                 Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -196,13 +194,13 @@ public class TLog {
                         } else {
                             text = JSONObject.toJSONString(object);
                         }
-                        File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "/log/");
+                        File directory = new File(FileUtils.getDataCacheStorage(), "/log/");
                         if (!directory.exists()) {
                             if (directory.mkdirs()) {
                                 i("创建文件夹" + directory.getAbsolutePath() + "成功");
                             }
                         }
-
+                        i("文件夹" + directory.getAbsolutePath() + "已存在");
                         File[] files = directory.listFiles();
                         if (files != null && files.length >= 10) {
                             for (int i = 5; i >= 0; i--) {
@@ -210,12 +208,13 @@ public class TLog {
                             }
                         }
 
-                        File file = new File(directory.getAbsolutePath(), "test-log-" + yyyyMMdd + ".txt");
+                        File file = new File(directory.getAbsolutePath(), "log-" + yyyyMMdd + ".txt");
                         if (!file.exists() || file.isDirectory()) {
                             if (file.createNewFile()) {
                                 i("创建文件" + file.getAbsolutePath() + "成功");
                             }
                         }
+                        i("文件" + file.getAbsolutePath() + "已存在");
 
                         try (FileWriter fileWriter = new FileWriter(file, true)) {
                             fileWriter.append("\n").append("\n");

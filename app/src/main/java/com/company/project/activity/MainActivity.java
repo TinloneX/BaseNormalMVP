@@ -119,6 +119,7 @@ public class MainActivity extends BaseActivity {
             }
             ToastUtils.showShort(msg);
         });
+
         PermissionUtils.permission(PermissionConstants.STORAGE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
@@ -132,6 +133,7 @@ public class MainActivity extends BaseActivity {
 
             }
         }).request();
+        TLog.writeLog(this,"测试日志文件");
     }
 
 
@@ -174,7 +176,6 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onDownloadFailed(Call call, Exception e) {
-                ToastUtils.showShort("下载失败，请稍后再试");
                 TLog.i("下载失败，请稍后再试");
                 TLog.i(e);
                 runOnUiThread(new Runnable() {
@@ -183,8 +184,10 @@ public class MainActivity extends BaseActivity {
                         if (updateDialog != null) {
                             updateDialog.hideProgress()
                                     .withoutMid()
+                                    .title("错误")
+                                    .content("下载失败，请稍后再试，ERROR: " + TLog.valueOf(e))
                                     .left("稍后再试", Color.GRAY, v -> updateDialog.dismiss())
-                                    .right("重新下载", Color.RED, v -> downloadFile(APK_DOWNLOAD_URL)).update();
+                                    .right("切换路径下载", Color.RED, v -> downloadFile(TEST_URL_CNZ)).update();
                         }
                     }
                 });

@@ -52,7 +52,7 @@ public class FileUtils {
      */
     public static String createDirInStorage(@Size(min = 1) String saveDir) {
         File downloadFile = MyApplication.getAppContext().getExternalFilesDir("files");
-        if (downloadFile==null){
+        if (downloadFile == null) {
             return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
         }
         if (!downloadFile.exists()) {
@@ -68,21 +68,21 @@ public class FileUtils {
     /**
      * 获取data目录下file文件夹路径
      */
-     public static String getDataFileStorage(){
-         File file = MyApplication.getAppContext().getExternalFilesDir("file");
-         if (file!=null) {
-             return file.getAbsolutePath();
-         }
-         return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
-     }
-     public static String getDataCacheStorage(){
-         File file = MyApplication.getAppContext().getExternalFilesDir("cache");
-         if (file!=null) {
-             return file.getAbsolutePath();
-         }
-         return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
-     }
+    public static String getDataFileStorage() {
+        File file = MyApplication.getAppContext().getExternalFilesDir("files");
+        if (file != null) {
+            return file.getAbsolutePath();
+        }
+        return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
+    }
 
+    public static String getDataCacheStorage() {
+        File file = MyApplication.getAppContext().getExternalFilesDir("caches");
+        if (file != null) {
+            return file.getAbsolutePath();
+        }
+        return MyApplication.getAppContext().getCacheDir().getAbsolutePath();
+    }
 
 
     /**
