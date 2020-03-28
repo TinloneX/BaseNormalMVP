@@ -42,6 +42,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:minHeight="40dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="#333"
         android:typeface="normal"
         app:layout_constraintEnd_toEndOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="@+id/tv_title"
@@ -64,13 +68,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="9dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_content">
+        app:layout_constraintTop_toBottomOf="@+id/tv_line2">
 
         <TextView
             android:id="@+id/tv_left"
@@ -123,7 +126,7 @@
         android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/tv_line2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

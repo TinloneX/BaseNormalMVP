@@ -43,6 +43,8 @@ import okhttp3.Call;
  */
 public class MainActivity extends BaseActivity {
 
+    private static final String APK_DOWNLOAD_URL = "https://raw.githubusercontent.com/TinloneX/BaseNormalMVP/master/apk/app-debug.apk";
+    private static final String TEST_URL_CNZ = "https://qd.myapp.com/myapp/qqteam/QQ_JS/qqlite_4.0.0.1025_537062065.apk";
     @BindView(R2.id.vp_fragments)
     ViewPager vpFragments;
     @BindView(R2.id.bottom_bar)
@@ -140,20 +142,17 @@ public class MainActivity extends BaseActivity {
                 TLog.i("下载完成，保存路径：" + file.getAbsolutePath());
                 runOnUiThread(() -> {
                     if (updateDialog != null) {
-                        updateDialog.dismiss();
+                        updateDialog.title("安装更新")
+                                .content("安装包下载完毕")
+                                .withoutMid()
+                                .left("稍后安装", Color.GRAY, v -> updateDialog.dismiss())
+                                .right("立即安装", Color.RED, v -> {
+                                    Intent clickIntent = new Intent(MyApplication.getAppContext(), OpenFileReceiver.class);
+                                    clickIntent.setAction(OpenFileReceiver.ACTION);
+                                    clickIntent.putExtra(OpenFileReceiver.KEY_PATH, file.getAbsolutePath());
+                                    sendBroadcast(clickIntent);
+                                }).show();
                     }
-                    updateDialog = new TMessageDialog(MainActivity.this)
-                            .title("安装更新")
-                            .content("安装包下载完毕")
-                            .withoutMid()
-                            .left("稍后安装", Color.GRAY, v -> updateDialog.dismiss())
-                            .right("立即安装", Color.RED, v -> {
-                                Intent clickIntent = new Intent(MyApplication.getAppContext(), OpenFileReceiver.class);
-                                clickIntent.setAction(OpenFileReceiver.ACTION);
-                                clickIntent.putExtra(OpenFileReceiver.KEY_PATH, file.getAbsolutePath());
-                                sendBroadcast(clickIntent);
-                            });
-                    updateDialog.show();
                 });
             }
 
@@ -164,8 +163,8 @@ public class MainActivity extends BaseActivity {
                     if (updateDialog != null) {
                         if (!updateDialog.progressShow()) {
                             updateDialog.withProgress(100)
-                                    .title("下载")
-                                    .content("正在下载更新")
+                                    .title("下载文件")
+                                    .content("正在下载更新，地址：" + APK_DOWNLOAD_URL)
                                     .noButton();
                         }
                         updateDialog.progress(progress).update();
@@ -185,7 +184,7 @@ public class MainActivity extends BaseActivity {
                             updateDialog.hideProgress()
                                     .withoutMid()
                                     .left("稍后再试", Color.GRAY, v -> updateDialog.dismiss())
-                                    .right("重新下载", Color.RED, v -> downloadFile("https://qd.myapp.com/myapp/qqteam/QQ_JS/qqlite_4.0.0.1025_537062065.apk")).update();
+                                    .right("重新下载", Color.RED, v -> downloadFile(APK_DOWNLOAD_URL)).update();
                         }
                     }
                 });
@@ -203,7 +202,6 @@ public class MainActivity extends BaseActivity {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 downloadBinder = (ODownloadService.DownloadBinder) service;
                 showUpdateDialog();
-//                downloadFile("https://qd.myapp.com/myapp/qqteam/QQ_JS/qqlite_4.0.0.1025_537062065.apk");
             }
 
             @Override
@@ -220,7 +218,7 @@ public class MainActivity extends BaseActivity {
                     .onlyMid()
                     .title("发现新版本")
                     .content("测试下载服务是否正常")
-                    .mid("下载新版本", Color.RED, v -> downloadFile("https://qd.myapp.com/myapp/qqteam/QQ_JS/qqlite_4.0.0.1025_537062065.apk"));
+                    .mid("下载新版本", Color.RED, v -> downloadFile(APK_DOWNLOAD_URL));
         }
         updateDialog.show();
     }

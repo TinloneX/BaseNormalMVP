@@ -178,6 +178,7 @@ public class TMessageDialog implements Dismissable {
 
     public TMessageDialog left(CharSequence text, @ColorInt int colorInt, @NonNull View.OnClickListener listener) {
         tvLeft.setText(text);
+        llButton.setVisibility(View.VISIBLE);
         tvLeft.setVisibility(View.VISIBLE);
         tvLeft.setTextColor(colorInt);
         tvLeft.setOnClickListener(v -> {
@@ -205,6 +206,7 @@ public class TMessageDialog implements Dismissable {
 
     public TMessageDialog mid(CharSequence text, @ColorInt int colorInt, @NonNull View.OnClickListener listener) {
         tvMid.setText(text);
+        llButton.setVisibility(View.VISIBLE);
         tvMid.setTextColor(colorInt);
         tvMid.setVisibility(View.VISIBLE);
         tvMid.setOnClickListener(v -> {
@@ -236,6 +238,7 @@ public class TMessageDialog implements Dismissable {
 
     public TMessageDialog right(CharSequence text, @ColorInt int colorInt, @NonNull View.OnClickListener listener) {
         tvRight.setText(text);
+        llButton.setVisibility(View.VISIBLE);
         tvRight.setTextColor(colorInt);
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setOnClickListener(v -> {
@@ -246,6 +249,7 @@ public class TMessageDialog implements Dismissable {
     }
 
     public TMessageDialog onlyMid() {
+        llButton.setVisibility(View.VISIBLE);
         tvMid.setVisibility(View.VISIBLE);
         tvLeft.setVisibility(View.GONE);
         tvRight.setVisibility(View.GONE);
@@ -255,6 +259,7 @@ public class TMessageDialog implements Dismissable {
     }
 
     public TMessageDialog withoutMid() {
+        llButton.setVisibility(View.VISIBLE);
         tvMid.setVisibility(View.GONE);
         tvLine9.setVisibility(View.VISIBLE);
         tvLeft.setVisibility(View.VISIBLE);
@@ -263,6 +268,7 @@ public class TMessageDialog implements Dismissable {
     }
 
     public TMessageDialog threeChoose() {
+        llButton.setVisibility(View.VISIBLE);
         tvLeft.setVisibility(View.VISIBLE);
         tvMid.setVisibility(View.VISIBLE);
         tvLine9.setVisibility(View.VISIBLE);
@@ -287,7 +293,7 @@ public class TMessageDialog implements Dismissable {
     }
 
     public TMessageDialog hideProgress() {
-        llProgress.setVisibility(View.GONE);
+        llProgress.setVisibility(View.INVISIBLE);
         return this;
     }
 
@@ -316,7 +322,6 @@ public class TMessageDialog implements Dismissable {
     }
 
     public void update() {
-        view.measure(view.getMeasuredWidth(), view.getMeasuredHeight());
         show();
     }
 

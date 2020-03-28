@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,6 +11,17 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/toUse"
         android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:tint="@android:color/white"
+        app:srcCompat="?attr/homeAsUpIndicator"
+        app:tintMode="multiply"
+        tools:ignore="UseAppTint" />
+
 
     <TextView
         android:id="@+id/tvToUse"
