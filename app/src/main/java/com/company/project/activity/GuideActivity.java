@@ -40,7 +40,6 @@ public class GuideActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        super.initView();
         statusTransparentFontWhite();
     }
 }

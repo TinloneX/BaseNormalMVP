@@ -6,6 +6,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * @author Administrator
+ */
 public class CountUtil {
     /**
      * 秒级倒计时
@@ -50,10 +53,13 @@ public class CountUtil {
      * @param observer 观察者
      */
     public static void numberDown(int top, int bottom, int step, TimeUnit unit, CountObserver observer) {
-        Observable.interval(0, step, unit)//设置0延迟，每隔一秒发送一条数据
-                .take((top - bottom) % step == 0 ? (top - bottom) / step : ((top - bottom) / step) + 1) //设置循环time/step次(无法整除则加1)
-                .map(aLong -> (long) (//不低于0
-                        (top - aLong.intValue() * step) < bottom ? bottom : (top - aLong.intValue() * step))
+        Observable.interval(0, step, unit)
+                //设置0延迟，每隔一秒发送一条数据
+                .take((top - bottom) % step == 0 ? (top - bottom) / step : ((top - bottom) / step) + 1)
+                //设置循环time/step次(无法整除则加1)
+                .map(aLong -> (long) (
+                        //不低于0
+                        Math.max((top - aLong.intValue() * step), bottom))
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -103,9 +109,12 @@ public class CountUtil {
      * @param observer 观察者
      */
     public static void numberUp(int top, int bottom, int step, TimeUnit unit, CountObserver observer) {
-        Observable.interval(0, step, unit)//设置0延迟，每隔一秒发送一条数据
-                .take((top - bottom) % step == 0 ? (top - bottom) / step : ((top - bottom) / step) + 1) //设置循环time/step次(无法整除则加1)
-                .map(aLong -> (bottom + aLong * step) > top ? top : (bottom + aLong * step))//不超过最大值
+        //设置0延迟，每隔一秒发送一条数据
+        Observable.interval(0, step, unit)
+                //设置循环time/step次(无法整除则加1)
+                .take((top - bottom) % step == 0 ? (top - bottom) / step : ((top - bottom) / step) + 1)
+                //不超过最大值
+                .map(aLong -> (bottom + aLong * step) > top ? top : (bottom + aLong * step))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);

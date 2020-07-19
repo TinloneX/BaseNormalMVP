@@ -17,10 +17,11 @@ import java.util.regex.Pattern;
 
 public final class Check {
 
+
     private Check() {
     }
 
-    public static int size(Collection list) {
+    public static <T> int size(Collection<T> list) {
         if (empty(list)) {
             return 0;
         }
@@ -52,7 +53,7 @@ public final class Check {
         return Check.hasContent(text) && text.length() > size;
     }
 
-    public static boolean maxThen(Collection list, int size) {
+    public static <T> boolean maxThen(Collection<T> list, int size) {
         return Check.hasContent(list) && list.size() > size;
     }
 
@@ -62,7 +63,7 @@ public final class Check {
      * @param list 集合
      * @return 集合状态
      */
-    public static boolean hasContent(Collection list) {
+    public static <T> boolean hasContent(Collection<T> list) {
         return list != null && list.size() > 0;
     }
 
@@ -72,7 +73,7 @@ public final class Check {
      * @param list 集合
      * @return 集合状态
      */
-    public static boolean empty(Collection list) {
+    public static <T> boolean empty(Collection<T> list) {
         return list == null || list.size() == 0;
     }
 
@@ -96,7 +97,7 @@ public final class Check {
      * @param response 响应
      * @return 响应实体状态
      */
-    public static boolean hasContent(BaseResponse response) {
+    public static <T> boolean hasContent(BaseResponse<T> response) {
         return response != null && response.getResultData() != null;
     }
 
@@ -106,7 +107,7 @@ public final class Check {
      * @param response 响应
      * @return 响应实体状态
      */
-    public static boolean hasContent(BaseResponse response, IView view) {
+    public static <T, V> boolean hasContent(BaseResponse<T> response, IView<V> view) {
         return response != null
 //                && response.getData() != null
                 && view != null;

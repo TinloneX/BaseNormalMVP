@@ -29,12 +29,12 @@ import com.company.project.activity.WebsiteActivity;
 import com.company.project.config.Config;
 import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
-import com.company.project.util.ActivityStackUtils2;
+import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
 import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.ImmersionBar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -89,7 +89,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
 
     protected void pressThis(boolean inAll) {
         if (inAll) {
-            ActivityStackUtils2.pressActivity(Config.Tags.ALL, this);
+            ActivityStackUtils.pressActivity(Config.Tags.ALL, this);
         }
     }
 
@@ -113,7 +113,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             //fontScale不为1，需要强制设置为1
             Configuration newConfig = new Configuration();
             newConfig.setToDefaults();//设置成默认值，即fontScale为1
-            resources.updateConfiguration(newConfig, resources.getDisplayMetrics());
+            createConfigurationContext(newConfig);
         }
         return resources;
     }
@@ -134,6 +134,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
     public void statusWhiteFontBlack() {
         immersionBar
                 .statusBarColor(R.color.white)
+                .fitsSystemWindows(false)
                 .keyboardEnable(true)
                 .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                 .statusBarDarkFont(true, 0.2f)
@@ -146,6 +147,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
     public void statusTransparentFontBlack() {
         immersionBar
                 .transparentStatusBar()
+                .fitsSystemWindows(false)
                 .keyboardEnable(true)
                 .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                 .statusBarDarkFont(true, 0.2f)
@@ -168,16 +170,13 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
     @Override
     protected void onDestroy() {
         hideLoading();
-        ActivityStackUtils2.popActivity(Config.Tags.ALL, this);
+        ActivityStackUtils.popActivity(Config.Tags.ALL, this);
         if (mPresenter != null) {
             mPresenter.dettachView();
         }
         if (unbinder != null) {
             unbinder.unbind();
             unbinder = null;
-        }
-        if (immersionBar != null) {
-            immersionBar.destroy();
         }
         lastClick = 0L;
         super.onDestroy();
@@ -514,7 +513,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             case ApiCode.TOKEN_INVALID:
                 ToastUtils.showShort(R.string.sign_in_info_overdue_reload);
                 UserInfoUtil.clearUserInfo();
-                ActivityStackUtils2.finishAll(Config.Tags.ALL);
+                ActivityStackUtils.finishAll(Config.Tags.ALL);
                 break;
             default:
                 if (Check.hasContent(response.getMessage())) {

@@ -37,7 +37,7 @@ public class HttpObserver {
             @Override
             public void onNext(BaseResponse<T> response) {
                 // 此处统一处理网络请求状态
-                if (Config.Strings.RESPONSE_OK.equals(response.getResultCode())) {
+                if (Config.Strings.RESPONSE_OK.equals(String.valueOf(response.getResultCode()))) {
                     callBack.onSuccess(response);
                 } else {
                     callBack.onFailed(response);

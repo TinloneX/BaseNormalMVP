@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import androidx.annotation.Nullable;
+
 import com.company.project.activity.LauncherActivity;
 import com.company.project.receiver.OpenFileReceiver;
 
@@ -15,25 +17,28 @@ import com.company.project.receiver.OpenFileReceiver;
  */
 public class MyApplication extends Application {
 
-    private static MyApplication mContext;
+    private static class MicroApplication {
+        public static MyApplication application;
+    }
 
+    @Nullable
     public static MyApplication getAppContext() {
-        return mContext;
+        return MicroApplication.application;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = this;
+        MicroApplication.application = this;
         dealUncaughtException();
         registerReceiver(new OpenFileReceiver(), new IntentFilter(BuildConfig.APPLICATION_ID + ".open_file"));
     }
 
     private void dealUncaughtException() {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            Intent intent = new Intent(mContext, LauncherActivity.class);
+            Intent intent = new Intent(MyApplication.this, LauncherActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            MyApplication.this.startActivity(intent);
             android.os.Process.killProcess(android.os.Process.myPid());
         });
     }

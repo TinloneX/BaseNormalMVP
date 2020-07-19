@@ -12,7 +12,7 @@ public class NumberUtil {
      * 金额格式化
      */
     public static String formatMoney(String str) {
-        if (str.equals("0") || str.equals("0.00")) {
+        if ("0".equals(str) || "0.00".equals(str)) {
             return str;
         }
         Double cny = Double.parseDouble(str);

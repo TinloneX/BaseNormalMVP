@@ -4,30 +4,31 @@ import android.app.Activity;
 
 import androidx.collection.ArrayMap;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * 手动管理活动栈结构
  * 慎用，容易产生内存泄漏
+ * @author Administrator
  */
 public class ActivityStackUtils {
 
-    private static ArrayMap<String, ArrayList<Activity>> mStackPool = new ArrayMap<>();
+    private static ArrayMap<String, Stack<Activity>> mStackPool = new ArrayMap<>();
 
-    public static ArrayList<Activity> requestStack(String tag) {
+    public static Stack<Activity> requestStack(String tag) {
         if (mStackPool.containsKey(tag)) {
             return mStackPool.get(tag);
         } else {
-            ArrayList<Activity> stack = new ArrayList<>();
+            Stack<Activity> stack = new Stack<>();
             mStackPool.put(tag, stack);
             return stack;
         }
     }
 
-
-
+    public static Activity peekTopActivity(String tag) {
+        return requestStack(tag).peek();
+    }
 
     /**
      * 压入Activity
@@ -36,7 +37,7 @@ public class ActivityStackUtils {
      * @param activity 入栈界面
      */
     public static void pressActivity(String tag, Activity activity) {
-        requestStack(tag).add(activity);
+        requestStack(tag).push(activity);
     }
 
     /**
@@ -55,11 +56,9 @@ public class ActivityStackUtils {
      * @param tag 栈标志信息
      */
     public static void finishAll(String tag) {
-        ArrayList<Activity> activities = requestStack(tag);
-        Iterator<Activity> iterator = activities.iterator();
-        while (iterator.hasNext()) {
-            iterator.next().finish();
-            iterator.remove();
+        Stack<Activity> activities = requestStack(tag);
+        while (!activities.empty()) {
+            activities.pop().finish();
         }
         //此处不释放，将空集合置于池中，以待后续使用
         activities.clear();
@@ -69,8 +68,8 @@ public class ActivityStackUtils {
      * 释放栈池资源
      */
     public void release() {
-        for (Map.Entry<String, ArrayList<Activity>> entry : mStackPool.entrySet()) {
-            entry.getValue().clear();
+        for (Map.Entry<String, Stack<Activity>> entry : mStackPool.entrySet()) {
+            finishAll(entry.getKey());
         }
         mStackPool.clear();
     }

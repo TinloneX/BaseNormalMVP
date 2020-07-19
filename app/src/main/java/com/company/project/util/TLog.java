@@ -1,7 +1,6 @@
 package com.company.project.util;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
@@ -21,6 +20,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author zhaojinlong
@@ -30,24 +30,16 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public class TLog {
 
+
     private static final String TAG = "DEBUG.T.LOG";
-    //    private static boolean showLog = BuildConfig.DEBUG;
-    private static boolean showLog = true;
-    private static String cachedValue;
-    @SuppressLint("SimpleDateFormat")
-    private static String yyyyMMdd = new SimpleDateFormat("yyyyMMdd").format(new Date());
-    @SuppressLint("SimpleDateFormat")
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+        private static boolean showLog = true;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS", Locale.getDefault());
 
     private TLog() {
     }
 
     public static void enable(boolean showlog) {
         showLog = showlog;
-    }
-
-    public static String getCachedValue() {
-        return cachedValue;
     }
 
     public static void d(Object object) {
@@ -117,14 +109,12 @@ public class TLog {
         } else {
             logText = JSONObject.toJSONString(object);
         }
-        cachedValue = logText;
         String clip;
         while (logText.length() > 4000) {
             clip = logText.substring(0, 4000);
             if (showLog) {
                 i(TAG, clip);
             }
-            logText = logText.substring(4000);
         }
         return logText;
     }
@@ -164,14 +154,14 @@ public class TLog {
         if (PermissionUtils.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 &&
                 Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            fileLog(object);
+            fLog(object);
         } else {
             w("无文件存储权限，无法写入LOG");
         }
     }
 
 
-    public static synchronized void fileLog(final Object object) {
+    public static synchronized void fLog(final Object object) {
         try {
             i(object);
             if (!showLog) {
@@ -180,7 +170,7 @@ public class TLog {
             ThreadUtils.executeByCached(new ThreadUtils.Task<Object>() {
                 @Nullable
                 @Override
-                public Object doInBackground() throws Throwable {
+                public Object doInBackground() {
                     try {
                         String text;
                         if (object == null) {
@@ -207,7 +197,7 @@ public class TLog {
                                 delFile(files[i]);
                             }
                         }
-
+                        String yyyyMMdd = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
                         File file = new File(directory.getAbsolutePath(), "log-" + yyyyMMdd + ".txt");
                         if (!file.exists() || file.isDirectory()) {
                             if (file.createNewFile()) {

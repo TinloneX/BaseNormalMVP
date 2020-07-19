@@ -18,6 +18,6 @@ public interface IView<Data> {
     /**
      * 加载数据失败
      */
-    void onLoadFail(BaseResponse response);
+    <T>void onLoadFail(BaseResponse<T> response);
 
 }

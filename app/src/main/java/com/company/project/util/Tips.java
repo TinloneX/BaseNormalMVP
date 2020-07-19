@@ -27,11 +27,12 @@ public class Tips {
         if (mContext != null) {
             Toast toast = new Toast(mContext.getApplicationContext());
             int topDistance = DensityUtil.dip2px(mContext, distance);
-            int left = DensityUtil.dip2px(mContext, 15);//左右padding
-            int top = DensityUtil.dip2px(mContext, 6);//上下padding
+            //左右padding
+            int left = DensityUtil.dip2px(mContext, 15);
+            //上下padding
+            int top = DensityUtil.dip2px(mContext, 6);
             toast.setGravity(Gravity.TOP, 0, topDistance);
             TextView tv = new TextView(mContext.getApplicationContext());
-//            tv.setBackgroundResource(R.drawable.toast_orange_gradient_bg);
             tv.setPadding(left, top, left, top);
             tv.setTextColor(Color.WHITE);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
@@ -51,11 +52,12 @@ public class Tips {
     public static void toastCenter(Context mContext, String msg) {
         if (mContext != null) {
             Toast toast = new Toast(mContext.getApplicationContext());
-            int left = DensityUtil.dip2px(mContext, 15);//左右padding
-            int top = DensityUtil.dip2px(mContext, 6);//上下padding
+            //左右padding
+            int left = DensityUtil.dip2px(mContext, 15);
+            //上下padding
+            int top = DensityUtil.dip2px(mContext, 6);
             toast.setGravity(Gravity.CENTER, 0, 0);
             TextView tv = new TextView(mContext.getApplicationContext());
-//            tv.setBackgroundResource(R.drawable.toast_orange_gradient_bg);
             tv.setPadding(left, top, left, top);
             tv.setTextColor(Color.WHITE);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
@@ -77,13 +79,14 @@ public class Tips {
     public static void toastDiy(Context mContext, String msg, int xLocal, int yLocal) {
         if (mContext != null) {
             Toast toast = new Toast(mContext.getApplicationContext());
-            int left = DensityUtil.dip2px(mContext, 15);//左右padding
-            int top = DensityUtil.dip2px(mContext, 6);//上下padding
+            //左右padding
+            int left = DensityUtil.dip2px(mContext, 15);
+            //上下padding
+            int top = DensityUtil.dip2px(mContext, 6);
             int x = DensityUtil.dip2px(mContext, xLocal);
             int y = DensityUtil.dip2px(mContext, yLocal);
             toast.setGravity(Gravity.TOP | Gravity.LEFT, x, y);
             TextView tv = new TextView(mContext.getApplicationContext());
-//            tv.setBackgroundResource(R.drawable.toast_orange_gradient_bg);
             tv.setPadding(left, top, left, top);
             tv.setTextColor(Color.WHITE);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
@@ -105,11 +108,10 @@ public class Tips {
         if (mContext != null) {
             Toast toast = new Toast(mContext.getApplicationContext());
             int buttom = DensityUtil.dip2px(mContext, distance);
-            int left = DensityUtil.dip2px(mContext, 15);//左右padding
-            int top = DensityUtil.dip2px(mContext, 6);//上下padding
+            int left = DensityUtil.dip2px(mContext, 15);
+            int top = DensityUtil.dip2px(mContext, 6);
             toast.setGravity(Gravity.BOTTOM, 0, buttom);
             TextView tv = new TextView(mContext.getApplicationContext());
-//            tv.setBackgroundResource(R.drawable.toast_orange_gradient_bg);
             tv.setPadding(left, top, left, top);
             tv.setTextColor(Color.WHITE);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -50,15 +49,15 @@ public class MainActivity extends BaseActivity {
     @BindView(R2.id.bottom_bar)
     BottomBarLayout bottomBar;
     String msg = "";
+    private String[] colors = {"#00B7EE", "#EEB7EE", "#00EEB7", "#FFFACD"};
     private List<Fragment> fragments = new ArrayList<Fragment>() {
         {
-            add(BlankFragment.newInstance(R.string.homepage, "#00B7EE"));
-            add(BlankFragment.newInstance(R.string.info, "#EEB7EE"));
-            add(BlankFragment.newInstance(R.string.discover, "#00EEB7"));
-            add(BlankFragment.newInstance(R.string.mine, "#FFFACD"));
+            add(BlankFragment.newInstance(R.string.homepage, colors[0]));
+            add(BlankFragment.newInstance(R.string.info, colors[1]));
+            add(BlankFragment.newInstance(R.string.discover, colors[2]));
+            add(BlankFragment.newInstance(R.string.mine, colors[3]));
         }
     };
-    private ServiceConnection conn;
     private ODownloadService.DownloadBinder downloadBinder;
     private TMessageDialog updateDialog;
 
@@ -82,22 +81,13 @@ public class MainActivity extends BaseActivity {
         statusTransparentFontWhite();
         vpFragments.setAdapter(new PagerFragmentAdapter(getSupportFragmentManager(), fragments));
         bottomBar.setViewPager(vpFragments);
-//        IndexFragmentAdapter adapter = new IndexFragmentAdapter(this, fragments);
-//        vpFragments.setAdapter(adapter);
+
         vpFragments.setOffscreenPageLimit(fragments.size());
-//        vpFragments.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                bottomBar.setCurrentItem(position);
-//                Log.i("DEBUG.T.LOG","滑选：" + position);
-//            }
-//        });
 
         bottomBar.getBottomItem(0).setUnreadNum(10000);
         bottomBar.getBottomItem(2).setMsg("aloha");
         bottomBar.setOnItemSelectedListener((bottomBarItem, i, i1) -> {
             vpFragments.setCurrentItem(i1, true);
-            Log.i("DEBUG.T.LOG", "点选：" + i1);
             switch (i1) {
                 case 0:
                     statusTransparentFontWhite();
@@ -119,12 +109,14 @@ public class MainActivity extends BaseActivity {
             }
             ToastUtils.showShort(msg);
         });
+// 测试更新下载服务
+//        testUpdateService();
+    }
 
+    private void testUpdateService() {
         PermissionUtils.permission(PermissionConstants.STORAGE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
-//                Intent dealIntent = FileUtils.getFileOpenIntent("/storage/emulated/0/Android/data/com.company.project/files/file/file/qqlite_4.0.0.1025_537062065.apk");
-//                startActivity(dealIntent);
                 preDownLoad();
             }
 
@@ -133,7 +125,7 @@ public class MainActivity extends BaseActivity {
 
             }
         }).request();
-        TLog.writeLog(this,"测试日志文件");
+        TLog.writeLog(this, "测试日志文件");
     }
 
 
@@ -200,7 +192,7 @@ public class MainActivity extends BaseActivity {
      */
     private void preDownLoad() {
         Intent intent = new Intent(this, ODownloadService.class);
-        conn = new ServiceConnection() {
+        ServiceConnection conn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 downloadBinder = (ODownloadService.DownloadBinder) service;

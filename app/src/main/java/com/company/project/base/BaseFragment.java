@@ -57,7 +57,6 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
      */
     private long lastClick = 0L;
     private Unbinder unbinder;
-    private boolean useButterKnife = true;
 
     @Override
     public void onAttach(Context context) {
@@ -84,7 +83,11 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
     }
 
     protected boolean useButterKnife() {
-        return useButterKnife;
+        return isUseButterKnife();
+    }
+
+    public boolean isUseButterKnife(){
+        return true;
     }
 
     @Override

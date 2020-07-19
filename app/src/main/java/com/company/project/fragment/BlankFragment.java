@@ -2,13 +2,23 @@ package com.company.project.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.company.project.R;
 import com.company.project.R2;
+import com.company.project.adapter.base.bean.BaseListBean;
+import com.company.project.adapter.base.bean.IBean;
+import com.company.project.adapter.temp.TemplateAdapter;
 import com.company.project.base.BaseFragment;
+import com.company.project.testbean.Bean1;
+import com.company.project.testbean.TestDataJSON;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -21,8 +31,11 @@ public class BlankFragment extends BaseFragment {
     private static final String COLOR = "color";
     @BindView(R2.id.tv_msg)
     TextView textView;
+    @BindView(R2.id.rv_content)
+    RecyclerView rvContent;
     private int mTextRes;
     private String mColor;
+    private TemplateAdapter adapter;
 
     public BlankFragment() {
         // Required empty public constructor
@@ -59,6 +72,16 @@ public class BlankFragment extends BaseFragment {
         textView.setBackgroundColor(Color.parseColor(mColor));
         textView.setText(mTextRes);
         textView.setOnClickListener(v -> openWebsite("https:www.baidu.com", true, "", false));
+        if ("首页".equals(getString(mTextRes))) {
+            rvContent.setLayoutManager(new LinearLayoutManager(mContext));
+            adapter = new TemplateAdapter<Bean1>(mContext);
+            rvContent.setAdapter(adapter);
+            List<BaseListBean<IBean>> beans = TestDataJSON.getJson();
+            adapter.setDataList(beans);
+            adapter.setOnItemClickListener((view, position) -> openWebsite("https:www.baidu.com", true, "", false));
+        }else {
+            rvContent.setVisibility(View.GONE);
+        }
     }
 
     @Override
