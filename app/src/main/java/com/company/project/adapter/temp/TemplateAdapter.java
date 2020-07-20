@@ -5,11 +5,10 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.company.project.R;
-import com.company.project.adapter.factorys.SubAdapterFactory;
 import com.company.project.adapter.base.BaseMultipleAdapter;
 import com.company.project.adapter.base.CommonViewHolder;
 import com.company.project.adapter.base.bean.BaseListBean;
-import com.company.project.adapter.base.bean.IBean;
+import com.company.project.adapter.factorys.SubAdapterFactory;
 import com.company.project.util.TLog;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
  * @author ynet
  * 通用模板Adapter
  */
-public class TemplateAdapter<T extends IBean> extends BaseMultipleAdapter<BaseListBean<T>> {
+public class TemplateAdapter<T> extends BaseMultipleAdapter<BaseListBean<T>> {
     private Context mContext;
 
     public TemplateAdapter(Context context) {

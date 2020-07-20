@@ -1,6 +1,6 @@
 package com.company.project.adapter.base.bean;
 
-public class BaseListBean<T extends IBean> {
+public class BaseListBean<T> {
     public String type;
     public String subType;
     public T data;

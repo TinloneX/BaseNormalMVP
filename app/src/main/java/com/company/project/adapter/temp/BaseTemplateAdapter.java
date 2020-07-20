@@ -6,14 +6,13 @@ import android.view.ViewGroup;
 import com.company.project.R;
 import com.company.project.adapter.base.CommonViewHolder;
 import com.company.project.adapter.base.bean.BaseListBean;
-import com.company.project.adapter.base.bean.IBean;
 import com.company.project.util.TLog;
 
 
 /**
  *  模板大类别Adapter，供各模板大类别Adapter继承
  */
-public abstract class BaseTemplateAdapter<T extends IBean> {
+public abstract class BaseTemplateAdapter<T> {
     protected Context mContext;
     /**
      * 子类别，例: TemplateType.ChildType.TYPE_1

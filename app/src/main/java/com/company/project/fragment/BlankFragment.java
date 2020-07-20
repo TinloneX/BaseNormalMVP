@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.company.project.R;
 import com.company.project.R2;
 import com.company.project.adapter.base.bean.BaseListBean;
-import com.company.project.adapter.base.bean.IBean;
 import com.company.project.adapter.temp.TemplateAdapter;
 import com.company.project.base.BaseFragment;
 import com.company.project.testbean.Bean1;
@@ -76,7 +75,7 @@ public class BlankFragment extends BaseFragment {
             rvContent.setLayoutManager(new LinearLayoutManager(mContext));
             adapter = new TemplateAdapter<Bean1>(mContext);
             rvContent.setAdapter(adapter);
-            List<BaseListBean<IBean>> beans = TestDataJSON.getJson();
+            List<BaseListBean> beans = TestDataJSON.getJson();
             adapter.setDataList(beans);
             adapter.setOnItemClickListener((view, position) -> openWebsite("https:www.baidu.com", true, "", false));
         }else {

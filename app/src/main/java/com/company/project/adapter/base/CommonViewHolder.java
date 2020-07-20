@@ -39,21 +39,17 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static CommonViewHolder createViewHolder(Context context, View itemView) {
-        CommonViewHolder holder = new CommonViewHolder(context, itemView);
-        return holder;
+        return new CommonViewHolder(context, itemView);
     }
 
     public static CommonViewHolder createViewHolder(Context context,
                                                     ViewGroup parent, int layoutId) {
         View itemView = LayoutInflater.from(context).inflate(layoutId, parent,
                 false);
-        CommonViewHolder holder = new CommonViewHolder(context, itemView);
-        return holder;
+        return new CommonViewHolder(context, itemView);
     }
 
     /**
-     * @param viewId
-     * @return
      *  通过viewId获取控件
      */
     public <T extends View> T getView(int viewId) {
@@ -70,9 +66,6 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
     }
     /****以下为辅助方法*****/
     /**
-     * @param viewId
-     * @param text
-     * @return
      *  设置TextView的值
      */
     public CommonViewHolder setText(int viewId, String text) {
