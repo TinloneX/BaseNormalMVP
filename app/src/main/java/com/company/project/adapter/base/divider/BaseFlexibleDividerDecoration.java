@@ -12,21 +12,22 @@ import android.view.View;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * @author ynet
- *  RecyclerView.FlexibleDividerDecoration分割线抽象类
+ * 非原作者本人编写
+ * RecyclerView.FlexibleDividerDecoration分割线抽象类
  */
 public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDecoration {
     private static final int DEFAULT_SIZE = 2;
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
     };
-    protected DividerType mDividerType = DividerType.DRAWABLE;
+    protected DividerType mDividerType;
     protected VisibilityProvider mVisibilityProvider;
     protected PaintProvider mPaintProvider;
     protected ColorProvider mColorProvider;
@@ -35,7 +36,8 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
     protected boolean mShowLastDivider;
     protected boolean mPositionInsideItem;
     private Paint mPaint;
-    protected BaseFlexibleDividerDecoration(Builder builder) {
+
+    protected BaseFlexibleDividerDecoration(@NonNull Builder builder) {
         if (builder.mPaintProvider != null) {
             mDividerType = DividerType.PAINT;
             mPaintProvider = builder.mPaintProvider;
@@ -50,12 +52,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
                 TypedArray a = builder.mContext.obtainStyledAttributes(ATTRS);
                 final Drawable divider = a.getDrawable(0);
                 a.recycle();
-                mDrawableProvider = new DrawableProvider() {
-                    @Override
-                    public Drawable drawableProvider(int position, RecyclerView parent) {
-                        return divider;
-                    }
-                };
+                mDrawableProvider = (position, parent) -> divider;
             } else {
                 mDrawableProvider = builder.mDrawableProvider;
             }
@@ -69,17 +66,12 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
     private void setSizeProvider(Builder builder) {
         mSizeProvider = builder.mSizeProvider;
         if (mSizeProvider == null) {
-            mSizeProvider = new SizeProvider() {
-                @Override
-                public int dividerSize(int position, RecyclerView parent) {
-                    return DEFAULT_SIZE;
-                }
-            };
+            mSizeProvider = (position, parent) -> DEFAULT_SIZE;
         }
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDraw(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
         RecyclerView.Adapter adapter = parent.getAdapter();
         if (adapter == null) {
             return;
@@ -149,7 +141,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
     /**
      * @param parent RecyclerView
      * @return true if recyclerview is reverse layout
-     *  Check if recyclerview is reverse layout
+     * Check if recyclerview is reverse layout
      */
     protected boolean isReverseLayout(RecyclerView parent) {
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
@@ -159,7 +151,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
     /**
      * @param parent RecyclerView
      * @return offset for how many views we don't have to draw a divider or 1 if its a
-     *  In the case mShowLastDivider = false, Returns offset for how many views we don't have to draw a divider for, for LinearLayoutManager it is as simple as not drawing the last child divider, but for a GridLayoutManager it needs to take the span count for the last items into account until we use the span count configured for the grid.
+     * In the case mShowLastDivider = false, Returns offset for how many views we don't have to draw a divider for, for LinearLayoutManager it is as simple as not drawing the last child divider, but for a GridLayoutManager it needs to take the span count for the last items into account until we use the span count configured for the grid.
      */
     private int getLastDividerOffset(RecyclerView parent) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
@@ -180,7 +172,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
      * @param position current view position to draw divider
      * @param parent   RecyclerView
      * @return true if the divider can be skipped as it is in the same row as the previous one.
-     *  Determines whether divider was already drawn for the row the item is in,effectively only makes sense for a grid
+     * Determines whether divider was already drawn for the row the item is in,effectively only makes sense for a grid
      */
     private boolean wasDividerAlreadyDrawn(int position, RecyclerView parent) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
@@ -196,7 +188,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
      * @param position current view position to draw divider
      * @param parent   RecyclerView
      * @return group index of items
-     *  Returns a group index for GridLayoutManager. for LinearLayoutManager, always returns position.
+     * Returns a group index for GridLayoutManager. for LinearLayoutManager, always returns position.
      */
     private int getGroupIndex(int position, RecyclerView parent) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
@@ -217,20 +209,20 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
     }
 
     /**
-     *  Interface for controlling divider visibility
+     * Interface for controlling divider visibility
      */
     public interface VisibilityProvider {
         /**
          * @param position Divider position (or group index for GridLayoutManager)
          * @param parent   RecyclerView
          * @return True if the divider at position should be hidden
-         *  Returns true if divider should be hidden.
+         * Returns true if divider should be hidden.
          */
         boolean shouldHideDivider(int position, RecyclerView parent);
     }
 
     /**
-     *  Interface for controlling paint instance for divider drawing
+     * Interface for controlling paint instance for divider drawing
      */
     public interface PaintProvider {
         /**
@@ -244,7 +236,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
     }
 
     /**
-     *  Interface for controlling divider color
+     * Interface for controlling divider color
      */
     public interface ColorProvider {
         /**
@@ -258,27 +250,27 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
     }
 
     /**
-     *  Interface for controlling drawable object for divider drawing
+     * Interface for controlling drawable object for divider drawing
      */
     public interface DrawableProvider {
         /**
          * @param position Divider position (or group index for GridLayoutManager)
          * @param parent   RecyclerView
          * @return Drawable instance
-         *  Returns drawable instance for divider
+         * Returns drawable instance for divider
          */
         Drawable drawableProvider(int position, RecyclerView parent);
     }
 
     /**
-     *  Interface for controlling divider size
+     * Interface for controlling divider size
      */
     public interface SizeProvider {
         /**
          * @param position Divider position (or group index for GridLayoutManager)
          * @param parent   RecyclerView
          * @return Size of divider
-         *  Returns size value of divider.Height for horizontal divider, width for vertical divider
+         * Returns size value of divider.Height for horizontal divider, width for vertical divider
          */
         int dividerSize(int position, RecyclerView parent);
     }
@@ -290,12 +282,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
         private ColorProvider mColorProvider;
         private DrawableProvider mDrawableProvider;
         private SizeProvider mSizeProvider;
-        private VisibilityProvider mVisibilityProvider = new VisibilityProvider() {
-            @Override
-            public boolean shouldHideDivider(int position, RecyclerView parent) {
-                return false;
-            }
-        };
+        private VisibilityProvider mVisibilityProvider = (position, parent) -> false;
         private boolean mShowLastDivider = false;
         private boolean mPositionInsideItem = false;
 
@@ -305,12 +292,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
         }
 
         public T paint(final Paint paint) {
-            return paintProvider(new PaintProvider() {
-                @Override
-                public Paint dividerPaint(int position, RecyclerView parent) {
-                    return paint;
-                }
-            });
+            return paintProvider((position, parent) -> paint);
         }
 
         public T paintProvider(PaintProvider provider) {
@@ -319,12 +301,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
         }
 
         public T color(final int color) {
-            return colorProvider(new ColorProvider() {
-                @Override
-                public int dividerColor(int position, RecyclerView parent) {
-                    return color;
-                }
-            });
+            return colorProvider((position, parent) -> color);
         }
 
         public T colorResId(@ColorRes int colorId) {
@@ -341,12 +318,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
         }
 
         public T drawable(final Drawable drawable) {
-            return drawableProvider(new DrawableProvider() {
-                @Override
-                public Drawable drawableProvider(int position, RecyclerView parent) {
-                    return drawable;
-                }
-            });
+            return drawableProvider((position, parent) -> drawable);
         }
 
         public T drawableProvider(DrawableProvider provider) {
@@ -355,12 +327,7 @@ public abstract class BaseFlexibleDividerDecoration extends RecyclerView.ItemDec
         }
 
         public T size(final int size) {
-            return sizeProvider(new SizeProvider() {
-                @Override
-                public int dividerSize(int position, RecyclerView parent) {
-                    return size;
-                }
-            });
+            return sizeProvider((position, parent) -> size);
         }
 
         public T sizeResId(@DimenRes int sizeId) {

@@ -29,14 +29,15 @@ public class NetWorkReceiver extends BroadcastReceiver {
 
     public static String getProcessName(Context cxt, int pid) {
         ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
+        if (am == null) {
+            return "";
+        }
         List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
         if (runningApps == null) {
             return null;
         }
         for (ActivityManager.RunningAppProcessInfo procInfo : runningApps) {
-            TLog.i("NetWorkReceiver", procInfo.processName);
             if (procInfo.pid == pid) {
-                TLog.i("NetWorkReceiver-this", procInfo.processName);
                 return procInfo.processName;
             }
         }
@@ -62,26 +63,21 @@ public class NetWorkReceiver extends BroadcastReceiver {
         }
         if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intent.getAction())) {
             switch (intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WIFI_STATE_UNKNOWN)) {
-                case WIFI_STATE_DISABLED: {
+                case WIFI_STATE_DISABLED:
                     Log.i("NetWorkReceiver", "WiFi关闭");
                     break;
-                }
-                case WIFI_STATE_DISABLING: {
+                case WIFI_STATE_DISABLING:
                     Log.i("NetWorkReceiver", "WiFi正在关闭");
                     break;
-                }
-                case WIFI_STATE_ENABLED: {
+                case WIFI_STATE_ENABLED:
                     Log.i("NetWorkReceiver", "WiFi开启");
                     break;
-                }
-                case WIFI_STATE_ENABLING: {
+                case WIFI_STATE_ENABLING:
                     Log.i("NetWorkReceiver", "WiFi正在开启");
                     break;
-                }
-                case WIFI_STATE_UNKNOWN: {
+                default:
                     Log.i("NetWorkReceiver", "WiFi状态未知");
                     break;
-                }
             }
         }
     }

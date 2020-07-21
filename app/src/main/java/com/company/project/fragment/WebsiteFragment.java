@@ -1,6 +1,7 @@
 package com.company.project.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+/**
+ * title + Webview 的fragment界面
+ */
 public class WebsiteFragment extends BaseFragment {
     private static final String TAG = "WebsiteActivity";
 
@@ -62,11 +66,11 @@ public class WebsiteFragment extends BaseFragment {
     FrameLayout flEmptyLayout;
     private String titleText = "";
     private String url = Config.BaseUrls.HOME;
-    private String rightText = "分享";
     private TMessageDialog messageDialog;
     private ODownloadService.DownloadBinder downloadBinder;
     private ServiceConnection conn;
     private int loadProgress = 0;
+    private TMessageDialog openFileDialog;
 
     @Override
     public int layoutId() {
@@ -76,6 +80,7 @@ public class WebsiteFragment extends BaseFragment {
     @Override
     protected void initView() {
         tvTitleText.setText(titleText);
+        String rightText = "分享";
         tvTitleRight.setText(rightText);
         initSettings();
     }
@@ -126,12 +131,12 @@ public class WebsiteFragment extends BaseFragment {
                                     "mimetype = %s\n," +
                                     "contentLength = %s",
                             url, userAgent, contentDisposition, mimetype, contentLength));
-                    whenDownload();
+                    whenDownload(url);
                 }
         );
     }
 
-    private void whenDownload() {
+    private void whenDownload(final String downloadUrl) {
         initDialog();
         messageDialog.content("确认下载该文件吗？")
                 .doClick(new TMessageDialog.DoClickListener() {
@@ -145,19 +150,21 @@ public class WebsiteFragment extends BaseFragment {
                         messageDialog.withProgress(100)
                                 .content("正在下载...")
                                 .update();
-                        downloadBinder.backgroundDown(url, FileUtils.getFileDisk(), new OnDownloadListener() {
+                        downloadBinder.backgroundDown(downloadUrl, FileUtils.getFileDisk(), new OnDownloadListener() {
 
                             @Override
                             public void onDownloadSuccess(File file) {
-                                Intent intent = new Intent(MyApplication.getAppContext(), OpenFileReceiver.class);
-                                intent.putExtra("path", file.getAbsolutePath());
-                                mContext.sendBroadcast(intent);
                                 dismiss(messageDialog);
+                                if (file != null) {
+                                    whenFileDownloadSuccess(file);
+                                }
                             }
 
                             @Override
                             public void onDownloading(int progress) {
-                                messageDialog.progress(progress).update();
+                                if (getActivity() != null && !getActivity().isFinishing()) {
+                                    getActivity().runOnUiThread(() -> messageDialog.progress(progress).update());
+                                }
                             }
 
                             @Override
@@ -168,6 +175,31 @@ public class WebsiteFragment extends BaseFragment {
                         });
                     }
                 }).show();
+    }
+
+    private void whenFileDownloadSuccess(@NonNull final File file) {
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            getActivity().runOnUiThread(() -> {
+                resetOpenFileDialog(getActivity(), file);
+                openFileDialog.show();
+            });
+        }
+
+    }
+
+    private void resetOpenFileDialog(@NonNull Activity activity, @NonNull final File file) {
+        if (openFileDialog == null) {
+            openFileDialog = new TMessageDialog(activity);
+        }
+        openFileDialog.title("提示")
+                .content("是否打开文件：" + file.getName())
+                .withoutMid()
+                .left("否", v -> openFileDialog.dismiss())
+                .right("打开文件", v -> {
+                    Intent intent = new Intent(MyApplication.getAppContext(), OpenFileReceiver.class);
+                    intent.putExtra("path", file.getAbsolutePath());
+                    MyApplication.getAppContext().sendBroadcast(intent);
+                });
     }
 
     /**
@@ -218,6 +250,7 @@ public class WebsiteFragment extends BaseFragment {
      *
      * @param javaScript JavaScript语句
      */
+    @SuppressWarnings("unused")
     private void injectJavaScript(@NonNull String javaScript) {
         if (!javaScript.toLowerCase().startsWith("javascript:")) {
             javaScript = "javascript:" + javaScript;

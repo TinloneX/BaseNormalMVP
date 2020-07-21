@@ -125,7 +125,6 @@ public class MainActivity extends BaseActivity {
 
             }
         }).request();
-        TLog.writeLog(this, "测试日志文件");
     }
 
 
@@ -170,17 +169,15 @@ public class MainActivity extends BaseActivity {
             public void onDownloadFailed(Call call, Exception e) {
                 TLog.i("下载失败，请稍后再试");
                 TLog.i(e);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (updateDialog != null) {
-                            updateDialog.hideProgress()
-                                    .withoutMid()
-                                    .title("错误")
-                                    .content("下载失败，请稍后再试，ERROR: " + TLog.valueOf(e))
-                                    .left("稍后再试", Color.GRAY, v -> updateDialog.dismiss())
-                                    .right("切换路径下载", Color.RED, v -> downloadFile(TEST_URL_CNZ)).update();
-                        }
+                runOnUiThread(() -> {
+                    if (updateDialog != null) {
+                        updateDialog.hideProgress()
+                                .withoutMid()
+                                .title("错误")
+                                .content("下载失败，请稍后再试，ERROR: " + TLog.valueOf(e))
+                                .left("稍后再试", Color.GRAY, v -> updateDialog.dismiss())
+                                .right("切换路径下载QQ", Color.RED, v -> downloadFile(TEST_URL_CNZ))
+                                .update();
                     }
                 });
             }

@@ -5,8 +5,7 @@ import android.animation.ObjectAnimator;
 import android.view.View;
 
 /**
- * @author ynet
- *  透明度进入动画
+ * 透明度进入动画
  */
 public class AlphaInAnimation extends BaseAnimation {
     private static final float DEFAULT_ALPHA_FROM = 0f;
@@ -21,7 +20,7 @@ public class AlphaInAnimation extends BaseAnimation {
     }
 
     /**
-     *  获取Animator[]
+     * 获取Animator[]
      */
     @Override
     public Animator[] getAnimators(View view) {

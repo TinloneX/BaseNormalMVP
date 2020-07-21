@@ -9,14 +9,16 @@ public interface TemplateType {
     /**
      * 此处定义唯一可信类别常量
      */
-    @StringDef({Type.TYPE_01, Type.TYPE_02})
+    @StringDef({Type.TYPE_01, Type.TYPE_02, Type.TYPE_03})
     @Retention(RetentionPolicy.SOURCE)
     @interface Type {
 
         String TYPE_01 = "1";
         String TYPE_02 = "2";
+        String TYPE_03 = "3";
 
     }
+
     /**
      * 此处定义唯一可信子类别常量
      */
@@ -26,6 +28,7 @@ public interface TemplateType {
 
         String TYPE_01 = "1";
         String TYPE_02 = "2";
+        String TYPE_03 = "3";
 
     }
 

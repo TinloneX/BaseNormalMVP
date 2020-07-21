@@ -9,12 +9,11 @@ import com.company.project.adapter.base.bean.BaseListBean;
 import com.company.project.adapter.temp.BaseTemplateAdapter;
 import com.company.project.testbean.Bean1;
 
-public class Test0101Adapter  extends BaseTemplateAdapter<Bean1> {
+public class Test0101Adapter extends BaseTemplateAdapter<Bean1> {
 
-    private TextView tvTitle;
 
-    public Test0101Adapter(Context context, String type) {
-        super(context, type);
+    public Test0101Adapter(Context context) {
+        super(context);
     }
 
     @Override
@@ -24,7 +23,6 @@ public class Test0101Adapter  extends BaseTemplateAdapter<Bean1> {
 
     @Override
     protected void onInitView(CommonViewHolder holder, BaseListBean<Bean1> item) {
-        tvTitle = holder.getView(R.id.tv_title);
     }
 
     @Override

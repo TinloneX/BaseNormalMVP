@@ -5,12 +5,11 @@ import android.animation.ObjectAnimator;
 import android.view.View;
 
 /**
- * @author ynet
- *  右部侧滑进入动画
+ * 右部侧滑进入动画
  */
 public class SlideInRightAnimation extends BaseAnimation {
     /**
-     *  获取Animator[]
+     * 获取Animator[]
      */
     @Override
     public Animator[] getAnimators(View view) {

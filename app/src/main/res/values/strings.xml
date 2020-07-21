@@ -14,7 +14,8 @@
     <string name="request_failed_retry">请求失败，请稍后再试</string>
     <string name="no_content_click_reload">暂无内容，点击重新加载</string>
     <string name="load_ing">加载中...</string>
-    <string name="no_support_type">暂时不支持显示该类别</string>
+    <string name="type_error">数据解析错误，请检查</string>
     <string name="test_01">测试模板01</string>
     <string name="test_02">测试模板02</string>
+    <string name="item_in_sub_recyclerview">item in sub_recyclerView</string>
 </resources>

@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * @author ynet
- *  水平分割线
+ * 非原作者本人编写
+ * 水平分割线
  */
 public class HorizontalDividerItemDecoration extends BaseFlexibleDividerDecoration {
     private MarginProvider mMarginProvider;
@@ -90,14 +90,14 @@ public class HorizontalDividerItemDecoration extends BaseFlexibleDividerDecorati
     }
 
     /**
-     *  Interface for controlling divider margin
+     * Interface for controlling divider margin
      */
     public interface MarginProvider {
         /**
          * @param position Divider position (or group index for GridLayoutManager)
          * @param parent   RecyclerView
          * @return left margin
-         *  Returns left margin of divider.
+         * Returns left margin of divider.
          */
         int dividerLeftMargin(int position, RecyclerView parent);
 
@@ -105,7 +105,7 @@ public class HorizontalDividerItemDecoration extends BaseFlexibleDividerDecorati
          * @param position Divider position (or group index for GridLayoutManager)
          * @param parent   RecyclerView
          * @return right margin
-         *  Returns right margin of divider.
+         * Returns right margin of divider.
          */
         int dividerRightMargin(int position, RecyclerView parent);
     }

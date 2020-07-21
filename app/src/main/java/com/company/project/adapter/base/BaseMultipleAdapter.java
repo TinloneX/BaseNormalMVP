@@ -3,8 +3,9 @@ package com.company.project.adapter.base;
 import com.company.project.adapter.base.bean.BaseListBean;
 
 /**
- *  非第一原作者
- *  MultipleRecyclerViewAdapter抽象类
+ * 非第一原作者
+ * 内容已修改
+ * MultipleRecyclerViewAdapter抽象类
  */
 public abstract class BaseMultipleAdapter<T extends BaseListBean> extends BaseRecyclerViewAdapter<T> {
     @Override

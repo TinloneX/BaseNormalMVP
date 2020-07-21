@@ -10,6 +10,7 @@ import java.util.Stack;
 /**
  * 手动管理活动栈结构
  * 慎用，容易产生内存泄漏
+ *
  * @author Administrator
  */
 public class ActivityStackUtils {

@@ -5,8 +5,6 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import androidx.annotation.Nullable;
-
 import com.company.project.activity.LauncherActivity;
 import com.company.project.receiver.OpenFileReceiver;
 
@@ -17,11 +15,6 @@ import com.company.project.receiver.OpenFileReceiver;
  */
 public class MyApplication extends Application {
 
-    private static class MicroApplication {
-        public static MyApplication application;
-    }
-
-    @Nullable
     public static MyApplication getAppContext() {
         return MicroApplication.application;
     }
@@ -41,5 +34,9 @@ public class MyApplication extends Application {
             MyApplication.this.startActivity(intent);
             android.os.Process.killProcess(android.os.Process.myPid());
         });
+    }
+
+    private static class MicroApplication {
+        public static MyApplication application;
     }
 }

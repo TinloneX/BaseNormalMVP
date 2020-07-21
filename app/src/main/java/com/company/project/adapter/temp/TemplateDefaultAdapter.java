@@ -8,16 +8,15 @@ import com.company.project.adapter.base.bean.BaseListBean;
 
 
 /**
- * @author ynet
- *  默认模板
+ * 数据错误是的默认模板
  */
 public class TemplateDefaultAdapter<T> extends BaseTemplateAdapter<T> {
-    public TemplateDefaultAdapter(Context context, String type) {
-        super(context, type);
+    public TemplateDefaultAdapter(Context context) {
+        super(context);
     }
 
     /**
-     *  返回item布局id
+     * 返回item布局id
      */
     @Override
     protected int getItemLayoutId(BaseListBean<T> info) {

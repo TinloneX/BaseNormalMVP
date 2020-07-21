@@ -1,8 +1,6 @@
 package com.company.project.testbean;
 
-import com.company.project.adapter.base.bean.IBean;
-
-public class Bean1 implements IBean {
+public class Bean1 {
 
     public String name;
 

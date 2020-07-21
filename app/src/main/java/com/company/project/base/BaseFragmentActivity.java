@@ -294,7 +294,7 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
                 tvRight.setOnClickListener(view -> onTitleRightClick());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            TLog.e(e);
         }
     }
 

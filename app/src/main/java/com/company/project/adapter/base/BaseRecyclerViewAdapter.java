@@ -26,8 +26,8 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 /**
  * @author 原作者为chenjinping
  * @version 0.0.2
- *  修改CommonRecyclerViewAdapter
- *  增加头部，底部和动画
+ * 修改CommonRecyclerViewAdapter
+ * 增加头部，底部和动画
  */
 public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<CommonViewHolder> {
     public static final int ALPHAIN = 0x00000001;
@@ -89,22 +89,18 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Co
                 if (getItem(position - getHeaderLayoutCount()) == null) {
                     return;
                 }
-                onBindViewHolderEvent(holder, (position - getHeaderLayoutCount()) >= mList.size() ? mList.size() - 1 : (position - getHeaderLayoutCount()));
+                onBindViewHolderEvent(holder, (position - getHeaderLayoutCount()) >= mList.size()
+                        ? mList.size() - 1 : (position - getHeaderLayoutCount()));
                 if (null != this.itemClickListener) {
-                    holder.getConvertView().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            itemClickListener.onItemClick(holder.getConvertView(), position - getHeaderLayoutCount());
-                        }
-                    });
+                    holder.getConvertView().setOnClickListener(v ->
+                            itemClickListener.onItemClick(holder.getConvertView(),
+                                    position - getHeaderLayoutCount()));
                 }
                 if (null != this.itemLongClickListener) {
-                    holder.getConvertView().setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            itemLongClickListener.onItemLongClick(holder.getConvertView(), position - getHeaderLayoutCount());
-                            return false;
-                        }
+                    holder.getConvertView().setOnLongClickListener(v -> {
+                        itemLongClickListener.onItemLongClick(holder.getConvertView(),
+                                position - getHeaderLayoutCount());
+                        return false;
                     });
                 }
                 break;
@@ -247,10 +243,6 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Co
         if (mEmptyLayout == null || mEmptyLayout.getChildCount() == 0) {
             return 0;
         }
-        boolean mIsUseEmpty = true;
-        if (!mIsUseEmpty) {
-            return 0;
-        }
         if (mList.size() != 0) {
             return 0;
         }
@@ -262,7 +254,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Co
     }
 
     /**
-     *  Return root layout of footer
+     * Return root layout of footer
      */
     public LinearLayout getFooterLayout() {
         return mFooterLayout;
@@ -391,7 +383,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Co
     }
 
     /**
-     *  remove all header view from mHeaderLayout and set null to mHeaderLayout
+     * remove all header view from mHeaderLayout and set null to mHeaderLayout
      */
     public void removeAllHeaderView() {
         if (getHeaderLayoutCount() == 0) {
@@ -405,7 +397,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Co
     }
 
     /**
-     *  remove all footer view from mFooterLayout and set null to mFooterLayout
+     * remove all footer view from mFooterLayout and set null to mFooterLayout
      */
     public void removeAllFooterView() {
         if (getFooterLayoutCount() == 0) {

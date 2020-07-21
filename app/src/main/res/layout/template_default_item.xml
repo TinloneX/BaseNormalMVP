@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:singleLine="true"
-        android:text="@string/no_support_type"
+        android:text="@string/type_error"
         android:textColor="#323C41"
         android:textSize="16sp" />
 </FrameLayout>

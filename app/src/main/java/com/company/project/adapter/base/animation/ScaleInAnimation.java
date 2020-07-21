@@ -5,11 +5,10 @@ import android.animation.ObjectAnimator;
 import android.view.View;
 
 /**
- * @author ynet
- *  缩放进入动画
+ * 缩放进入动画
  */
 public class ScaleInAnimation extends BaseAnimation {
-    private static final float DEFAULT_SCALE_FROM = .5f;
+    private static final float DEFAULT_SCALE_FROM = 0.5f;
     private final float mFrom;
 
     public ScaleInAnimation() {
@@ -21,7 +20,7 @@ public class ScaleInAnimation extends BaseAnimation {
     }
 
     /**
-     *  获取Animator[]
+     * 获取Animator[]
      */
     @Override
     public Animator[] getAnimators(View view) {

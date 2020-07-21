@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- *  CommonViewHolder
+ * CommonViewHolder
  */
 public class CommonViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
@@ -35,7 +35,7 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         mContext = context;
         mConvertView = itemView;
-        mViews = new SparseArray<View>();
+        mViews = new SparseArray<>();
     }
 
     public static CommonViewHolder createViewHolder(Context context, View itemView) {
@@ -50,7 +50,7 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     *  通过viewId获取控件
+     * 通过viewId获取控件
      */
     public <T extends View> T getView(int viewId) {
         View view = mViews.get(viewId);
@@ -66,7 +66,7 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
     }
     /****以下为辅助方法*****/
     /**
-     *  设置TextView的值
+     * 设置TextView的值
      */
     public CommonViewHolder setText(int viewId, String text) {
         TextView tv = getView(viewId);
@@ -230,7 +230,7 @@ public class CommonViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     *  关于事件的
+     * 关于事件的
      */
     public CommonViewHolder setOnClickListener(int viewId,
                                                View.OnClickListener listener) {

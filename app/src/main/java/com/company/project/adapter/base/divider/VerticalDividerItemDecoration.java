@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * @author ynet
- *  竖直分割线
+ * 非原作者本人编写
+ * 竖直分割线
  */
 public class VerticalDividerItemDecoration extends BaseFlexibleDividerDecoration {
     private MarginProvider mMarginProvider;
@@ -90,14 +90,14 @@ public class VerticalDividerItemDecoration extends BaseFlexibleDividerDecoration
     }
 
     /**
-     *  Interface for controlling divider margin
+     * Interface for controlling divider margin
      */
     public interface MarginProvider {
         /**
          * @param position Divider position (or group index for GridLayoutManager)
          * @param parent   RecyclerView
          * @return top margin
-         *  Returns top margin of divider.
+         * Returns top margin of divider.
          */
         int dividerTopMargin(int position, RecyclerView parent);
 
@@ -105,7 +105,7 @@ public class VerticalDividerItemDecoration extends BaseFlexibleDividerDecoration
          * @param position Divider position (or group index for GridLayoutManager)
          * @param parent   RecyclerView
          * @return bottom margin
-         *  Returns bottom margin of divider.
+         * Returns bottom margin of divider.
          */
         int dividerBottomMargin(int position, RecyclerView parent);
     }

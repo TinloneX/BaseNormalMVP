@@ -31,6 +31,7 @@ import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
 import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
+import com.company.project.util.TLog;
 import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
@@ -44,7 +45,7 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * @author Tinlone
- *  2018/3/23.
+ * 2018/3/23.
  * If you shed tears when you miss the sun, you also miss the stars.
  */
 
@@ -314,7 +315,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
                 statusBar.setBackgroundColor(Color.TRANSPARENT);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            TLog.e(e);
         }
     }
 

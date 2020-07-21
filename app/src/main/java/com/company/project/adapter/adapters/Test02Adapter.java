@@ -13,8 +13,8 @@ public class Test02Adapter extends BaseTemplateAdapter<Bean2> {
 
     private TextView tvTitle;
 
-    public Test02Adapter(Context context, String type) {
-        super(context, type);
+    public Test02Adapter(Context context) {
+        super(context);
     }
 
     @Override
@@ -23,13 +23,19 @@ public class Test02Adapter extends BaseTemplateAdapter<Bean2> {
     }
 
     @Override
-    protected void onInitView(CommonViewHolder holder, BaseListBean<Bean2> item) throws Exception {
+    protected void onInitView(CommonViewHolder holder, BaseListBean<Bean2> item) {
+        if (item == null){
+            return;
+        }
         tvTitle = holder.getView(R.id.tv_title);
         tvTitle.setTextColor(item.data.color);
     }
 
     @Override
-    protected void setDataToHolder(CommonViewHolder holder, BaseListBean<Bean2> item) throws Exception {
+    protected void setDataToHolder(CommonViewHolder holder, BaseListBean<Bean2> item) {
+        if (item == null){
+            return;
+        }
         TextView tvContent = holder.getView(R.id.tv_content);
         tvContent.setText(item.data.name);
     }
