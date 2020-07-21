@@ -3,6 +3,8 @@
 ## 项目配置说明
 项目主要开发语言为Java，编译工具使用Gradle，主要使用RxJava、Retrofit、Glide、ButterKnife及其他优秀的开源框架。
 
+***TODO:文档补充*
+
 **Java：**
 由于大量使用便利的lambda表达式，故jdk版本应为**1.8+**，同时项目编译版本指定为Java1.8：
 
