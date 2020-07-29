@@ -8,16 +8,15 @@ import com.company.project.adapter.base.BaseMultipleAdapter;
 import com.company.project.adapter.base.CommonViewHolder;
 import com.company.project.adapter.base.bean.BaseListBean;
 import com.company.project.adapter.factorys.SubAdapterFactory;
-import com.company.project.util.TLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 通用模板Adapter
- * 修订，增加泛型，以支持多种数据类型
+ * 修订，通过BaseListBean做数据封装约定类型，以支持多种数据类型
  */
-public class  TemplateAdapter  extends BaseMultipleAdapter<BaseListBean> {
+public class TemplateAdapter extends BaseMultipleAdapter<BaseListBean> {
     private Context mContext;
 
     public TemplateAdapter(Context context) {
@@ -34,7 +33,7 @@ public class  TemplateAdapter  extends BaseMultipleAdapter<BaseListBean> {
         try {
             adapter = SubAdapterFactory.newTemplateAdapter(mContext, item);
         } catch (Exception e) {
-            TLog.e(e);
+            e.printStackTrace();
         }
         if (adapter != null) {
             return adapter.onCreateViewHolder(parent, item);
@@ -52,43 +51,23 @@ public class  TemplateAdapter  extends BaseMultipleAdapter<BaseListBean> {
             BaseTemplateAdapter adapter = (BaseTemplateAdapter) holder.getConvertView().getTag(R.id.template_group_adapter);
             adapter.onBindViewHolder(holder, mList.get(position));
         } catch (Exception e) {
-            TLog.e(e);
-        }
-    }
-
-    /**
-     * @param dataList 数据列表
-     *                 设置数据
-     */
-    public void setDataList(List<BaseListBean> dataList) {
-        try {
-            if (mList == null) {
-                mList = new ArrayList<>();
-            }
-            mList.clear();
-            mList.addAll(dataList);
-            notifyDataSetChanged();
-        } catch (Exception e) {
-            TLog.e(e);
+            e.printStackTrace();
         }
     }
 
     @Override
-    public synchronized void setDateList(List<BaseListBean> dataList) {
-        try {
-            if (null != dataList) {
-                if (null != this.mList) {
-                    this.mList.clear();
-                    this.mList.addAll(dataList);
-                    try {
-                        this.notifyDataSetChanged();
-                    } catch (Exception e) {
-                        TLog.e(e);
-                    }
-                }
+    public synchronized void setDataList(List<BaseListBean> dataList) {
+        if (null != dataList) {
+            if (mList == null) {
+                mList = new ArrayList<>();
             }
-        } catch (Exception e) {
-            TLog.e(e);
+            this.mList.clear();
+            this.mList.addAll(dataList);
+            try {
+                this.notifyDataSetChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

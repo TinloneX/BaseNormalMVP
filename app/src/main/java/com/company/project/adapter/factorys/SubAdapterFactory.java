@@ -20,7 +20,7 @@ import java.lang.reflect.Constructor;
 /**
  * @author Administrator
  * 子类adapter工厂
- *
+ * <p>
  * 注意，由于未直接指定BaseTemplateAdapter泛型，且在获取子类模板View adapter时执行了泛型擦除，未约定泛型，
  * 此处可能存在数据污染可能性，应自行维护好type及subType与指定 adapter类的对应关系
  */
@@ -31,14 +31,14 @@ public class SubAdapterFactory {
      * @return adapter实例
      * 创建模板adapter
      */
-    public static <T> BaseTemplateAdapter<T> newTemplateAdapter(Context context, @NonNull BaseListBean<T> item) {
+    public static BaseTemplateAdapter newTemplateAdapter(Context context, @NonNull BaseListBean item) {
         return newInstance(SubAdapterFactory.getClassByChildType(item), context);
     }
 
     /**
      * 创建实例
      */
-    private static <T> BaseTemplateAdapter<T> newInstance(Class<? extends BaseTemplateAdapter> clazz, Context context) {
+    private static BaseTemplateAdapter newInstance(Class<? extends BaseTemplateAdapter> clazz, Context context) {
         if (clazz == null) {
             return new TemplateDefaultAdapter(context);
         }
@@ -60,7 +60,7 @@ public class SubAdapterFactory {
      *
      * @param item 对象
      * @return 模板适配器
-     * 由于泛型检查问题，此处需要优化
+     * 由于泛型检查问题，须留意返回的Adapter类的泛型是否与数据对应，此处需要优化
      */
     public static <T> Class<? extends BaseTemplateAdapter> getClassByChildType(@NonNull BaseListBean<T> item) {
         String type = item.type;
@@ -68,7 +68,6 @@ public class SubAdapterFactory {
         if (type == null) {
             return TemplateDefaultAdapter.class;
         }
-        TLog.e(type);
         switch (type) {
             case TemplateType.Type.TYPE_01:
                 return typeOneSubAdapterClass(subType);

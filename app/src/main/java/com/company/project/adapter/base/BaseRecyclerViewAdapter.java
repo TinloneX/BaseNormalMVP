@@ -107,11 +107,11 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Co
         }
     }
 
-    public void setDateList(List<T> recyclerList) {
-        setDateList(recyclerList, true);
+    public void setDataList(List<T> recyclerList) {
+        setDataList(recyclerList, true);
     }
 
-    public void setDateList(List<T> recyclerList, boolean clearable) {
+    public void setDataList(List<T> recyclerList, boolean clearable) {
         if (null == recyclerList) {
             return;
         }

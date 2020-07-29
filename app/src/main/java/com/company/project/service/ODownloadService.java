@@ -92,7 +92,6 @@ public class ODownloadService extends Service {
                 // 下载失败
                 TLog.e(e);
                 listener.onDownloadFailed(call, e);
-//                updateNotificationHandler.sendEmptyMessage(-1);
                 builder.setContentTitle("下载失败")
                         .setContentText("请稍后再试")
                         .setAutoCancel(true);//设置通知被点击一次是否自动取消
@@ -141,9 +140,6 @@ public class ODownloadService extends Service {
                             listener.onDownloading(progress);
                         }
                         //更新进度
-//                        message.what = 0;
-//                        message.arg1 = progress;
-//                        updateNotificationHandler.sendMessage(message);
                         builder.setContentText(String.format("下载进度:%s%%", progress))
                                 .setProgress(100, progress, true);
                         notificationManager.notify(1, builder.build());
@@ -151,10 +147,6 @@ public class ODownloadService extends Service {
                     //刷入文件流，防止文件写入不完整
                     fos.flush();
                     // 处理通知栏信息
-//                    Message message = Message.obtain();
-//                    message.what = 1;
-//                    message.obj = file.getAbsolutePath();
-//                    updateNotificationHandler.sendMessage(message);
                     Intent clickIntent = new Intent(MyApplication.getAppContext(), OpenFileReceiver.class);
                     clickIntent.setAction(OpenFileReceiver.ACTION);
                     clickIntent.putExtra(OpenFileReceiver.KEY_PATH, file.getAbsolutePath());

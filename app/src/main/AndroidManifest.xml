@@ -82,7 +82,7 @@
         </receiver>
 
         <provider
-            android:name=".util.MyFileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.file_provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -93,7 +93,7 @@
 
         <service android:name=".service.ODownloadService" />
 
-        <activity android:name=".activity.WebsiteActivity"></activity>
+        <activity android:name=".activity.WebsiteActivity"/>
     </application>
 
 </manifest>
