@@ -163,7 +163,7 @@ public class PhoneStateUtil {
                 IMSI = tm.getSubscriberId();
             }
         }
-        if (IMSI == null || "".equals(IMSI)) {
+        if (IMSI == null || IMSI.equals("")) {
             return null;
         }
         if (IMSI.startsWith("46000") || IMSI.startsWith("46002")) {

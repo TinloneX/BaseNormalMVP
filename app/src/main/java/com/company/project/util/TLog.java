@@ -32,7 +32,7 @@ public class TLog {
 
 
     private static final String TAG = "DEBUG.T.LOG";
-    private static boolean showLog = true;
+        private static boolean showLog = true;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS", Locale.getDefault());
 
     private TLog() {

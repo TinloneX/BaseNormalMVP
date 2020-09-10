@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.company.project.MyApplication;
 import com.company.project.R;
 import com.company.project.R2;
 import com.company.project.base.BaseActivity;
@@ -58,7 +59,6 @@ public class WebsiteActivity extends BaseActivity {
     private TMessageDialog messageDialog;
     private ODownloadService.DownloadBinder downloadBinder;
     private ServiceConnection conn;
-    private TMessageDialog openFileDialog;
 
     @Override
     public int layoutId() {
@@ -114,7 +114,7 @@ public class WebsiteActivity extends BaseActivity {
         wvWebsite.setWebViewClient(new MyWebViewClient());
         wvWebsite.setWebChromeClient(new MyChromeClient());
         preDownLoad();
-        // 支持webView下载文件 ， 自行实现下载服务
+        // 自行实现下载服务
         wvWebsite.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
                     Log.i("aaa", String.format("url = %s\n," +
                                     "userAgent = %s\n," +
@@ -122,12 +122,12 @@ public class WebsiteActivity extends BaseActivity {
                                     "mimetype = %s\n," +
                                     "contentLength = %s",
                             url, userAgent, contentDisposition, mimetype, contentLength));
-                    whenDownload(url);
+                    whenDownload();
                 }
         );
     }
 
-    private void whenDownload(final String downloadUrl) {
+    private void whenDownload() {
         initDialog();
         messageDialog.content("确认下载该文件吗？")
                 .doClick(new TMessageDialog.DoClickListener() {
@@ -141,14 +141,16 @@ public class WebsiteActivity extends BaseActivity {
                         messageDialog.withProgress(100)
                                 .content("正在下载...")
                                 .update();
-                        downloadBinder.backgroundDown(downloadUrl, FileUtils.getFileDisk(), new OnDownloadListener() {
+                        downloadBinder.backgroundDown(url, FileUtils.getFileDisk(), new OnDownloadListener() {
 
                             @Override
                             public void onDownloadSuccess(File file) {
-                                dismiss(messageDialog);
-                                if (file != null) {
-                                    whenFileDownloadSuccess(file);
-                                }
+                                runOnUiThread(() -> {
+                                    Intent intent = new Intent(MyApplication.getAppContext(), OpenFileReceiver.class);
+                                    intent.putExtra("path", file.getAbsolutePath());
+                                    sendBroadcast(intent);
+                                    dismiss(messageDialog);
+                                });
                             }
 
                             @Override
@@ -164,28 +166,6 @@ public class WebsiteActivity extends BaseActivity {
                         });
                     }
                 }).show();
-    }
-
-    private void whenFileDownloadSuccess(@NonNull final File file) {
-        runOnUiThread(() -> {
-            resetOpenFileDialog(file);
-            openFileDialog.show();
-        });
-    }
-
-    private void resetOpenFileDialog(@NonNull final File file) {
-        if (openFileDialog == null) {
-            openFileDialog = new TMessageDialog(WebsiteActivity.this);
-        }
-        openFileDialog.title("提示")
-                .content("是否打开文件：" + file.getName())
-                .withoutMid()
-                .left("否", v -> openFileDialog.dismiss())
-                .right("打开文件", v -> {
-                    Intent intent = new Intent(WebsiteActivity.this, OpenFileReceiver.class);
-                    intent.putExtra("path", file.getAbsolutePath());
-                    sendBroadcast(intent);
-                });
     }
 
     /**
@@ -229,7 +209,6 @@ public class WebsiteActivity extends BaseActivity {
      *
      * @param javaScript JavaScript语句
      */
-    @SuppressWarnings("unused")
     private void injectJavaScript(@NonNull String javaScript) {
         if (!javaScript.toLowerCase().startsWith("javascript:")) {
             javaScript = "javascript:" + javaScript;

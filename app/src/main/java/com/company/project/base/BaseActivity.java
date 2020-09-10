@@ -31,11 +31,10 @@ import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
 import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
-import com.company.project.util.TLog;
 import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
-import com.gyf.immersionbar.ImmersionBar;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +44,7 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * @author Tinlone
- * 2018/3/23.
+ *  2018/3/23.
  * If you shed tears when you miss the sun, you also miss the stars.
  */
 
@@ -114,7 +113,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
             //fontScale不为1，需要强制设置为1
             Configuration newConfig = new Configuration();
             newConfig.setToDefaults();//设置成默认值，即fontScale为1
-            createConfigurationContext(newConfig);
+            resources.updateConfiguration(newConfig, resources.getDisplayMetrics());
         }
         return resources;
     }
@@ -134,8 +133,8 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      */
     public void statusWhiteFontBlack() {
         immersionBar
+                .fitsSystemWindows(true)
                 .statusBarColor(R.color.white)
-                .fitsSystemWindows(false)
                 .keyboardEnable(true)
                 .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                 .statusBarDarkFont(true, 0.2f)
@@ -147,8 +146,8 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      */
     public void statusTransparentFontBlack() {
         immersionBar
+                .fitsSystemWindows(true)
                 .transparentStatusBar()
-                .fitsSystemWindows(false)
                 .keyboardEnable(true)
                 .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                 .statusBarDarkFont(true, 0.2f)
@@ -160,6 +159,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
      */
     public void statusTransparentFontWhite() {
         immersionBar
+                .fitsSystemWindows(true)
                 .transparentStatusBar()
                 .fitsSystemWindows(false)
                 .statusBarDarkFont(false)
@@ -178,6 +178,9 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
         if (unbinder != null) {
             unbinder.unbind();
             unbinder = null;
+        }
+        if (immersionBar != null) {
+            immersionBar.destroy();
         }
         lastClick = 0L;
         super.onDestroy();
@@ -315,7 +318,7 @@ public abstract class BaseActivity<P extends IPresenter, DATA> extends AppCompat
                 statusBar.setBackgroundColor(Color.TRANSPARENT);
             }
         } catch (Exception e) {
-            TLog.e(e);
+            e.printStackTrace();
         }
     }
 

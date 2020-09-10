@@ -28,7 +28,6 @@ import com.company.project.http.ApiCode;
 import com.company.project.mvp.IView;
 import com.company.project.util.ActivityStackUtils;
 import com.company.project.util.Check;
-import com.company.project.util.TLog;
 import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
@@ -87,7 +86,7 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
         return isUseButterKnife();
     }
 
-    public boolean isUseButterKnife() {
+    public boolean isUseButterKnife(){
         return true;
     }
 
@@ -239,7 +238,7 @@ public abstract class BaseFragment<P extends IPresenter, DATA> extends Fragment 
                 tvRight.setTextColor(Color.WHITE);
             }
         } catch (Exception e) {
-            TLog.e(e);
+            e.printStackTrace();
         }
     }
 

@@ -99,7 +99,7 @@ dependencies {
     // util集合
     implementation 'com.blankj:utilcode:1.23.5'
     // 沉浸式状态栏
-    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    implementation 'com.gyf.immersionbar:immersionbar:2.3.2-beta01'
     // 底部导航栏
     implementation 'com.github.chaychan:BottomBarLayout:1.1.2'
     // 黄油🔪

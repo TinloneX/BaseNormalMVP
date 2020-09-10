@@ -115,7 +115,6 @@ public class FileUtils {
         File file = new File(path);
         RequestBody requestFile =
                 RequestBody.create(MultipartBody.FORM, file);
-
         return MultipartBody.Part.createFormData(partName, file.getName(), requestFile);
     }
 

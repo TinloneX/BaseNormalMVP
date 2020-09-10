@@ -117,9 +117,8 @@ public class ViewUtils {
         if (rid != 0) {
             int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
             return context.getResources().getDimensionPixelSize(resourceId);
-        } else {
+        } else
             return 0;
-        }
     }
 
 }

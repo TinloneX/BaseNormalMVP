@@ -37,7 +37,7 @@ import com.company.project.util.TLog;
 import com.company.project.util.UserInfoUtil;
 import com.company.project.widget.Dismissable;
 import com.company.project.widget.LoadingProgressDialog;
-import com.gyf.immersionbar.ImmersionBar;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
 
@@ -114,7 +114,7 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
             //fontScale不为1，需要强制设置为1
             Configuration newConfig = new Configuration();
             newConfig.setToDefaults();//设置成默认值，即fontScale为1
-            createConfigurationContext(newConfig);
+            resources.updateConfiguration(newConfig, resources.getDisplayMetrics());
         }
         return resources;
     }
@@ -176,6 +176,9 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
         if (unbinder != null) {
             unbinder.unbind();
             unbinder = null;
+        }
+        if (immersionBar != null) {
+            immersionBar.destroy();
         }
         lastClick = 0L;
         super.onDestroy();
@@ -294,7 +297,7 @@ public abstract class BaseFragmentActivity<P extends IPresenter, DATA> extends F
                 tvRight.setOnClickListener(view -> onTitleRightClick());
             }
         } catch (Exception e) {
-            TLog.e(e);
+            e.printStackTrace();
         }
     }
 
